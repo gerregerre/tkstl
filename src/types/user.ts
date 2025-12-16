@@ -11,6 +11,8 @@ export interface User {
   pointDifferential: number;
   nobleStandard: number;
   avatarUrl?: string;
+  yearsOfService: number;
+  accomplishments: string[];
 }
 
 export interface Session {

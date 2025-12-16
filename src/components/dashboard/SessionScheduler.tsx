@@ -36,8 +36,7 @@ function formatCountdown(targetDate: Date): string {
 }
 
 export function SessionScheduler() {
-  const { members } = useMembers();
-  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+  const { members, checkedInPlayers, setCheckedInPlayers } = useMembers();
   const [countdown, setCountdown] = useState('');
   const nextSession = getNextMonday();
 
@@ -51,24 +50,21 @@ export function SessionScheduler() {
   }, []);
 
   const togglePlayer = (playerId: string) => {
-    setSelectedPlayers(prev => {
-      if (prev.includes(playerId)) {
-        return prev.filter(id => id !== playerId);
-      }
-      if (prev.length >= 4) {
-        toast({
-          title: "The Holy Quartet is Complete",
-          description: "Only 4 players may participate in each sacred session.",
-          variant: "destructive",
-        });
-        return prev;
-      }
-      return [...prev, playerId];
-    });
+    if (checkedInPlayers.includes(playerId)) {
+      setCheckedInPlayers(checkedInPlayers.filter(id => id !== playerId));
+    } else if (checkedInPlayers.length >= 4) {
+      toast({
+        title: "The Holy Quartet is Complete",
+        description: "Only 4 players may participate in each sacred session.",
+        variant: "destructive",
+      });
+    } else {
+      setCheckedInPlayers([...checkedInPlayers, playerId]);
+    }
   };
 
   const confirmSession = () => {
-    if (selectedPlayers.length !== 4) {
+    if (checkedInPlayers.length !== 4) {
       toast({
         title: "Incomplete Quartet",
         description: "Exactly 4 players must be selected for the session.",
@@ -79,7 +75,7 @@ export function SessionScheduler() {
     
     toast({
       title: "Session Confirmed",
-      description: "The Holy Quartet has been assembled. May glory await.",
+      description: "The Holy Quartet has been assembled. Proceed to Record Session.",
     });
   };
 
@@ -122,27 +118,27 @@ export function SessionScheduler() {
           </div>
           <div className={cn(
             "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium",
-            selectedPlayers.length === 4 
+            checkedInPlayers.length === 4 
               ? "bg-hunter-green/20 text-hunter-green" 
               : "bg-muted text-muted-foreground"
           )}>
             <Users className="w-4 h-4" />
-            {selectedPlayers.length}/4
+            {checkedInPlayers.length}/4
           </div>
         </div>
 
-        {selectedPlayers.length < 4 && (
+        {checkedInPlayers.length < 4 && (
           <div className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg mb-4 text-sm">
             <AlertCircle className="w-4 h-4 text-accent-foreground" />
             <span className="text-accent-foreground">
-              {4 - selectedPlayers.length} more player{4 - selectedPlayers.length !== 1 ? 's' : ''} needed
+              {4 - checkedInPlayers.length} more player{4 - checkedInPlayers.length !== 1 ? 's' : ''} needed
             </span>
           </div>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {members.map((member) => {
-            const isSelected = selectedPlayers.includes(member.id);
+            const isSelected = checkedInPlayers.includes(member.id);
             const isRoyal = member.role === 'royalty';
             
             return (
@@ -192,7 +188,7 @@ export function SessionScheduler() {
           variant="royal"
           size="lg"
           className="w-full mt-6"
-          disabled={selectedPlayers.length !== 4}
+          disabled={checkedInPlayers.length !== 4}
         >
           Confirm The Holy Quartet
         </Button>

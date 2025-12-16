@@ -23,9 +23,8 @@ const tabs = [
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'members', label: 'Members', icon: Users },
   { id: 'session', label: 'Schedule', icon: Calendar },
-  { id: 'matches', label: 'Record Match', icon: Swords },
+  { id: 'matches', label: 'Record Session', icon: Swords },
   { id: 'leaderboard', label: 'PwC Scoreboard', icon: Trophy },
-  { id: 'rating', label: 'Post-Session', icon: ClipboardList },
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {

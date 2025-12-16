@@ -9,7 +9,7 @@ import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NobleStandardRating } from '@/components/dashboard/NobleStandardRating';
 import { Noteboard } from '@/components/dashboard/Noteboard';
-import { MatchRecorder } from '@/components/dashboard/MatchRecorder';
+import { SessionRecorder } from '@/components/dashboard/SessionRecorder';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
@@ -28,7 +28,7 @@ export default function Dashboard() {
       case 'session':
         return <SessionScheduler />;
       case 'matches':
-        return <MatchRecorder />;
+        return <SessionRecorder />;
       case 'lore':
         return <TheLore />;
       case 'members':

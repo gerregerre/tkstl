@@ -2,19 +2,29 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { User } from '@/types/user';
 import { members as initialMembers } from '@/data/members';
 
-interface MatchResult {
+interface GameResult {
+  type: 'mini-single' | 'shibuya' | 'ladder';
+  pairA: string[];
+  pairB: string[];
+  pairAScore?: number;
+  pairBScore?: number;
+  winner?: 'A' | 'B'; // For ladder (binary result)
+}
+
+interface SessionResult {
   id: string;
   date: Date;
-  winnerId: string;
-  loserId: string;
-  winnerScore: number;
-  loserScore: number;
+  players: string[];
+  games: GameResult[];
+  nobleStandard: number;
 }
 
 interface MembersContextType {
   members: User[];
-  matchHistory: MatchResult[];
-  recordMatch: (winnerId: string, loserId: string, winnerScore: number, loserScore: number) => void;
+  sessionHistory: SessionResult[];
+  checkedInPlayers: string[];
+  setCheckedInPlayers: (players: string[]) => void;
+  recordSession: (games: GameResult[], nobleStandard: number) => void;
   updateNobleStandard: (memberId: string, score: number) => void;
   resetStats: () => void;
 }
@@ -22,7 +32,8 @@ interface MembersContextType {
 const MembersContext = createContext<MembersContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'tennis-club-members';
-const MATCH_HISTORY_KEY = 'tennis-club-matches';
+const SESSION_HISTORY_KEY = 'tennis-club-sessions';
+const CHECKED_IN_KEY = 'tennis-club-checked-in';
 
 export function MembersProvider({ children }: { children: ReactNode }) {
   const [members, setMembers] = useState<User[]>(() => {
@@ -37,8 +48,20 @@ export function MembersProvider({ children }: { children: ReactNode }) {
     return initialMembers;
   });
 
-  const [matchHistory, setMatchHistory] = useState<MatchResult[]>(() => {
-    const stored = localStorage.getItem(MATCH_HISTORY_KEY);
+  const [sessionHistory, setSessionHistory] = useState<SessionResult[]>(() => {
+    const stored = localStorage.getItem(SESSION_HISTORY_KEY);
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  const [checkedInPlayers, setCheckedInPlayers] = useState<string[]>(() => {
+    const stored = localStorage.getItem(CHECKED_IN_KEY);
     if (stored) {
       try {
         return JSON.parse(stored);
@@ -54,40 +77,100 @@ export function MembersProvider({ children }: { children: ReactNode }) {
   }, [members]);
 
   useEffect(() => {
-    localStorage.setItem(MATCH_HISTORY_KEY, JSON.stringify(matchHistory));
-  }, [matchHistory]);
+    localStorage.setItem(SESSION_HISTORY_KEY, JSON.stringify(sessionHistory));
+  }, [sessionHistory]);
 
-  const recordMatch = (winnerId: string, loserId: string, winnerScore: number, loserScore: number) => {
-    const pointDiff = winnerScore - loserScore;
+  useEffect(() => {
+    localStorage.setItem(CHECKED_IN_KEY, JSON.stringify(checkedInPlayers));
+  }, [checkedInPlayers]);
 
-    setMembers(prev => prev.map(member => {
-      if (member.id === winnerId) {
-        return {
-          ...member,
-          wins: member.wins + 1,
-          pointDifferential: member.pointDifferential + pointDiff,
-        };
-      }
-      if (member.id === loserId) {
-        return {
-          ...member,
-          losses: member.losses + 1,
-          pointDifferential: member.pointDifferential - pointDiff,
-        };
-      }
-      return member;
-    }));
+  const recordSession = (games: GameResult[], nobleStandard: number) => {
+    // Process each game and update member stats
+    setMembers(prev => {
+      const updated = [...prev];
+      
+      games.forEach(game => {
+        if (game.type === 'mini-single' || game.type === 'shibuya') {
+          // Point-based games
+          const pairAScore = game.pairAScore || 0;
+          const pairBScore = game.pairBScore || 0;
+          const diff = Math.abs(pairAScore - pairBScore);
+          const winnersIds = pairAScore > pairBScore ? game.pairA : game.pairB;
+          const losersIds = pairAScore > pairBScore ? game.pairB : game.pairA;
+          
+          winnersIds.forEach(id => {
+            const idx = updated.findIndex(m => m.id === id);
+            if (idx !== -1) {
+              updated[idx] = {
+                ...updated[idx],
+                wins: updated[idx].wins + 1,
+                pointDifferential: updated[idx].pointDifferential + diff,
+              };
+            }
+          });
+          
+          losersIds.forEach(id => {
+            const idx = updated.findIndex(m => m.id === id);
+            if (idx !== -1) {
+              updated[idx] = {
+                ...updated[idx],
+                losses: updated[idx].losses + 1,
+                pointDifferential: updated[idx].pointDifferential - diff,
+              };
+            }
+          });
+        } else if (game.type === 'ladder') {
+          // Binary result - win/loss only, no point differential
+          const winnersIds = game.winner === 'A' ? game.pairA : game.pairB;
+          const losersIds = game.winner === 'A' ? game.pairB : game.pairA;
+          
+          winnersIds.forEach(id => {
+            const idx = updated.findIndex(m => m.id === id);
+            if (idx !== -1) {
+              updated[idx] = {
+                ...updated[idx],
+                wins: updated[idx].wins + 1,
+              };
+            }
+          });
+          
+          losersIds.forEach(id => {
+            const idx = updated.findIndex(m => m.id === id);
+            if (idx !== -1) {
+              updated[idx] = {
+                ...updated[idx],
+                losses: updated[idx].losses + 1,
+              };
+            }
+          });
+        }
+      });
 
-    const newMatch: MatchResult = {
+      // Update Noble Standard for all checked-in players
+      checkedInPlayers.forEach(id => {
+        const idx = updated.findIndex(m => m.id === id);
+        if (idx !== -1) {
+          // Average the new noble standard with existing (or set if 0)
+          const current = updated[idx].nobleStandard;
+          updated[idx] = {
+            ...updated[idx],
+            nobleStandard: current === 0 ? nobleStandard : (current + nobleStandard) / 2,
+          };
+        }
+      });
+
+      return updated;
+    });
+
+    const newSession: SessionResult = {
       id: crypto.randomUUID(),
       date: new Date(),
-      winnerId,
-      loserId,
-      winnerScore,
-      loserScore,
+      players: checkedInPlayers,
+      games,
+      nobleStandard,
     };
 
-    setMatchHistory(prev => [newMatch, ...prev]);
+    setSessionHistory(prev => [newSession, ...prev]);
   };
 
   const updateNobleStandard = (memberId: string, score: number) => {
@@ -101,11 +184,20 @@ export function MembersProvider({ children }: { children: ReactNode }) {
 
   const resetStats = () => {
     setMembers(initialMembers);
-    setMatchHistory([]);
+    setSessionHistory([]);
+    setCheckedInPlayers([]);
   };
 
   return (
-    <MembersContext.Provider value={{ members, matchHistory, recordMatch, updateNobleStandard, resetStats }}>
+    <MembersContext.Provider value={{ 
+      members, 
+      sessionHistory, 
+      checkedInPlayers,
+      setCheckedInPlayers,
+      recordSession, 
+      updateNobleStandard, 
+      resetStats 
+    }}>
       {children}
     </MembersContext.Provider>
   );

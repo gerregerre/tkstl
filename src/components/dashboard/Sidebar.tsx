@@ -8,6 +8,7 @@ import {
   Calendar, 
   Trophy,
   ClipboardList,
+  Swords,
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ const tabs = [
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'members', label: 'Members', icon: Users },
   { id: 'session', label: 'Schedule', icon: Calendar },
+  { id: 'matches', label: 'Record Match', icon: Swords },
   { id: 'leaderboard', label: 'PwC Scoreboard', icon: Trophy },
   { id: 'rating', label: 'Post-Session', icon: ClipboardList },
 ];

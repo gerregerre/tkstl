@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { members } from '@/data/members';
+import { useMembers } from '@/contexts/MembersContext';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CrownIcon } from '@/components/icons/CrownIcon';
@@ -36,6 +36,7 @@ function formatCountdown(targetDate: Date): string {
 }
 
 export function SessionScheduler() {
+  const { members } = useMembers();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [countdown, setCountdown] = useState('');
   const nextSession = getNextMonday();

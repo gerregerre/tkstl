@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { CrownIcon } from '@/components/icons/CrownIcon';
 import { Calendar } from 'lucide-react';
 import { members } from '@/data/members';
+import { DutyRoster } from './DutyRoster';
+import { PendingSessionsList } from './PendingSessionsList';
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -132,6 +134,12 @@ export function DashboardHome() {
           </div>
         </div>
       </div>
+
+      {/* Duty Roster */}
+      <DutyRoster />
+
+      {/* Pending Sessions */}
+      <PendingSessionsList />
     </div>
   );
 }

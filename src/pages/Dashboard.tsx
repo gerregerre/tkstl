@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Header } from '@/components/dashboard/Header';
-import { Navigation } from '@/components/dashboard/Navigation';
+import { Sidebar } from '@/components/dashboard/Sidebar';
+import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { Leaderboard } from '@/components/dashboard/Leaderboard';
 import { SessionScheduler } from '@/components/dashboard/SessionScheduler';
 import { TheLore } from '@/components/dashboard/TheLore';
@@ -12,7 +12,7 @@ import { Noteboard } from '@/components/dashboard/Noteboard';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
-  const [activeTab, setActiveTab] = useState('leaderboard');
+  const [activeTab, setActiveTab] = useState('home');
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -20,6 +20,8 @@ export default function Dashboard() {
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'home':
+        return <DashboardHome />;
       case 'leaderboard':
         return <Leaderboard />;
       case 'session':
@@ -33,30 +35,31 @@ export default function Dashboard() {
       case 'noteboard':
         return <Noteboard />;
       default:
-        return <Leaderboard />;
+        return <DashboardHome />;
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
-      <main className="container mx-auto px-4 py-8">
-        {renderContent()}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border py-6 mt-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground font-serif-body italic">
-            "The court separates the worthy from the merely ambitious."
-          </p>
-          <p className="text-xs text-muted-foreground mt-2">
-            TKSTL — Est. 2017 — Long May We Reign
-          </p>
+      <main className="ml-64 min-h-screen">
+        <div className="p-8">
+          {renderContent()}
         </div>
-      </footer>
+
+        {/* Footer */}
+        <footer className="border-t border-border py-6 mt-12 px-8">
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground font-serif-body italic">
+              "The court separates the worthy from the merely ambitious."
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              TKSTL — Est. 2017 — Long May We Reign
+            </p>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 }

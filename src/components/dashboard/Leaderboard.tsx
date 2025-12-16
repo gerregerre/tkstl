@@ -1,9 +1,10 @@
-import { members } from '@/data/members';
+import { useMembers } from '@/contexts/MembersContext';
 import { CrownIcon } from '@/components/icons/CrownIcon';
 import { DirtIcon } from '@/components/icons/DirtIcon';
 import { cn } from '@/lib/utils';
 
 export function Leaderboard() {
+  const { members } = useMembers();
   const sortedMembers = [...members].sort((a, b) => {
     // Sort by Noble Standard first, then by wins
     if (b.nobleStandard !== a.nobleStandard) {

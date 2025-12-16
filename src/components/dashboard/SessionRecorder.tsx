@@ -21,9 +21,7 @@ import {
   Laugh,
   ThermometerSun,
   Send,
-  Lock,
-  ScrollText,
-  ShieldX
+  Lock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -54,7 +52,7 @@ const nobleCategories = [
 ];
 
 export function SessionRecorder() {
-  const { members, checkedInPlayers, submitForAssent, getCurrentScribe } = useMembers();
+  const { members, checkedInPlayers, submitForAssent } = useMembers();
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -94,9 +92,6 @@ export function SessionRecorder() {
 
   const checkedInMembers = members.filter(m => checkedInPlayers.includes(m.id));
   const hasQuartet = checkedInPlayers.length === 4;
-  const currentScribe = getCurrentScribe();
-  const isCurrentScribe = user?.id === currentScribe.id;
-  const isRoyal = user?.role === 'royalty';
 
   const steps = [
     { id: 0, title: 'Mini-Single', subtitle: '2v2 Doubles', icon: Swords, color: 'terra-cotta' },
@@ -295,48 +290,6 @@ export function SessionRecorder() {
           <p className="text-muted-foreground max-w-md mx-auto">
             You must be logged in to record sessions.
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Check if user is the current scribe (must be a Founder AND be this week's designated scribe)
-  if (!isCurrentScribe) {
-    return (
-      <div className="space-y-6 animate-fade-in-up">
-        <div className="text-center">
-          <h2 className="font-serif text-3xl font-bold text-foreground">
-            Post-Match Report
-          </h2>
-          <p className="text-muted-foreground mt-1 font-serif-body italic">
-            Chronicle the PwC session results
-          </p>
-        </div>
-        
-        <div className="bg-card rounded-lg border-2 border-gold/30 p-8 shadow-card text-center">
-          <ShieldX className="w-16 h-16 text-gold/50 mx-auto mb-4" />
-          <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-            Not Your Sacred Duty
-          </h3>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            {isRoyal ? (
-              <>
-                The quill is not yours this week, noble one. The sacred duty of chronicling falls to{' '}
-                <span className="font-semibold text-gold">{currentScribe.name}</span>, 
-                as decreed by the ancient rotation.
-              </>
-            ) : (
-              <>
-                Peasants are not permitted to chronicle the sacred records. 
-                Only Founding Fathers may wield the Royal Quill. This week's Scribe is{' '}
-                <span className="font-semibold text-gold">{currentScribe.name}</span>.
-              </>
-            )}
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gold">
-            <ScrollText className="w-4 h-4" />
-            <span>Current Scribe: {currentScribe.name}</span>
-          </div>
         </div>
       </div>
     );

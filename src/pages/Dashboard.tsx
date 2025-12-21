@@ -7,27 +7,45 @@ import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
 import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
+import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
+
+  const handlePlayerSelect = (playerName: string) => {
+    setSelectedPlayer(playerName);
+    setActiveTab('profile');
+  };
+
+  const handleBackFromProfile = () => {
+    setSelectedPlayer(null);
+    setActiveTab('leaderboard');
+  };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
         return <DashboardHome />;
       case 'leaderboard':
-        return <NewLeaderboard />;
+        return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
       case 'session':
         return <NewSessionRecorder />;
       case 'lore':
         return <TheLore />;
       case 'members':
         return <MemberProfiles />;
+      case 'profile':
+        return selectedPlayer ? (
+          <PlayerProfile playerName={selectedPlayer} onBack={handleBackFromProfile} />
+        ) : (
+          <NewLeaderboard onPlayerSelect={handlePlayerSelect} />
+        );
       default:
         return <DashboardHome />;
     }

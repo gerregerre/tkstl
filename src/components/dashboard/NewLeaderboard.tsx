@@ -1,9 +1,13 @@
 import { usePlayers } from '@/hooks/usePlayers';
 import { cn } from '@/lib/utils';
-import { Trophy, Medal, Award, Star } from 'lucide-react';
+import { Trophy, Medal, Award, Star, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-export function NewLeaderboard() {
+interface NewLeaderboardProps {
+  onPlayerSelect?: (playerName: string) => void;
+}
+
+export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   const { players, loading, getAveragePoints, getLeaderboard } = usePlayers();
   
   if (loading) {
@@ -73,8 +77,9 @@ export function NewLeaderboard() {
                 return (
                   <tr
                     key={player.id}
+                    onClick={() => onPlayerSelect?.(player.name)}
                     className={cn(
-                      "hover:bg-muted/50 transition-colors",
+                      "hover:bg-muted/50 transition-colors cursor-pointer",
                       index === 0 && "bg-gold/5",
                       index === 1 && "bg-muted/30",
                       index === 2 && "bg-primary/5"
@@ -129,16 +134,19 @@ export function NewLeaderboard() {
                       {player.total_points.toFixed(1)}
                     </td>
                     <td className="px-4 py-4 text-center">
-                      {qualifies ? (
-                        <Badge variant="default" className="bg-secondary text-secondary-foreground">
-                          <Star className="w-3 h-3 mr-1" />
-                          Qualified
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-muted-foreground">
-                          {5 - player.games_played} games to qualify
-                        </Badge>
-                      )}
+                      <div className="flex items-center justify-center gap-2">
+                        {qualifies ? (
+                          <Badge variant="default" className="bg-secondary text-secondary-foreground">
+                            <Star className="w-3 h-3 mr-1" />
+                            Qualified
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-muted-foreground">
+                            {5 - player.games_played} games to qualify
+                          </Badge>
+                        )}
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      </div>
                     </td>
                   </tr>
                 );
@@ -155,10 +163,11 @@ export function NewLeaderboard() {
           const qualifies = player.games_played >= 5;
           
           return (
-            <div
+            <button
               key={player.id}
+              onClick={() => onPlayerSelect?.(player.name)}
               className={cn(
-                "bg-card rounded border border-border p-4",
+                "w-full bg-card rounded border border-border p-4 text-left transition-colors hover:bg-muted/50",
                 index === 0 && "border-gold/50 bg-gold/5",
                 index === 1 && "border-muted-foreground/30",
                 index === 2 && "border-primary/50 bg-primary/5"
@@ -201,14 +210,17 @@ export function NewLeaderboard() {
                     )}
                   </div>
                 </div>
-                <span className={cn(
-                  "px-3 py-1 rounded text-sm font-bold",
-                  avgPoints >= 8 && "bg-secondary/10 text-secondary",
-                  avgPoints >= 6 && avgPoints < 8 && "bg-primary/10 text-primary",
-                  avgPoints < 6 && "bg-muted text-muted-foreground"
-                )}>
-                  {avgPoints.toFixed(2)}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={cn(
+                    "px-3 py-1 rounded text-sm font-bold",
+                    avgPoints >= 8 && "bg-secondary/10 text-secondary",
+                    avgPoints >= 6 && avgPoints < 8 && "bg-primary/10 text-primary",
+                    avgPoints < 6 && "bg-muted text-muted-foreground"
+                  )}>
+                    {avgPoints.toFixed(2)}
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-2 text-center text-sm">
                 <div className="bg-muted rounded p-2">
@@ -225,7 +237,7 @@ export function NewLeaderboard() {
                   {5 - player.games_played} more games to qualify for final leaderboard
                 </div>
               )}
-            </div>
+            </button>
           );
         })}
       </div>

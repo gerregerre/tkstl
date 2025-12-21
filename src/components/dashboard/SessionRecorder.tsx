@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { CrownIcon } from '@/components/icons/CrownIcon';
-import { DirtIcon } from '@/components/icons/DirtIcon';
 import { 
   Users, 
   Swords, 
@@ -21,7 +19,8 @@ import {
   Laugh,
   ThermometerSun,
   Send,
-  Lock
+  Lock,
+  Crown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -94,10 +93,10 @@ export function SessionRecorder() {
   const hasQuartet = checkedInPlayers.length === 4;
 
   const steps = [
-    { id: 0, title: 'Mini-Single', subtitle: '2v2 Doubles', icon: Swords, color: 'terra-cotta' },
-    { id: 1, title: 'Shibuya Crossing', subtitle: '2v2 Doubles', icon: Shuffle, color: 'hunter-green' },
-    { id: 2, title: 'Ladder', subtitle: 'Binary Result', icon: Trophy, color: 'gold' },
-    { id: 3, title: 'Noble Standard', subtitle: 'Session Survey', icon: Target, color: 'terra-cotta' },
+    { id: 0, title: 'Mini-Single', icon: Swords },
+    { id: 1, title: 'Shibuya', icon: Shuffle },
+    { id: 2, title: 'Ladder', icon: Trophy },
+    { id: 3, title: 'Noble Standard', icon: Target },
   ];
 
   const togglePlayerInPair = (
@@ -215,10 +214,8 @@ export function SessionRecorder() {
                   {member.name[0]}
                 </div>
                 <span className="font-medium text-foreground">{member.name}</span>
-                {isRoyal ? (
-                  <CrownIcon className="w-4 h-4 text-gold ml-auto" />
-                ) : (
-                  <DirtIcon className="w-4 h-4 text-burlap ml-auto" />
+                {isRoyal && (
+                  <Crown className="w-4 h-4 text-primary ml-auto" />
                 )}
               </button>
             );
@@ -256,10 +253,8 @@ export function SessionRecorder() {
                   {member.name[0]}
                 </div>
                 <span className="font-medium text-foreground">{member.name}</span>
-                {isRoyal ? (
-                  <CrownIcon className="w-4 h-4 text-gold ml-auto" />
-                ) : (
-                  <DirtIcon className="w-4 h-4 text-burlap ml-auto" />
+                {isRoyal && (
+                  <Crown className="w-4 h-4 text-primary ml-auto" />
                 )}
               </button>
             );
@@ -347,18 +342,18 @@ export function SessionRecorder() {
               key={step.id}
               onClick={() => setCurrentStep(idx)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all whitespace-nowrap",
+                "flex items-center gap-2 px-4 py-2 rounded border transition-all whitespace-nowrap",
                 isActive
-                  ? `border-${step.color} bg-${step.color}/10`
+                  ? "border-primary bg-primary/10"
                   : isCompleted
-                  ? "border-hunter-green/50 bg-hunter-green/5"
-                  : "border-border bg-background hover:border-muted-foreground/30"
+                  ? "border-secondary/50 bg-secondary/5"
+                  : "border-border bg-background hover:border-primary/30"
               )}
             >
               {isCompleted ? (
-                <Check className="w-4 h-4 text-hunter-green" />
+                <Check className="w-4 h-4 text-secondary" />
               ) : (
-                <Icon className={cn("w-4 h-4", isActive ? `text-${step.color}` : "text-muted-foreground")} />
+                <Icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground")} />
               )}
               <span className={cn(
                 "font-medium text-sm",

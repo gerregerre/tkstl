@@ -1,7 +1,5 @@
 import { useMembers } from '@/contexts/MembersContext';
-import { CrownIcon } from '@/components/icons/CrownIcon';
-import { ScrollText, Feather } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ScrollText, User } from 'lucide-react';
 
 export function DutyRoster() {
   const { getCurrentScribe } = useMembers();
@@ -23,42 +21,35 @@ export function DutyRoster() {
   };
 
   return (
-    <div className="bg-card rounded-xl border-2 border-gold/30 p-6 shadow-noble">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center">
-          <ScrollText className="w-5 h-5 text-gold" />
-        </div>
-        <div>
-          <h2 className="font-serif text-xl font-semibold text-foreground">Duty Roster</h2>
-          <p className="text-xs text-muted-foreground">{getWeekRange()}</p>
-        </div>
+    <div className="bg-card border border-border rounded p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <ScrollText className="w-5 h-5 text-primary" />
+        <h3 className="font-serif text-xl font-semibold text-foreground uppercase tracking-wide">
+          Duty Roster
+        </h3>
       </div>
 
-      <div className="bg-gradient-noble rounded-lg p-4 border border-gold/20">
-        <p className="text-xs text-gold/80 font-medium uppercase tracking-wide mb-2">
+      <p className="text-sm text-muted-foreground mb-4">{getWeekRange()}</p>
+
+      <div className="bg-primary rounded p-4">
+        <p className="text-xs text-primary-foreground/70 uppercase tracking-wider mb-3">
           This Week's Royal Scribe
         </p>
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center border-2 border-gold/40">
-            <span className="font-serif text-xl font-bold text-gold">
-              {scribe.name[0]}
-            </span>
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+            <User className="w-7 h-7 text-primary-foreground" />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="font-serif text-lg font-bold text-foreground">
-                {scribe.name}
-              </span>
-              <CrownIcon className="w-4 h-4 text-gold" />
-            </div>
-            <p className="text-xs text-muted-foreground">{scribe.title}</p>
+          <div>
+            <p className="font-serif text-xl font-bold text-primary-foreground">
+              {scribe.name}
+            </p>
+            <p className="text-sm text-primary-foreground/70">{scribe.title}</p>
           </div>
-          <Feather className="w-6 h-6 text-gold/60" />
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground mt-3 italic text-center">
-        Only the appointed Scribe may chronicle this week's sacred matches.
+      <p className="text-xs text-muted-foreground mt-4 text-center">
+        Only the appointed Scribe may chronicle this week's matches.
       </p>
     </div>
   );

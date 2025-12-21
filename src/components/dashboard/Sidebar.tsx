@@ -1,15 +1,14 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
-import { CrownIcon } from '@/components/icons/CrownIcon';
 import { 
   Home,
   BookOpen, 
   Users, 
   Calendar, 
   Trophy,
-  ClipboardList,
   Swords,
-  LogOut
+  LogOut,
+  Circle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -33,18 +32,24 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-secondary flex flex-col z-50">
       {/* Logo */}
-      <div className="p-6 flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-gold flex items-center justify-center">
-          <CrownIcon className="w-7 h-7 text-secondary" />
-        </div>
-        <div>
-          <h1 className="font-serif text-xl font-bold text-secondary-foreground">TKSTL</h1>
-          <p className="text-xs text-secondary-foreground/70">Est. 2017</p>
+      <div className="p-6 border-b border-sidebar-border">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+            <span className="font-serif text-lg font-bold text-primary-foreground">TK</span>
+          </div>
+          <div>
+            <h1 className="font-serif text-lg font-bold text-sidebar-foreground tracking-wide">
+              TKSTL
+            </h1>
+            <p className="text-xs text-sidebar-foreground/60 uppercase tracking-wider">
+              Est. 2017
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6 space-y-1">
+      <nav className="flex-1 px-3 py-6 space-y-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -54,29 +59,29 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
               className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all",
+                "w-full flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-secondary-foreground/80 hover:text-secondary-foreground hover:bg-secondary-foreground/10"
+                  : "text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent"
               )}
             >
               <Icon className="w-5 h-5" />
               <span>{tab.label}</span>
+              {isActive && (
+                <Circle className="w-1.5 h-1.5 fill-current ml-auto" />
+              )}
             </button>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-secondary-foreground/10">
-        <p className="text-xs text-secondary-foreground/60 italic text-center mb-4">
-          "Excellence on Clay"
-        </p>
+      <div className="p-4 border-t border-sidebar-border">
         <Button
           variant="ghost"
           size="sm"
           onClick={logout}
-          className="w-full text-secondary-foreground/70 hover:text-secondary-foreground hover:bg-secondary-foreground/10"
+          className="w-full text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Sign Out

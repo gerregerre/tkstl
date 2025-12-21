@@ -43,21 +43,18 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="ml-64 min-h-screen">
-        <div className="p-8">
+        <div className="p-8 max-w-7xl">
           {renderContent()}
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-border py-6 mt-12 px-8">
+        <footer className="border-t border-border py-6 mt-12 px-8 bg-background">
           <div className="text-center">
-            <p className="text-sm text-muted-foreground font-serif-body italic">
-              "The court separates the worthy from the merely ambitious."
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-sm text-muted-foreground">
               TKSTL — Est. 2017 — Long May We Reign
             </p>
           </div>

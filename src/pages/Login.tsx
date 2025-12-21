@@ -4,8 +4,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TennisRacketIcon } from '@/components/icons/TennisRacketIcon';
-import { CrownIcon } from '@/components/icons/CrownIcon';
 import { toast } from '@/hooks/use-toast';
 
 export default function Login() {
@@ -39,38 +37,24 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-texture-parchment pointer-events-none" />
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-noble" />
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-noble" />
-      
-      {/* Corner decorations */}
-      <div className="absolute top-8 left-8 text-terra-cotta/20">
-        <TennisRacketIcon className="w-16 h-16 rotate-45" />
-      </div>
-      <div className="absolute bottom-8 right-8 text-terra-cotta/20">
-        <TennisRacketIcon className="w-16 h-16 -rotate-45" />
-      </div>
-
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in-up">
         {/* Logo and Title */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="relative">
-              <CrownIcon className="w-16 h-16 text-gold animate-crown-shine" />
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-noble rounded-full" />
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center">
+              <span className="font-serif text-2xl font-bold text-primary-foreground">TK</span>
             </div>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="font-serif text-4xl font-bold text-foreground tracking-tight">
             TKSTL
           </h1>
-          <p className="font-serif-body text-xl text-muted-foreground mt-2 italic">
+          <p className="text-muted-foreground mt-2">
             Tennisklubben Stora Tennisligan
           </p>
           <div className="flex items-center justify-center gap-3 mt-4">
             <div className="h-px w-12 bg-border" />
-            <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-sans">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">
               Est. 2017
             </span>
             <div className="h-px w-12 bg-border" />
@@ -78,7 +62,7 @@ export default function Login() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-card rounded-lg shadow-card border border-border p-8">
+        <div className="bg-card rounded border border-border p-8">
           <div className="text-center mb-6">
             <h2 className="font-serif text-2xl font-semibold text-foreground">
               Enter the Court
@@ -99,7 +83,7 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter your name"
-                className="h-11 bg-background"
+                className="h-11"
                 required
               />
             </div>
@@ -114,14 +98,13 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="h-11 bg-background"
+                className="h-11"
                 required
               />
             </div>
 
             <Button
               type="submit"
-              variant="royal"
               size="lg"
               className="w-full mt-6"
               disabled={isLoading}
@@ -141,17 +124,14 @@ export default function Login() {
           </form>
 
           <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-center text-muted-foreground italic font-serif-body">
+            <p className="text-xs text-center text-muted-foreground">
               "The court separates the worthy from the merely ambitious."
-            </p>
-            <p className="text-xs text-center text-muted-foreground mt-1">
-              — Gerard, Year One
             </p>
           </div>
         </div>
 
         {/* Hint for demo */}
-        <div className="mt-6 p-4 bg-muted/50 rounded-lg border border-border">
+        <div className="mt-6 p-4 bg-muted rounded border border-border">
           <p className="text-xs text-center text-muted-foreground">
             <span className="font-semibold">Demo Access:</span> Use member names (e.g., "gerard", "ludvig") 
             with password "sovereign2017" for Royalty or "peasant123" for Peasants.

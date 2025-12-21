@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Calendar, ScrollText, User } from 'lucide-react';
+import { Calendar, ScrollText, User, Trophy, Clock, Users } from 'lucide-react';
 import { PwCScoreboard } from './PwCScoreboard';
 import { PendingSessionsList } from './PendingSessionsList';
 import { useMembers } from '@/contexts/MembersContext';
+import { members } from '@/data/members';
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -44,10 +45,18 @@ function getWeekRange() {
   return `${formatDate(monday)} - ${formatDate(sunday)}`;
 }
 
+// Mock recent results data
+const recentResults = [
+  { id: 1, date: '2024-01-15', player1: 'Gerard', player2: 'Ludvig', score1: 6, score2: 3, type: 'Mini-Single' },
+  { id: 2, date: '2024-01-15', player1: 'Viktor', player2: 'Joel', score1: 6, score2: 4, type: 'Mini-Single' },
+  { id: 3, date: '2024-01-08', player1: 'Kockum', player2: 'Hampus', score1: 6, score2: 2, type: 'Mini-Single' },
+  { id: 4, date: '2024-01-08', player1: 'Gerard', player2: 'Viktor', score1: 7, score2: 5, type: 'Mini-Single' },
+];
+
 export function DashboardHome() {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
   const nextSession = getNextMonday();
-  const { getCurrentScribe } = useMembers();
+  const { getCurrentScribe, checkedInPlayers } = useMembers();
   const scribe = getCurrentScribe();
 
   useEffect(() => {
@@ -59,6 +68,11 @@ export function DashboardHome() {
   }, []);
 
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
+
+  // Get checked-in players or default to first 4 members
+  const sessionParticipants = checkedInPlayers.length > 0 
+    ? checkedInPlayers.map(id => members.find(m => m.id === id)).filter(Boolean)
+    : members.slice(0, 4);
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -110,8 +124,111 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* Main Scoreboard - Full Width */}
-      <PwCScoreboard />
+      {/* Main Content - Scoreboard & Right Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Scoreboard - Takes 2 columns */}
+        <div className="lg:col-span-2">
+          <PwCScoreboard />
+        </div>
+
+        {/* Right Panel - Recent Results & Next Session */}
+        <div className="space-y-6">
+          {/* Next Scheduled Session */}
+          <div className="bg-card border border-border rounded overflow-hidden">
+            <div className="bg-primary px-4 py-3 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary-foreground" />
+              <h3 className="font-serif text-sm font-semibold text-primary-foreground uppercase tracking-wide">
+                Next Session
+              </h3>
+            </div>
+            <div className="p-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                <Calendar className="w-4 h-4" />
+                <span>
+                  {nextSession.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })} at 19:00
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2 mb-3">
+                <Users className="w-4 h-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase tracking-wide">Participants</span>
+              </div>
+              
+              <div className="space-y-2">
+                {sessionParticipants.map((player) => (
+                  <div 
+                    key={player?.id} 
+                    className="flex items-center gap-2 px-3 py-2 bg-muted/30 rounded"
+                  >
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                      player?.role === 'royalty' 
+                        ? 'bg-[#dc6900]/20 text-[#dc6900]' 
+                        : 'bg-muted text-muted-foreground'
+                    }`}>
+                      {player?.name?.[0]}
+                    </div>
+                    <span className="text-sm font-medium text-foreground">{player?.name}</span>
+                    {player?.role === 'royalty' && (
+                      <span className="text-[9px] px-1.5 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium ml-auto">
+                        RF
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Results */}
+          <div className="bg-card border border-border rounded overflow-hidden">
+            <div className="bg-secondary px-4 py-3 flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-secondary-foreground" />
+              <h3 className="font-serif text-sm font-semibold text-secondary-foreground uppercase tracking-wide">
+                Recent Results
+              </h3>
+            </div>
+            <div className="divide-y divide-border">
+              {recentResults.map((result) => (
+                <div key={result.id} className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                      {result.type}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {new Date(result.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-sm font-medium ${result.score1 > result.score2 ? 'text-foreground' : 'text-muted-foreground'}`}>
+                        {result.player1}
+                      </span>
+                      {result.score1 > result.score2 && (
+                        <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
+                      )}
+                    </div>
+                    <span className="font-mono text-sm font-bold text-foreground">
+                      {result.score1} - {result.score2}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {result.score2 > result.score1 && (
+                        <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
+                      )}
+                      <span className={`text-sm font-medium ${result.score2 > result.score1 ? 'text-foreground' : 'text-muted-foreground'}`}>
+                        {result.player2}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Pending Sessions */}
       <PendingSessionsList />

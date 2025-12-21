@@ -3,14 +3,10 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { DashboardHome } from '@/components/dashboard/DashboardHome';
-import { Leaderboard } from '@/components/dashboard/Leaderboard';
-import { SessionScheduler } from '@/components/dashboard/SessionScheduler';
+import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
 import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
-import { NobleStandardRating } from '@/components/dashboard/NobleStandardRating';
-import { Noteboard } from '@/components/dashboard/Noteboard';
-import { SessionRecorder } from '@/components/dashboard/SessionRecorder';
-import { PwCScoreboard } from '@/components/dashboard/PwCScoreboard';
+import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
@@ -25,19 +21,13 @@ export default function Dashboard() {
       case 'home':
         return <DashboardHome />;
       case 'leaderboard':
-        return <Leaderboard />;
+        return <NewLeaderboard />;
       case 'session':
-        return <SessionScheduler />;
-      case 'matches':
-        return <SessionRecorder />;
+        return <NewSessionRecorder />;
       case 'lore':
         return <TheLore />;
       case 'members':
         return <MemberProfiles />;
-      case 'rating':
-        return <NobleStandardRating />;
-      case 'noteboard':
-        return <Noteboard />;
       default:
         return <DashboardHome />;
     }

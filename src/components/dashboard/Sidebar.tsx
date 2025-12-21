@@ -4,7 +4,7 @@ import {
   Home,
   BookOpen, 
   Users, 
-  Calendar, 
+  Trophy,
   Swords,
   LogOut
 } from 'lucide-react';
@@ -17,10 +17,10 @@ interface SidebarProps {
 
 const tabs = [
   { id: 'home', label: 'Dashboard', icon: Home },
+  { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+  { id: 'session', label: 'Record Session', icon: Swords },
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'members', label: 'Members', icon: Users },
-  { id: 'session', label: 'Schedule', icon: Calendar },
-  { id: 'matches', label: 'Record Session', icon: Swords },
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {

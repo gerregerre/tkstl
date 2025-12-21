@@ -134,75 +134,92 @@ export function PwCScoreboard() {
       </div>
 
       {/* Table Header */}
-      <div className="grid grid-cols-12 gap-2 px-6 py-3 bg-muted/50 border-b border-border text-xs font-medium text-muted-foreground uppercase tracking-wide">
+      <div className="grid grid-cols-14 gap-2 px-6 py-3 bg-muted/50 border-b border-border text-xs font-medium text-muted-foreground uppercase tracking-wide">
         <div className="col-span-2">Pos</div>
         <div className="col-span-4">Player</div>
         <div className="col-span-2 text-center">W-L</div>
+        <div className="col-span-2 text-center">Win %</div>
         <div className="col-span-2 text-center">+/-</div>
         <div className="col-span-2 text-center">Form</div>
       </div>
 
       {/* Player Rows */}
       <div className="divide-y divide-border">
-        {sortedMembers.map((member, index) => (
-          <div
-            key={member.id}
-            className={`grid grid-cols-12 gap-2 px-6 py-4 items-center transition-all duration-300 hover:bg-muted/30 ${
-              index < 3 ? 'bg-primary/5' : ''
-            } ${getRowAnimation(member.id)}`}
-          >
-            {/* Position with change indicator */}
-            <div className="col-span-2 flex items-center gap-2">
-              <span className={`font-serif text-lg font-bold transition-transform ${
-                animatingRows.has(member.id) ? 'animate-number-pop' : ''
-              } ${
-                index === 0 ? 'text-[#dc6900]' : 
-                index === 1 ? 'text-secondary' : 
-                index === 2 ? 'text-primary' : 'text-muted-foreground'
-              }`}>
-                {index + 1}
-              </span>
-              {getPositionChangeIndicator(member.id)}
-            </div>
-
-            {/* Player Name */}
-            <div className="col-span-4">
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-foreground">{member.name}</span>
-                {member.role === 'royalty' && (
-                  <span className="text-xs px-1.5 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium">
-                    RF
-                  </span>
-                )}
+        {sortedMembers.map((member, index) => {
+          const totalGames = member.wins + member.losses;
+          const winPercentage = totalGames > 0 ? (member.wins / totalGames) * 100 : 0;
+          
+          return (
+            <div
+              key={member.id}
+              className={`grid grid-cols-14 gap-2 px-6 py-4 items-center transition-all duration-300 hover:bg-muted/30 ${
+                index < 3 ? 'bg-primary/5' : ''
+              } ${getRowAnimation(member.id)}`}
+            >
+              {/* Position with change indicator */}
+              <div className="col-span-2 flex items-center gap-2">
+                <span className={`font-serif text-lg font-bold transition-transform ${
+                  animatingRows.has(member.id) ? 'animate-number-pop' : ''
+                } ${
+                  index === 0 ? 'text-[#dc6900]' : 
+                  index === 1 ? 'text-secondary' : 
+                  index === 2 ? 'text-primary' : 'text-muted-foreground'
+                }`}>
+                  {index + 1}
+                </span>
+                {getPositionChangeIndicator(member.id)}
               </div>
-              <span className="text-xs text-muted-foreground">{member.title}</span>
-            </div>
 
-            {/* Win-Loss */}
-            <div className="col-span-2 text-center">
-              <span className={`font-mono text-sm font-medium text-foreground transition-all ${
-                animatingRows.has(member.id) ? 'animate-highlight-pulse' : ''
-              }`}>
-                {member.wins}-{member.losses}
-              </span>
-            </div>
+              {/* Player Name */}
+              <div className="col-span-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-foreground">{member.name}</span>
+                  {member.role === 'royalty' && (
+                    <span className="text-xs px-1.5 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium">
+                      RF
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-muted-foreground">{member.title}</span>
+              </div>
 
-            {/* Point Differential */}
-            <div className="col-span-2 text-center">
-              <span className={`font-mono text-sm font-medium ${
-                member.pointDifferential > 0 ? 'text-green-600' : 
-                member.pointDifferential < 0 ? 'text-red-500' : 'text-muted-foreground'
-              }`}>
-                {member.pointDifferential > 0 ? '+' : ''}{member.pointDifferential}
-              </span>
-            </div>
+              {/* Win-Loss */}
+              <div className="col-span-2 text-center">
+                <span className={`font-mono text-sm font-medium text-foreground transition-all ${
+                  animatingRows.has(member.id) ? 'animate-highlight-pulse' : ''
+                }`}>
+                  {member.wins}-{member.losses}
+                </span>
+              </div>
 
-            {/* Form/Trend */}
-            <div className="col-span-2 flex justify-center">
-              {getTrendIcon(index)}
+              {/* Win Percentage */}
+              <div className="col-span-2 text-center">
+                <span className={`font-mono text-sm font-medium ${
+                  winPercentage >= 60 ? 'text-green-600' : 
+                  winPercentage >= 40 ? 'text-foreground' : 
+                  totalGames === 0 ? 'text-muted-foreground' : 'text-red-500'
+                }`}>
+                  {totalGames > 0 ? `${winPercentage.toFixed(0)}%` : '-'}
+                </span>
+              </div>
+
+              {/* Point Differential */}
+              <div className="col-span-2 text-center">
+                <span className={`font-mono text-sm font-medium ${
+                  member.pointDifferential > 0 ? 'text-green-600' : 
+                  member.pointDifferential < 0 ? 'text-red-500' : 'text-muted-foreground'
+                }`}>
+                  {member.pointDifferential > 0 ? '+' : ''}{member.pointDifferential}
+                </span>
+              </div>
+
+              {/* Form/Trend */}
+              <div className="col-span-2 flex justify-center">
+                {getTrendIcon(index)}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Footer */}

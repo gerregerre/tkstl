@@ -8,6 +8,7 @@ import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
+import { HeadToHead } from '@/components/dashboard/HeadToHead';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
@@ -34,6 +35,8 @@ export default function Dashboard() {
         return <DashboardHome />;
       case 'leaderboard':
         return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
+      case 'headtohead':
+        return <HeadToHead />;
       case 'session':
         return <NewSessionRecorder />;
       case 'lore':

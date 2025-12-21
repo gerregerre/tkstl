@@ -3,7 +3,6 @@ import { Calendar, Users, Award, Clock } from 'lucide-react';
 import { members } from '@/data/members';
 import { DutyRoster } from './DutyRoster';
 import { PendingSessionsList } from './PendingSessionsList';
-import { Leaderboard } from './Leaderboard';
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -155,9 +154,6 @@ export function DashboardHome() {
 
       {/* Pending Sessions */}
       <PendingSessionsList />
-
-      {/* Scoreboard */}
-      <Leaderboard />
     </div>
   );
 }

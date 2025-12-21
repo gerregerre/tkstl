@@ -47,6 +47,75 @@ export type Database = {
         }
         Relationships: []
       }
+      players: {
+        Row: {
+          created_at: string
+          games_played: number
+          id: string
+          name: string
+          total_points: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          games_played?: number
+          id?: string
+          name: string
+          total_points?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          games_played?: number
+          id?: string
+          name?: string
+          total_points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      session_games: {
+        Row: {
+          created_at: string
+          game_number: number
+          id: string
+          session_date: string
+          team_a_player1: string
+          team_a_player2: string
+          team_a_score: number | null
+          team_b_player1: string
+          team_b_player2: string
+          team_b_score: number | null
+          winner: string | null
+        }
+        Insert: {
+          created_at?: string
+          game_number: number
+          id?: string
+          session_date?: string
+          team_a_player1: string
+          team_a_player2: string
+          team_a_score?: number | null
+          team_b_player1: string
+          team_b_player2: string
+          team_b_score?: number | null
+          winner?: string | null
+        }
+        Update: {
+          created_at?: string
+          game_number?: number
+          id?: string
+          session_date?: string
+          team_a_player1?: string
+          team_a_player2?: string
+          team_a_score?: number | null
+          team_b_player1?: string
+          team_b_player2?: string
+          team_b_score?: number | null
+          winner?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

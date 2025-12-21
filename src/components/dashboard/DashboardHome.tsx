@@ -4,6 +4,17 @@ import { PwCScoreboard } from './PwCScoreboard';
 import { PendingSessionsList } from './PendingSessionsList';
 import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
+import { supabase } from '@/integrations/supabase/client';
+
+interface MatchResult {
+  id: string;
+  match_type: string;
+  match_date: string;
+  player1_name: string;
+  player2_name: string;
+  player1_score: number;
+  player2_score: number;
+}
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -45,16 +56,10 @@ function getWeekRange() {
   return `${formatDate(monday)} - ${formatDate(sunday)}`;
 }
 
-// Mock recent results data
-const recentResults = [
-  { id: 1, date: '2024-01-15', player1: 'Gerard', player2: 'Ludvig', score1: 6, score2: 3, type: 'Mini-Single' },
-  { id: 2, date: '2024-01-15', player1: 'Viktor', player2: 'Joel', score1: 6, score2: 4, type: 'Mini-Single' },
-  { id: 3, date: '2024-01-08', player1: 'Kockum', player2: 'Hampus', score1: 6, score2: 2, type: 'Mini-Single' },
-  { id: 4, date: '2024-01-08', player1: 'Gerard', player2: 'Viktor', score1: 7, score2: 5, type: 'Mini-Single' },
-];
-
 export function DashboardHome() {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
+  const [recentResults, setRecentResults] = useState<MatchResult[]>([]);
+  const [loadingResults, setLoadingResults] = useState(true);
   const nextSession = getNextMonday();
   const { getCurrentScribe, checkedInPlayers } = useMembers();
   const scribe = getCurrentScribe();
@@ -65,6 +70,40 @@ export function DashboardHome() {
     }, 1000);
     
     return () => clearInterval(interval);
+  }, []);
+
+  // Fetch recent match results from database
+  useEffect(() => {
+    const fetchResults = async () => {
+      const { data, error } = await supabase
+        .from('match_results')
+        .select('*')
+        .order('match_date', { ascending: false })
+        .limit(5);
+      
+      if (!error && data) {
+        setRecentResults(data);
+      }
+      setLoadingResults(false);
+    };
+
+    fetchResults();
+
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel('match_results_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'match_results' },
+        () => {
+          fetchResults();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
@@ -192,39 +231,49 @@ export function DashboardHome() {
               </h3>
             </div>
             <div className="divide-y divide-border">
-              {recentResults.map((result) => (
-                <div key={result.id} className="p-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
-                      {result.type}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">
-                      {new Date(result.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm font-medium ${result.score1 > result.score2 ? 'text-foreground' : 'text-muted-foreground'}`}>
-                        {result.player1}
-                      </span>
-                      {result.score1 > result.score2 && (
-                        <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
-                      )}
-                    </div>
-                    <span className="font-mono text-sm font-bold text-foreground">
-                      {result.score1} - {result.score2}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {result.score2 > result.score1 && (
-                        <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
-                      )}
-                      <span className={`text-sm font-medium ${result.score2 > result.score1 ? 'text-foreground' : 'text-muted-foreground'}`}>
-                        {result.player2}
-                      </span>
-                    </div>
-                  </div>
+              {loadingResults ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  Loading results...
                 </div>
-              ))}
+              ) : recentResults.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  No match results yet
+                </div>
+              ) : (
+                recentResults.map((result) => (
+                  <div key={result.id} className="p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                        {result.match_type}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {new Date(result.match_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className={`text-sm font-medium ${result.player1_score > result.player2_score ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {result.player1_name}
+                        </span>
+                        {result.player1_score > result.player2_score && (
+                          <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
+                        )}
+                      </div>
+                      <span className="font-mono text-sm font-bold text-foreground">
+                        {result.player1_score} - {result.player2_score}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {result.player2_score > result.player1_score && (
+                          <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
+                        )}
+                        <span className={`text-sm font-medium ${result.player2_score > result.player1_score ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {result.player2_name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

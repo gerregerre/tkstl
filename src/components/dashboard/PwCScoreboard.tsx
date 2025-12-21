@@ -134,13 +134,13 @@ export function PwCScoreboard() {
       </div>
 
       {/* Table Header */}
-      <div className="grid grid-cols-14 gap-2 px-6 py-3 bg-muted/50 border-b border-border text-xs font-medium text-muted-foreground uppercase tracking-wide">
-        <div className="col-span-2">Pos</div>
+      <div className="grid grid-cols-12 gap-2 px-6 py-3 bg-muted/50 border-b border-border text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <div className="col-span-1">Pos</div>
         <div className="col-span-4">Player</div>
         <div className="col-span-2 text-center">W-L</div>
         <div className="col-span-2 text-center">Win %</div>
         <div className="col-span-2 text-center">+/-</div>
-        <div className="col-span-2 text-center">Form</div>
+        <div className="col-span-1 text-center">Form</div>
       </div>
 
       {/* Player Rows */}
@@ -152,12 +152,12 @@ export function PwCScoreboard() {
           return (
             <div
               key={member.id}
-              className={`grid grid-cols-14 gap-2 px-6 py-4 items-center transition-all duration-300 hover:bg-muted/30 ${
+              className={`grid grid-cols-12 gap-2 px-6 py-4 items-center transition-all duration-300 hover:bg-muted/30 ${
                 index < 3 ? 'bg-primary/5' : ''
               } ${getRowAnimation(member.id)}`}
             >
               {/* Position with change indicator */}
-              <div className="col-span-2 flex items-center gap-2">
+              <div className="col-span-1 flex items-center gap-1">
                 <span className={`font-serif text-lg font-bold transition-transform ${
                   animatingRows.has(member.id) ? 'animate-number-pop' : ''
                 } ${
@@ -214,7 +214,7 @@ export function PwCScoreboard() {
               </div>
 
               {/* Form/Trend */}
-              <div className="col-span-2 flex justify-center">
+              <div className="col-span-1 flex justify-center">
                 {getTrendIcon(index)}
               </div>
             </div>

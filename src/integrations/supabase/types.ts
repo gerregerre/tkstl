@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      match_results: {
+        Row: {
+          created_at: string
+          id: string
+          match_date: string
+          match_type: string
+          player1_name: string
+          player1_score: number
+          player2_name: string
+          player2_score: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_date?: string
+          match_type?: string
+          player1_name: string
+          player1_score: number
+          player2_name: string
+          player2_score: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_date?: string
+          match_type?: string
+          player1_name?: string
+          player1_score?: number
+          player2_name?: string
+          player2_score?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

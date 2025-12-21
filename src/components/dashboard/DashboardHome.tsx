@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Users, Award, Clock } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { members } from '@/data/members';
 import { DutyRoster } from './DutyRoster';
 import { PendingSessionsList } from './PendingSessionsList';
@@ -42,8 +42,6 @@ export function DashboardHome() {
     return () => clearInterval(interval);
   }, []);
 
-  const royalCount = members.filter(m => m.role === 'royalty').length;
-  const peasantCount = members.filter(m => m.role === 'peasant').length;
 
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
@@ -70,48 +68,6 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-card border border-border rounded p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
-              <Clock className="w-5 h-5 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-muted-foreground">Years Active</span>
-          </div>
-          <p className="font-serif text-4xl font-bold text-foreground">7</p>
-        </div>
-
-        <div className="bg-card border border-border rounded p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded bg-secondary/10 flex items-center justify-center">
-              <Users className="w-5 h-5 text-secondary" />
-            </div>
-            <span className="text-sm font-medium text-muted-foreground">Total Members</span>
-          </div>
-          <p className="font-serif text-4xl font-bold text-foreground">{members.length}</p>
-        </div>
-
-        <div className="bg-card border border-border rounded p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
-              <Award className="w-5 h-5 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-muted-foreground">Royal Founders</span>
-          </div>
-          <p className="font-serif text-4xl font-bold text-foreground">{royalCount}</p>
-        </div>
-
-        <div className="bg-card border border-border rounded p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-              <Users className="w-5 h-5 text-muted-foreground" />
-            </div>
-            <span className="text-sm font-medium text-muted-foreground">Peasants</span>
-          </div>
-          <p className="font-serif text-4xl font-bold text-foreground">{peasantCount}</p>
-        </div>
-      </div>
 
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

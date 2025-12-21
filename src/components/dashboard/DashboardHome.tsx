@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Calendar } from 'lucide-react';
-import { members } from '@/data/members';
 import { DutyRoster } from './DutyRoster';
 import { PendingSessionsList } from './PendingSessionsList';
+import { PwCScoreboard } from './PwCScoreboard';
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -107,6 +107,9 @@ export function DashboardHome() {
         {/* Duty Roster */}
         <DutyRoster />
       </div>
+
+      {/* PwC Scoreboard */}
+      <PwCScoreboard />
 
       {/* Pending Sessions */}
       <PendingSessionsList />

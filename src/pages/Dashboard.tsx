@@ -10,6 +10,7 @@ import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NobleStandardRating } from '@/components/dashboard/NobleStandardRating';
 import { Noteboard } from '@/components/dashboard/Noteboard';
 import { SessionRecorder } from '@/components/dashboard/SessionRecorder';
+import { PwCScoreboard } from '@/components/dashboard/PwCScoreboard';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
@@ -47,6 +48,11 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="ml-64 min-h-screen">
+        {/* PwC Scoreboard Banner */}
+        <div className="sticky top-0 z-40">
+          <PwCScoreboard />
+        </div>
+
         <div className="p-8 max-w-7xl">
           {renderContent()}
         </div>

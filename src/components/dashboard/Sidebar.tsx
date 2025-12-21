@@ -5,7 +5,6 @@ import {
   BookOpen, 
   Users, 
   Calendar, 
-  Trophy,
   Swords,
   LogOut,
   Circle
@@ -23,7 +22,6 @@ const tabs = [
   { id: 'members', label: 'Members', icon: Users },
   { id: 'session', label: 'Schedule', icon: Calendar },
   { id: 'matches', label: 'Record Session', icon: Swords },
-  { id: 'leaderboard', label: 'PwC Scoreboard', icon: Trophy },
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {

@@ -48,11 +48,6 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="pt-16 min-h-screen">
-        {/* PwC Scoreboard Banner */}
-        <div className="sticky top-16 z-40">
-          <PwCScoreboard />
-        </div>
-
         <div className="p-8 max-w-7xl mx-auto">
           {renderContent()}
         </div>

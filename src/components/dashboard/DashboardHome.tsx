@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Calendar } from 'lucide-react';
-import { DutyRoster } from './DutyRoster';
+import { Calendar, ScrollText, User } from 'lucide-react';
+import { PwCScoreboard } from './PwCScoreboard';
 import { PendingSessionsList } from './PendingSessionsList';
+import { useMembers } from '@/contexts/MembersContext';
 
 function getNextMonday(): Date {
   const today = new Date();
@@ -29,9 +30,25 @@ function getCountdownParts(targetDate: Date) {
   return { days, hours, mins, secs };
 }
 
+function getWeekRange() {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  
+  const formatDate = (date: Date) => 
+    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  
+  return `${formatDate(monday)} - ${formatDate(sunday)}`;
+}
+
 export function DashboardHome() {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
   const nextSession = getNextMonday();
+  const { getCurrentScribe } = useMembers();
+  const scribe = getCurrentScribe();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,71 +58,60 @@ export function DashboardHome() {
     return () => clearInterval(interval);
   }, []);
 
-
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
   return (
-    <div className="space-y-8 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up">
       {/* Page Header */}
       <div>
         <h1 className="section-header">Dashboard</h1>
       </div>
 
-      {/* Hero Banner */}
-      <div className="bg-secondary rounded overflow-hidden">
-        <div className="p-8 md:p-10">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-secondary-foreground mb-2">
-            Tennisklubben Stora Tennisligan
-          </h2>
-          <p className="text-secondary-foreground/80 text-lg mb-4">
-            Where Excellence Meets Clay
-          </p>
-          <p className="text-secondary-foreground/60 max-w-2xl">
-            Welcome to the most exclusive tennis society this side of Roland Garros. 
-            Here, legends are forged, peasants are tolerated, and the clay courts whisper tales of glory.
-          </p>
-        </div>
-      </div>
-
-
-      {/* Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Countdown Timer */}
-        <div className="bg-card border border-border rounded p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Calendar className="w-5 h-5 text-primary" />
-            <h3 className="font-serif text-xl font-semibold text-foreground uppercase tracking-wide">
-              Next Session
-            </h3>
+      {/* Compact Info Bar - Next Session & Duty Roster */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Compact Countdown */}
+        <div className="bg-card border border-border rounded px-4 py-3 flex items-center gap-4">
+          <Calendar className="w-4 h-4 text-primary shrink-0" />
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">Next Session:</span>
+            <div className="flex items-center gap-2">
+              {[
+                { value: formatNumber(countdown.days), label: 'd' },
+                { value: formatNumber(countdown.hours), label: 'h' },
+                { value: formatNumber(countdown.mins), label: 'm' },
+                { value: formatNumber(countdown.secs), label: 's' },
+              ].map((item, i) => (
+                <span key={item.label} className="flex items-center">
+                  <span className="font-mono font-semibold text-primary">{item.value}</span>
+                  <span className="text-xs text-muted-foreground ml-0.5">{item.label}</span>
+                  {i < 3 && <span className="text-muted-foreground mx-1">:</span>}
+                </span>
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground">(Mon 19:00)</span>
           </div>
-          
-          <p className="text-sm text-muted-foreground mb-4">Monday at 19:00</p>
-          
-          <div className="grid grid-cols-4 gap-3">
-            {[
-              { value: formatNumber(countdown.days), label: 'Days' },
-              { value: formatNumber(countdown.hours), label: 'Hours' },
-              { value: formatNumber(countdown.mins), label: 'Mins' },
-              { value: formatNumber(countdown.secs), label: 'Secs' },
-            ].map((item) => (
-              <div 
-                key={item.label} 
-                className="bg-muted rounded p-4 text-center"
-              >
-                <p className="font-serif text-3xl font-bold text-primary">
-                  {item.value}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wide">
-                  {item.label}
-                </p>
+        </div>
+
+        {/* Compact Duty Roster */}
+        <div className="bg-card border border-border rounded px-4 py-3 flex items-center gap-4">
+          <ScrollText className="w-4 h-4 text-primary shrink-0" />
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="text-sm text-muted-foreground shrink-0">Scribe:</span>
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <User className="w-4 h-4 text-primary" />
               </div>
-            ))}
+              <div className="min-w-0">
+                <span className="font-medium text-foreground truncate block">{scribe.name}</span>
+              </div>
+            </div>
+            <span className="text-xs text-muted-foreground ml-auto shrink-0">{getWeekRange()}</span>
           </div>
         </div>
-
-        {/* Duty Roster */}
-        <DutyRoster />
       </div>
+
+      {/* Main Scoreboard - Full Width */}
+      <PwCScoreboard />
 
       {/* Pending Sessions */}
       <PendingSessionsList />

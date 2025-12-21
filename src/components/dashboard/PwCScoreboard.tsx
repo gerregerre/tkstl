@@ -99,95 +99,122 @@ export function PwCScoreboard() {
     const trends = ['up', 'same', 'down', 'up', 'same', 'down'];
     const trend = trends[index % trends.length];
     
-    if (trend === 'up') return <TrendingUp className="w-3 h-3 text-green-600" />;
-    if (trend === 'down') return <TrendingDown className="w-3 h-3 text-red-500" />;
-    return <Minus className="w-3 h-3 text-muted-foreground" />;
+    if (trend === 'up') return <TrendingUp className="w-4 h-4 text-green-600" />;
+    if (trend === 'down') return <TrendingDown className="w-4 h-4 text-red-500" />;
+    return <Minus className="w-4 h-4 text-muted-foreground" />;
   };
 
   return (
-    <div className="bg-card border-b border-border">
-      {/* Compact Header */}
-      <div className="bg-[#dc6900] px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-white" />
-          <h3 className="font-serif text-sm font-semibold text-white uppercase tracking-wide">
-            Live Standings
+    <div className="bg-card border border-border rounded overflow-hidden">
+      {/* Header */}
+      <div className="bg-[#dc6900] px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Trophy className="w-5 h-5 text-white" />
+          <h3 className="font-serif text-lg font-semibold text-white uppercase tracking-wide">
+            PwC Scoreboard - Live Standings
           </h3>
         </div>
-        <div className="flex items-center gap-2">
-          {animatingRows.size > 0 && (
-            <span className="text-[10px] text-white/90 font-medium px-1.5 py-0.5 bg-white/20 rounded animate-pulse">
-              LIVE
-            </span>
-          )}
-          <span className="text-[10px] text-white/80 font-medium uppercase tracking-wider">
-            PwC Scoreboard
+        {animatingRows.size > 0 && (
+          <span className="text-xs text-white/90 font-medium px-2 py-1 bg-white/20 rounded animate-pulse">
+            LIVE
           </span>
-        </div>
+        )}
       </div>
 
-      {/* Horizontal Scrollable Table */}
+      {/* Table */}
       <div className="overflow-x-auto">
-        <div className="flex items-center gap-4 px-4 py-2 min-w-max">
-          {sortedMembers.slice(0, 6).map((member, index) => {
-            const totalGames = member.wins + member.losses;
-            const winPercentage = totalGames > 0 ? (member.wins / totalGames) * 100 : 0;
-            
-            return (
-              <div
-                key={member.id}
-                className={`flex items-center gap-3 px-3 py-2 rounded transition-all duration-300 ${
-                  index < 3 ? 'bg-primary/5' : 'bg-muted/30'
-                } ${getRowAnimation(member.id)}`}
-              >
-                {/* Position */}
-                <div className="flex items-center gap-1">
-                  <span className={`font-serif text-lg font-bold ${
-                    index === 0 ? 'text-[#dc6900]' : 
-                    index === 1 ? 'text-secondary' : 
-                    index === 2 ? 'text-primary' : 'text-muted-foreground'
-                  }`}>
-                    {index + 1}
-                  </span>
-                  {getPositionChangeIndicator(member.id)}
-                </div>
-
-                {/* Player Info */}
-                <div className="min-w-[100px]">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-medium text-sm text-foreground">{member.name}</span>
-                    {member.role === 'royalty' && (
-                      <span className="text-[10px] px-1 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium">
-                        RF
+        <table className="w-full">
+          <thead>
+            <tr className="bg-muted/50 border-b border-border">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider w-16">Pos</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">Player</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider w-20">W</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider w-20">L</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider w-24">Win %</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider w-24">+/-</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider w-20">Trend</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {sortedMembers.map((member, index) => {
+              const totalGames = member.wins + member.losses;
+              const winPercentage = totalGames > 0 ? (member.wins / totalGames) * 100 : 0;
+              
+              return (
+                <tr
+                  key={member.id}
+                  className={`transition-all duration-300 hover:bg-muted/30 ${
+                    index < 3 ? 'bg-primary/5' : ''
+                  } ${getRowAnimation(member.id)}`}
+                >
+                  {/* Position */}
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className={`font-serif text-xl font-bold ${
+                        index === 0 ? 'text-[#dc6900]' : 
+                        index === 1 ? 'text-secondary-foreground' : 
+                        index === 2 ? 'text-primary' : 'text-muted-foreground'
+                      }`}>
+                        {index + 1}
                       </span>
-                    )}
-                  </div>
-                </div>
+                      {getPositionChangeIndicator(member.id)}
+                    </div>
+                  </td>
 
-                {/* Stats */}
-                <div className="flex items-center gap-3 text-xs">
-                  <span className="font-mono text-muted-foreground">
-                    {member.wins}-{member.losses}
-                  </span>
-                  <span className={`font-mono ${
-                    winPercentage >= 60 ? 'text-green-600' : 
-                    winPercentage >= 40 ? 'text-foreground' : 
-                    totalGames === 0 ? 'text-muted-foreground' : 'text-red-500'
-                  }`}>
-                    {totalGames > 0 ? `${winPercentage.toFixed(0)}%` : '-'}
-                  </span>
-                  <span className={`font-mono ${
-                    member.pointDifferential > 0 ? 'text-green-600' : 
-                    member.pointDifferential < 0 ? 'text-red-500' : 'text-muted-foreground'
-                  }`}>
-                    {member.pointDifferential > 0 ? '+' : ''}{member.pointDifferential}
-                  </span>
-                  {getTrendIcon(index)}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                  {/* Player */}
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-foreground">{member.name}</span>
+                      {member.role === 'royalty' && (
+                        <span className="text-[10px] px-1.5 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium">
+                          RF
+                        </span>
+                      )}
+                    </div>
+                  </td>
+
+                  {/* Wins */}
+                  <td className="px-4 py-4 text-center">
+                    <span className="font-mono font-semibold text-green-600">{member.wins}</span>
+                  </td>
+
+                  {/* Losses */}
+                  <td className="px-4 py-4 text-center">
+                    <span className="font-mono font-semibold text-red-500">{member.losses}</span>
+                  </td>
+
+                  {/* Win % */}
+                  <td className="px-4 py-4 text-center">
+                    <span className={`font-mono font-semibold ${
+                      winPercentage >= 60 ? 'text-green-600' : 
+                      winPercentage >= 40 ? 'text-foreground' : 
+                      totalGames === 0 ? 'text-muted-foreground' : 'text-red-500'
+                    }`}>
+                      {totalGames > 0 ? `${winPercentage.toFixed(0)}%` : '-'}
+                    </span>
+                  </td>
+
+                  {/* Point Differential */}
+                  <td className="px-4 py-4 text-center">
+                    <span className={`font-mono font-semibold ${
+                      member.pointDifferential > 0 ? 'text-green-600' : 
+                      member.pointDifferential < 0 ? 'text-red-500' : 'text-muted-foreground'
+                    }`}>
+                      {member.pointDifferential > 0 ? '+' : ''}{member.pointDifferential}
+                    </span>
+                  </td>
+
+                  {/* Trend */}
+                  <td className="px-4 py-4">
+                    <div className="flex justify-center">
+                      {getTrendIcon(index)}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

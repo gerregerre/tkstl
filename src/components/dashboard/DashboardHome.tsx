@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ScrollText, User, Trophy, Clock, Users } from 'lucide-react';
-import { PwCScoreboard } from './PwCScoreboard';
+import { NewLeaderboard } from './NewLeaderboard';
 import { PendingSessionsList } from './PendingSessionsList';
 import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
 import { supabase } from '@/integrations/supabase/client';
 import NewsCarousel from '@/components/home/NewsCarousel';
-
 interface MatchResult {
   id: string;
   match_type: string;
@@ -162,11 +161,11 @@ export function DashboardHome() {
         </div>
       </div>
 
-      {/* Main Content - Scoreboard & Right Panel */}
+      {/* Main Content - Leaderboard & Right Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Scoreboard - Takes 2 columns */}
+        {/* Leaderboard - Takes 2 columns */}
         <div className="lg:col-span-2">
-          <PwCScoreboard />
+          <NewLeaderboard />
         </div>
 
         {/* Right Panel - Recent Results & Next Session */}

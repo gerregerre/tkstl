@@ -284,11 +284,13 @@ export function SessionHistory() {
         teamBPoints = teamAWon ? (teamBScore / 9) * 10 : 10;
       }
 
-      // Update player stats (these are doubles games)
+      // Update player stats (apply to BOTH singles and doubles)
       teamAPlayers.forEach(playerName => {
         if (playerStats[playerName]) {
           playerStats[playerName].games += 1;
           playerStats[playerName].points += teamAPoints;
+          playerStats[playerName].singlesGames += 1;
+          playerStats[playerName].singlesPoints += teamAPoints;
           playerStats[playerName].doublesGames += 1;
           playerStats[playerName].doublesPoints += teamAPoints;
         }
@@ -298,6 +300,8 @@ export function SessionHistory() {
         if (playerStats[playerName]) {
           playerStats[playerName].games += 1;
           playerStats[playerName].points += teamBPoints;
+          playerStats[playerName].singlesGames += 1;
+          playerStats[playerName].singlesPoints += teamBPoints;
           playerStats[playerName].doublesGames += 1;
           playerStats[playerName].doublesPoints += teamBPoints;
         }

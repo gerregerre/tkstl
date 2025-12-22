@@ -158,6 +158,36 @@ export type Database = {
         }
         Relationships: []
       }
+      team_stats: {
+        Row: {
+          created_at: string
+          games_played: number
+          id: string
+          player1_name: string
+          player2_name: string
+          total_points: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          games_played?: number
+          id?: string
+          player1_name: string
+          player2_name: string
+          total_points?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          games_played?: number
+          id?: string
+          player1_name?: string
+          player2_name?: string
+          total_points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -170,6 +200,14 @@ export type Database = {
           p_points: number
           p_singles_points: number
         }
+        Returns: undefined
+      }
+      increment_singles_stats: {
+        Args: { p_player_name: string; p_points: number }
+        Returns: undefined
+      }
+      increment_team_stats: {
+        Args: { p_player1: string; p_player2: string; p_points: number }
         Returns: undefined
       }
     }

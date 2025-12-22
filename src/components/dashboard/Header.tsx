@@ -1,6 +1,13 @@
+import { Link } from 'react-router-dom';
 import { CrownIcon } from '@/components/icons/CrownIcon';
+import { UserMenu } from '@/components/dashboard/UserMenu';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { LogIn } from 'lucide-react';
 
 export function Header() {
+  const { user, loading } = useAuth();
+
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -16,6 +23,22 @@ export function Header() {
                 Tennis Society
               </p>
             </div>
+          </div>
+
+          {/* User Menu */}
+          <div className="flex items-center gap-2">
+            {!loading && (
+              user ? (
+                <UserMenu />
+              ) : (
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/auth">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Link>
+                </Button>
+              )
+            )}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   activeTab: string;
@@ -18,7 +19,6 @@ interface SidebarProps {
 }
 
 const tabs = [
-  { id: 'home', label: 'Dashboard', icon: Home },
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
   { id: 'history', label: 'History', icon: History },
@@ -29,15 +29,23 @@ const tabs = [
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    onTabChange('home');
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-secondary flex items-center z-50 px-6">
-      {/* Logo */}
-      <div className="flex items-center gap-3 mr-8">
+      {/* Logo - clickable to go home */}
+      <button 
+        onClick={handleLogoClick}
+        className="flex items-center gap-3 mr-8 hover:opacity-80 transition-opacity"
+      >
         <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
           <span className="font-serif text-sm font-bold text-primary-foreground">TK</span>
         </div>
-        <div>
+        <div className="text-left">
           <h1 className="font-serif text-base font-bold text-sidebar-foreground tracking-wide leading-tight">
             TKSTL
           </h1>
@@ -45,7 +53,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             Est. 2017
           </p>
         </div>
-      </div>
+      </button>
 
       {/* Navigation */}
       <nav className="flex items-center gap-1 flex-1">

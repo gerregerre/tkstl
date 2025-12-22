@@ -5,6 +5,7 @@ import { PendingSessionsList } from './PendingSessionsList';
 import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
 import { supabase } from '@/integrations/supabase/client';
+import NewsCarousel from '@/components/home/NewsCarousel';
 
 interface MatchResult {
   id: string;
@@ -119,6 +120,9 @@ export function DashboardHome() {
       <div>
         <h1 className="section-header">Dashboard</h1>
       </div>
+
+      {/* News Carousel */}
+      <NewsCarousel />
 
       {/* Compact Info Bar - Next Session & Duty Roster */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

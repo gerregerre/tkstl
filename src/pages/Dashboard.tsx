@@ -26,7 +26,7 @@ export default function Dashboard() {
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
-        return <DashboardHome />;
+        return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
       case 'leaderboard':
         return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
       case 'headtohead':

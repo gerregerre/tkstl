@@ -161,16 +161,28 @@ export function Information() {
                 </ul>
               </div>
               
-              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+              <div className="bg-rose-500/10 rounded-lg p-4 space-y-2 border border-rose-500/20">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  Origin Story
+                  <Scroll className="w-4 h-4 text-rose-600" />
+                  The Legend of Kenji the Wanderer
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Named after Tokyo's legendary Shibuya Crossing, where up to 3,000 people 
-                  cross simultaneously without collision. The founders visited once, watched 
-                  in awe, and thought: "What if we made this... a badminton thing?" 
-                  The answer was yes.
+                  In the winter of 2023, a mysterious figure known only as <strong>Kenji</strong> arrived 
+                  at the training grounds. He spoke little, but carried with him tales of the legendary 
+                  Shibuya Crossing in Tokyo—where 3,000 souls traverse simultaneously without collision.
+                </p>
+                <p className="text-sm text-muted-foreground italic">
+                  "What if," Kenji whispered during the Second Council of Formats, "we played... diagonally?" 
+                  The elders laughed. "Impossible!" they cried. "Shuttles will collide! Chaos will reign!" 
+                  But Kenji merely smiled and drew an X in the air with his finger.
+                </p>
+                <p className="text-sm text-muted-foreground italic">
+                  Three days later, after 47 test matches and only 12 minor shuttle-related injuries, 
+                  the format was perfected. Kenji vanished as mysteriously as he arrived, leaving only 
+                  a single feather shuttle and a note: <em>"Trust the crossing."</em>
+                </p>
+                <p className="text-xs text-rose-600/80 mt-2">
+                  Some say he still wanders between courts, appearing whenever players forget to call "crossing."
                 </p>
               </div>
             </AccordionContent>
@@ -208,15 +220,29 @@ export function Information() {
                 </ul>
               </div>
               
-              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+              <div className="bg-violet-500/10 rounded-lg p-4 space-y-2 border border-violet-500/20">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  The Philosophy
+                  <Scroll className="w-4 h-4 text-violet-600" />
+                  The Ancient Origins
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Inspired by ancient rope-pulling contests dating back to 2500 BC, this format 
-                  channels that primal energy into badminton. Historians believe the Egyptians 
-                  would have approved, had they invented rackets instead of pyramids.
+                  Archaeological evidence suggests that in 2500 BC, Egyptian pharaohs settled disputes 
+                  through ceremonial rope-pulling contests. When <strong>Magnus the Undefeated</strong> 
+                  proposed adapting this ancient tradition for badminton in early 2024, scholars initially 
+                  dismissed him as "historically confused."
+                </p>
+                <p className="text-sm text-muted-foreground italic">
+                  But Magnus persisted. He spent seventeen sleepless nights studying hieroglyphics, 
+                  eventually discovering a tomb painting depicting what he claimed was "clearly a 
+                  5-5 starting position." Egyptologists disagree, but the Council was convinced.
+                </p>
+                <p className="text-sm text-muted-foreground italic">
+                  The first official Tug of War match ended 10-0 in just 4 minutes. Magnus won, naturally. 
+                  When asked for comment, he simply raised both arms and shouted: <em>"ZERO SUM!"</em>—a 
+                  phrase that echoes through the halls to this day.
+                </p>
+                <p className="text-xs text-violet-600/80 mt-2">
+                  Magnus now holds the record for most dramatic Tug of War victories (all of them).
                 </p>
               </div>
             </AccordionContent>

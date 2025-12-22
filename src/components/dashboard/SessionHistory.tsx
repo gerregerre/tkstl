@@ -231,41 +231,86 @@ export function SessionHistory() {
     }
 
     // Calculate stats for each player
-    const playerStats: Record<string, { games: number; points: number }> = {};
+    const playerStats: Record<string, { 
+      games: number; 
+      points: number;
+      singlesGames: number;
+      singlesPoints: number;
+      doublesGames: number;
+      doublesPoints: number;
+    }> = {};
 
     players?.forEach(player => {
-      playerStats[player.name] = { games: 0, points: 0 };
+      playerStats[player.name] = { 
+        games: 0, 
+        points: 0,
+        singlesGames: 0,
+        singlesPoints: 0,
+        doublesGames: 0,
+        doublesPoints: 0,
+      };
     });
+
+    // Track team stats for recalculation
+    const teamStats: Record<string, { points: number; games: number }> = {};
+
+    const getTeamKey = (p1: string, p2: string) => {
+      return p1 < p2 ? `${p1}|${p2}` : `${p2}|${p1}`;
+    };
 
     allGames?.forEach(game => {
       const teamAPlayers = [game.team_a_player1, game.team_a_player2];
       const teamBPlayers = [game.team_b_player1, game.team_b_player2];
-      const allPlayers = [...teamAPlayers, ...teamBPlayers];
 
-      // Increment games played
-      allPlayers.forEach(playerName => {
+      let teamAPoints = 0;
+      let teamBPoints = 0;
+
+      // Calculate points using the same logic as NewSessionRecorder
+      if (game.game_number === 3) {
+        // Game 3: Win = 10 points, Loss = 5 points
+        const teamAWon = game.winner === 'A';
+        teamAPoints = teamAWon ? 10 : 5;
+        teamBPoints = teamAWon ? 5 : 10;
+      } else {
+        // Games 1 & 2: Winner gets 10, loser gets (score/9)*10
+        const teamAScore = game.team_a_score || 0;
+        const teamBScore = game.team_b_score || 0;
+        const teamAWon = teamAScore > teamBScore;
+        
+        teamAPoints = teamAWon ? 10 : (teamAScore / 9) * 10;
+        teamBPoints = teamAWon ? (teamBScore / 9) * 10 : 10;
+      }
+
+      // Update player stats
+      teamAPlayers.forEach(playerName => {
         if (playerStats[playerName]) {
           playerStats[playerName].games += 1;
+          playerStats[playerName].points += teamAPoints;
+          playerStats[playerName].singlesGames += 1;
+          playerStats[playerName].singlesPoints += teamAPoints;
         }
       });
 
-      // Calculate points
-      if (game.game_number === 3) {
-        // Game 3: Win = 5 points, Loss = 0
-        if (game.winner === 'Team A') {
-          teamAPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += 5; });
-        } else if (game.winner === 'Team B') {
-          teamBPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += 5; });
+      teamBPlayers.forEach(playerName => {
+        if (playerStats[playerName]) {
+          playerStats[playerName].games += 1;
+          playerStats[playerName].points += teamBPoints;
+          playerStats[playerName].singlesGames += 1;
+          playerStats[playerName].singlesPoints += teamBPoints;
         }
-      } else {
-        // Games 1 & 2: Points = own score
-        if (game.team_a_score !== null) {
-          teamAPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += game.team_a_score!; });
-        }
-        if (game.team_b_score !== null) {
-          teamBPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += game.team_b_score!; });
-        }
-      }
+      });
+
+      // Update team stats
+      const teamAKey = getTeamKey(teamAPlayers[0], teamAPlayers[1]);
+      const teamBKey = getTeamKey(teamBPlayers[0], teamBPlayers[1]);
+
+      if (!teamStats[teamAKey]) teamStats[teamAKey] = { points: 0, games: 0 };
+      if (!teamStats[teamBKey]) teamStats[teamBKey] = { points: 0, games: 0 };
+
+      teamStats[teamAKey].points += teamAPoints;
+      teamStats[teamAKey].games += 1;
+      teamStats[teamBKey].points += teamBPoints;
+      teamStats[teamBKey].games += 1;
     });
 
     // Update all players in database
@@ -277,9 +322,27 @@ export function SessionHistory() {
           .update({
             games_played: stats.games,
             total_points: stats.points,
+            singles_games: stats.singlesGames,
+            singles_points: stats.singlesPoints,
+            doubles_games: stats.doublesGames,
+            doubles_points: stats.doublesPoints,
           })
           .eq('name', player.name);
       }
+    }
+
+    // Delete all existing team_stats and recreate
+    await supabase.from('team_stats').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+
+    // Insert new team stats
+    for (const [key, stats] of Object.entries(teamStats)) {
+      const [p1, p2] = key.split('|');
+      await supabase.from('team_stats').insert({
+        player1_name: p1,
+        player2_name: p2,
+        total_points: stats.points,
+        games_played: stats.games,
+      });
     }
   };
 

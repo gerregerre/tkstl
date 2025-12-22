@@ -10,14 +10,17 @@ import NewsCarousel from '@/components/home/NewsCarousel';
 interface DashboardHomeProps {
   onPlayerSelect?: (playerName: string) => void;
 }
-interface MatchResult {
+interface SessionGame {
   id: string;
-  match_type: string;
-  match_date: string;
-  player1_name: string;
-  player2_name: string;
-  player1_score: number;
-  player2_score: number;
+  game_number: number;
+  session_date: string;
+  team_a_player1: string;
+  team_a_player2: string;
+  team_b_player1: string;
+  team_b_player2: string;
+  team_a_score: number | null;
+  team_b_score: number | null;
+  winner: string | null;
 }
 
 function getNextMonday(): Date {
@@ -62,7 +65,7 @@ function getWeekRange() {
 
 export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
-  const [recentResults, setRecentResults] = useState<MatchResult[]>([]);
+  const [recentResults, setRecentResults] = useState<SessionGame[]>([]);
   const [loadingResults, setLoadingResults] = useState(true);
   const nextSession = getNextMonday();
   const { getCurrentScribe, checkedInPlayers } = useMembers();
@@ -76,13 +79,14 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch recent match results from database
+  // Fetch recent session games from database
   useEffect(() => {
     const fetchResults = async () => {
       const { data, error } = await supabase
-        .from('match_results')
+        .from('session_games')
         .select('*')
-        .order('match_date', { ascending: false })
+        .order('session_date', { ascending: false })
+        .order('game_number', { ascending: false })
         .limit(5);
       
       if (!error && data) {
@@ -95,10 +99,10 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
 
     // Subscribe to realtime updates
     const channel = supabase
-      .channel('match_results_changes')
+      .channel('session_games_changes')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'match_results' },
+        { event: '*', schema: 'public', table: 'session_games' },
         () => {
           fetchResults();
         }
@@ -239,42 +243,52 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
                 </div>
               ) : recentResults.length === 0 ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">
-                  No match results yet
+                  No session games yet
                 </div>
               ) : (
-                recentResults.map((result) => (
-                  <div key={result.id} className="p-3">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
-                        {result.match_type}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground">
-                        {new Date(result.match_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-sm font-medium ${result.player1_score > result.player2_score ? 'text-foreground' : 'text-muted-foreground'}`}>
-                          {result.player1_name}
+                recentResults.map((game) => {
+                  const teamAWon = game.winner === 'A';
+                  const teamBWon = game.winner === 'B';
+                  const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
+                  const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
+                  const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null
+                    ? `${game.team_a_score} - ${game.team_b_score}`
+                    : game.winner ? (teamAWon ? 'W - L' : 'L - W') : 'TBD';
+                  
+                  return (
+                    <div key={game.id} className="p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                          Game {game.game_number}
                         </span>
-                        {result.player1_score > result.player2_score && (
-                          <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
-                        )}
-                      </div>
-                      <span className="font-mono text-sm font-bold text-foreground">
-                        {result.player1_score} - {result.player2_score}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {result.player2_score > result.player1_score && (
-                          <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold">W</span>
-                        )}
-                        <span className={`text-sm font-medium ${result.player2_score > result.player1_score ? 'text-foreground' : 'text-muted-foreground'}`}>
-                          {result.player2_name}
+                        <span className="text-[10px] text-muted-foreground">
+                          {new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </span>
                       </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <span className={`text-xs font-medium truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {teamADisplay}
+                          </span>
+                          {teamAWon && (
+                            <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold shrink-0">W</span>
+                          )}
+                        </div>
+                        <span className="font-mono text-sm font-bold text-foreground mx-2 shrink-0">
+                          {scoreDisplay}
+                        </span>
+                        <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                          {teamBWon && (
+                            <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold shrink-0">W</span>
+                          )}
+                          <span className={`text-xs font-medium truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                            {teamBDisplay}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>

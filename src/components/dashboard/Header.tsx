@@ -5,8 +5,8 @@ import { DirtIcon } from '@/components/icons/DirtIcon';
 import { LogOut } from 'lucide-react';
 
 export function Header() {
-  const { user, logout } = useAuth();
-  const isRoyal = user?.role === 'royalty';
+  const { profile, signOut } = useAuth();
+  const isRoyal = profile?.role === 'royalty';
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -33,21 +33,21 @@ export function Header() {
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
               <p className={`font-serif font-semibold ${isRoyal ? 'text-gold' : 'text-burlap'}`}>
-                {user?.name}
+                {profile?.name}
               </p>
-              <p className="text-xs text-muted-foreground italic">{user?.title}</p>
+              <p className="text-xs text-muted-foreground italic">{profile?.title}</p>
             </div>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-lg ${
               isRoyal 
                 ? 'bg-gradient-noble text-foreground border-2 border-gold/30' 
                 : 'bg-gradient-peasant text-foreground border-2 border-burlap/30'
             }`}>
-              {user?.name?.[0]}
+              {profile?.name?.[0]}
             </div>
             <Button
               variant="ghost"
               size="icon"
-              onClick={logout}
+              onClick={signOut}
               className="text-muted-foreground hover:text-foreground"
             >
               <LogOut className="w-5 h-5" />

@@ -1,64 +1,153 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '@/types/user';
-import { members } from '@/data/members';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+
+export interface Profile {
+  id: string;
+  member_id: string;
+  name: string;
+  role: 'royalty' | 'peasant';
+  title: string | null;
+  bio: string | null;
+  years_of_service: number;
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  session: Session | null;
+  profile: Profile | null;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, memberData: { name: string; role: 'royalty' | 'peasant' }) => Promise<{ error: Error | null }>;
+  signOut: () => Promise<void>;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Simple password for demo - in production this would be proper auth
-const PASSWORDS: Record<string, string> = {
-  gerard: 'sovereign2017',
-  kockum: 'strategist2017',
-  viktor: 'velvet2017',
-  ludvig: 'peasant123',
-  joel: 'peasant123',
-  hampus: 'peasant123',
-};
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check for stored session
-    const stored = localStorage.getItem('tkstl_user');
-    if (stored) {
-      const userData = JSON.parse(stored);
-      const member = members.find(m => m.id === userData.id);
-      if (member) {
-        setUser(member);
-        setIsAuthenticated(true);
-      }
-    }
-  }, []);
+  const fetchProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    const normalizedUsername = username.toLowerCase().trim();
-    const member = members.find(m => m.id === normalizedUsername || m.name.toLowerCase() === normalizedUsername);
-    
-    if (member && PASSWORDS[member.id] === password) {
-      setUser(member);
-      setIsAuthenticated(true);
-      localStorage.setItem('tkstl_user', JSON.stringify({ id: member.id }));
-      return true;
+    if (error) {
+      console.error('Error fetching profile:', error);
+      return null;
     }
-    return false;
+    return data as Profile;
   };
 
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('tkstl_user');
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        // Fetch profile with setTimeout to avoid deadlock
+        if (session?.user) {
+          setTimeout(() => {
+            fetchProfile(session.user.id).then(setProfile);
+          }, 0);
+        } else {
+          setProfile(null);
+        }
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      if (session?.user) {
+        fetchProfile(session.user.id).then((p) => {
+          setProfile(p);
+          setIsLoading(false);
+        });
+      } else {
+        setIsLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
+  };
+
+  const signUp = async (
+    email: string, 
+    password: string, 
+    memberData: { name: string; role: 'royalty' | 'peasant' }
+  ) => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          name: memberData.name,
+          role: memberData.role,
+        }
+      }
+    });
+
+    if (error) return { error };
+
+    // Create profile for the new user
+    if (data.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          id: data.user.id,
+          member_id: memberData.name.toLowerCase().replace(/\s+/g, '_'),
+          name: memberData.name,
+          role: memberData.role,
+          title: memberData.role === 'royalty' ? 'Noble Member' : 'Aspiring Player',
+          years_of_service: 1,
+        });
+
+      if (profileError) {
+        console.error('Error creating profile:', profileError);
+        return { error: profileError as unknown as Error };
+      }
+    }
+
+    return { error: null };
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setProfile(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      profile, 
+      signIn, 
+      signUp, 
+      signOut, 
+      isAuthenticated: !!session,
+      isLoading 
+    }}>
       {children}
     </AuthContext.Provider>
   );

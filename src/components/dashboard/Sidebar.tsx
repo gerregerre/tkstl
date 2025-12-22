@@ -28,7 +28,7 @@ const tabs = [
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const { logout } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -83,7 +83,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       <Button
         variant="ghost"
         size="sm"
-        onClick={logout}
+        onClick={signOut}
         className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
       >
         <LogOut className="w-4 h-4 mr-2" />

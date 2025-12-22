@@ -53,27 +53,38 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           <button
             onClick={() => setMode('combined')}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
               mode === 'combined'
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Users className="w-4 h-4" />
-            <span>All Games</span>
+            <Trophy className="w-4 h-4" />
+            <span className="hidden sm:inline">All</span>
           </button>
           <button
             onClick={() => setMode('doubles')}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
               mode === 'doubles'
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
+            <Users className="w-4 h-4" />
+            <span className="hidden sm:inline">Doubles</span>
+          </button>
+          <button
+            onClick={() => setMode('singles')}
+            className={cn(
+              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
+              mode === 'singles'
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
             <User className="w-4 h-4" />
-            <Users className="w-4 h-4 -ml-2" />
-            <span>Doubles</span>
+            <span className="hidden sm:inline">Singles</span>
           </button>
         </div>
       </div>

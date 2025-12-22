@@ -8,11 +8,13 @@ export interface Player {
   games_played: number;
   doubles_points: number;
   doubles_games: number;
+  singles_points: number;
+  singles_games: number;
   created_at: string;
   updated_at: string;
 }
 
-export type LeaderboardMode = 'combined' | 'doubles';
+export type LeaderboardMode = 'combined' | 'doubles' | 'singles';
 
 export function usePlayers() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -50,7 +52,7 @@ export function usePlayers() {
     };
   }, []);
 
-  const updatePlayerStats = async (playerName: string, pointsToAdd: number, isDoubles: boolean = true) => {
+  const updatePlayerStats = async (playerName: string, pointsToAdd: number, gameType: 'doubles' | 'singles' = 'doubles') => {
     const player = players.find(p => p.name === playerName);
     if (!player) return;
 
@@ -59,10 +61,12 @@ export function usePlayers() {
       games_played: player.games_played + 1,
     };
 
-    // Always update doubles stats for team games
-    if (isDoubles) {
+    if (gameType === 'doubles') {
       updateData.doubles_points = player.doubles_points + pointsToAdd;
       updateData.doubles_games = player.doubles_games + 1;
+    } else {
+      updateData.singles_points = player.singles_points + pointsToAdd;
+      updateData.singles_games = player.singles_games + 1;
     }
 
     const { error } = await supabase
@@ -80,16 +84,24 @@ export function usePlayers() {
       if (player.doubles_games === 0) return 0;
       return player.doubles_points / player.doubles_games;
     }
+    if (mode === 'singles') {
+      if (player.singles_games === 0) return 0;
+      return player.singles_points / player.singles_games;
+    }
     if (player.games_played === 0) return 0;
     return player.total_points / player.games_played;
   };
 
   const getGamesPlayed = (player: Player, mode: LeaderboardMode = 'combined') => {
-    return mode === 'doubles' ? player.doubles_games : player.games_played;
+    if (mode === 'doubles') return player.doubles_games;
+    if (mode === 'singles') return player.singles_games;
+    return player.games_played;
   };
 
   const getTotalPoints = (player: Player, mode: LeaderboardMode = 'combined') => {
-    return mode === 'doubles' ? player.doubles_points : player.total_points;
+    if (mode === 'doubles') return player.doubles_points;
+    if (mode === 'singles') return player.singles_points;
+    return player.total_points;
   };
 
   const getLeaderboard = (mode: LeaderboardMode = 'combined') => {

@@ -85,6 +85,8 @@ export type Database = {
           games_played: number
           id: string
           name: string
+          singles_games: number
+          singles_points: number
           total_points: number
           updated_at: string
         }
@@ -95,6 +97,8 @@ export type Database = {
           games_played?: number
           id?: string
           name: string
+          singles_games?: number
+          singles_points?: number
           total_points?: number
           updated_at?: string
         }
@@ -105,6 +109,8 @@ export type Database = {
           games_played?: number
           id?: string
           name?: string
+          singles_games?: number
+          singles_points?: number
           total_points?: number
           updated_at?: string
         }

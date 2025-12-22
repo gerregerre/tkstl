@@ -5,7 +5,8 @@ import {
   Swords,
   GitCompare,
   History,
-  Info
+  Info,
+  MessageSquare
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -14,6 +15,7 @@ interface SidebarProps {
 }
 
 const tabs = [
+  { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
   { id: 'history', label: 'History', icon: History },
   { id: 'recorder', label: 'Record Score', icon: Swords },

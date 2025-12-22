@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
-import NewsCarousel from '@/components/home/NewsCarousel';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -44,25 +43,19 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-3xl" />
-      </div>
-
-      <div className="w-full max-w-4xl animate-fade-in-up relative z-10">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md animate-fade-in-up">
         {/* Logo and Title */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center">
               <span className="font-serif text-2xl font-bold text-primary-foreground">TK</span>
             </div>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="font-serif text-4xl font-bold text-foreground tracking-tight">
             TKSTL
           </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
+          <p className="text-muted-foreground mt-2">
             Tennisklubben Stora Tennisligan
           </p>
           <div className="flex items-center justify-center gap-3 mt-4">
@@ -74,13 +67,8 @@ export default function Login() {
           </div>
         </div>
 
-        {/* News Carousel */}
-        <div className="mb-10">
-          <NewsCarousel />
-        </div>
-
         {/* Login Card */}
-        <div className="max-w-md mx-auto bg-card/80 backdrop-blur-sm rounded-xl border border-border p-8 shadow-lg">
+        <div className="bg-card rounded border border-border p-8">
           <div className="text-center mb-6">
             <h2 className="font-serif text-2xl font-semibold text-foreground">
               Enter the Court
@@ -142,14 +130,14 @@ export default function Login() {
           </form>
 
           <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-center text-muted-foreground italic">
+            <p className="text-xs text-center text-muted-foreground">
               "The court separates the worthy from the merely ambitious."
             </p>
           </div>
         </div>
 
         {/* Hint for demo */}
-        <div className="max-w-md mx-auto mt-6 p-4 bg-muted/50 backdrop-blur-sm rounded-lg border border-border/50">
+        <div className="mt-6 p-4 bg-muted rounded border border-border">
           <p className="text-xs text-center text-muted-foreground">
             <span className="font-semibold">Demo Access:</span> Use member names (e.g., "gerard", "ludvig") 
             with password "sovereign2017" for Royalty or "peasant123" for Peasants.

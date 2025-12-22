@@ -53,23 +53,13 @@ export function usePlayers() {
   }, []);
 
   const updatePlayerStats = async (playerName: string, pointsToAdd: number) => {
-    const player = players.find(p => p.name === playerName);
-    if (!player) return;
-
-    // Doubles games update both singles and doubles stats
-    const updateData: Record<string, number> = {
-      total_points: player.total_points + pointsToAdd,
-      games_played: player.games_played + 1,
-      doubles_points: player.doubles_points + pointsToAdd,
-      doubles_games: player.doubles_games + 1,
-      singles_points: player.singles_points + pointsToAdd,
-      singles_games: player.singles_games + 1,
-    };
-
-    const { error } = await supabase
-      .from('players')
-      .update(updateData)
-      .eq('name', playerName);
+    // Use atomic increment function to avoid stale data issues
+    const { error } = await supabase.rpc('increment_player_stats', {
+      p_player_name: playerName,
+      p_points: pointsToAdd,
+      p_doubles_points: pointsToAdd,
+      p_singles_points: pointsToAdd,
+    });
 
     if (error) {
       console.error('Error updating player stats:', error);

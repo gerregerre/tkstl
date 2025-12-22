@@ -7,6 +7,7 @@ import {
   Trophy,
   Swords,
   GitCompare,
+  History,
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,7 @@ const tabs = [
   { id: 'home', label: 'Dashboard', icon: Home },
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
+  { id: 'history', label: 'History', icon: History },
   { id: 'session', label: 'Record Session', icon: Swords },
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'members', label: 'Members', icon: Users },

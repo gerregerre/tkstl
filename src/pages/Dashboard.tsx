@@ -9,6 +9,7 @@ import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
+import { SessionHistory } from '@/components/dashboard/SessionHistory';
 
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
@@ -37,6 +38,8 @@ export default function Dashboard() {
         return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
       case 'headtohead':
         return <HeadToHead />;
+      case 'history':
+        return <SessionHistory />;
       case 'session':
         return <NewSessionRecorder />;
       case 'lore':

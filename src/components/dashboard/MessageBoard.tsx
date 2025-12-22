@@ -5,10 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { MessageSquare, Send, Trash2 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { MessageSquare, Send, Trash2, SmilePlus } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+
+const REACTION_EMOJIS = ['👍', '❤️', '😂', '🎾', '🏆', '🔥', '👏', '💪'];
+
+interface Reaction {
+  emoji: string;
+  count: number;
+  userReacted: boolean;
+}
 
 interface Message {
   id: string;
@@ -19,6 +28,7 @@ interface Message {
     display_name: string | null;
     avatar_url: string | null;
   };
+  reactions: Reaction[];
 }
 
 export function MessageBoard() {
@@ -31,18 +41,23 @@ export function MessageBoard() {
   useEffect(() => {
     fetchMessages();
 
-    // Subscribe to realtime updates
-    const channel = supabase
+    // Subscribe to realtime updates for messages and reactions
+    const messagesChannel = supabase
       .channel('message-board')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'messages' },
         () => fetchMessages()
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'message_reactions' },
+        () => fetchMessages()
+      )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(messagesChannel);
     };
   }, []);
 
@@ -62,21 +77,57 @@ export function MessageBoard() {
 
     // Fetch user profiles for all message authors
     const userIds = [...new Set(messagesData?.map(m => m.user_id) || [])];
+    const messageIds = messagesData?.map(m => m.id) || [];
     
     const { data: profilesData } = await supabase
       .from('user_profiles')
       .select('id, display_name, avatar_url')
       .in('id', userIds);
 
+    // Fetch all reactions for these messages
+    const { data: reactionsData } = await supabase
+      .from('message_reactions')
+      .select('*')
+      .in('message_id', messageIds);
+
     const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
 
-    // Combine messages with profiles
-    const messagesWithProfiles = messagesData?.map(msg => ({
-      ...msg,
-      user_profile: profilesMap.get(msg.user_id) || null,
-    })) || [];
+    // Group reactions by message
+    const reactionsMap = new Map<string, { emoji: string; user_id: string }[]>();
+    reactionsData?.forEach(r => {
+      if (!reactionsMap.has(r.message_id)) {
+        reactionsMap.set(r.message_id, []);
+      }
+      reactionsMap.get(r.message_id)!.push({ emoji: r.emoji, user_id: r.user_id });
+    });
 
-    setMessages(messagesWithProfiles);
+    // Combine messages with profiles and reactions
+    const messagesWithData = messagesData?.map(msg => {
+      const msgReactions = reactionsMap.get(msg.id) || [];
+      
+      // Aggregate reactions by emoji
+      const emojiCounts = new Map<string, { count: number; userReacted: boolean }>();
+      msgReactions.forEach(r => {
+        const existing = emojiCounts.get(r.emoji) || { count: 0, userReacted: false };
+        existing.count++;
+        if (r.user_id === user?.id) existing.userReacted = true;
+        emojiCounts.set(r.emoji, existing);
+      });
+
+      const reactions: Reaction[] = Array.from(emojiCounts.entries()).map(([emoji, data]) => ({
+        emoji,
+        count: data.count,
+        userReacted: data.userReacted,
+      }));
+
+      return {
+        ...msg,
+        user_profile: profilesMap.get(msg.user_id) || undefined,
+        reactions,
+      };
+    }) || [];
+
+    setMessages(messagesWithData);
     setLoading(false);
   };
 
@@ -111,6 +162,41 @@ export function MessageBoard() {
       toast.error('Failed to delete message');
     } else {
       toast.success('Message deleted');
+    }
+  };
+
+  const handleReaction = async (messageId: string, emoji: string) => {
+    if (!user) return;
+
+    // Check if user already reacted with this emoji
+    const message = messages.find(m => m.id === messageId);
+    const existingReaction = message?.reactions.find(r => r.emoji === emoji && r.userReacted);
+
+    if (existingReaction) {
+      // Remove reaction
+      const { error } = await supabase
+        .from('message_reactions')
+        .delete()
+        .eq('message_id', messageId)
+        .eq('user_id', user.id)
+        .eq('emoji', emoji);
+
+      if (error) {
+        console.error('Error removing reaction:', error);
+      }
+    } else {
+      // Add reaction
+      const { error } = await supabase
+        .from('message_reactions')
+        .insert({
+          message_id: messageId,
+          user_id: user.id,
+          emoji,
+        });
+
+      if (error) {
+        console.error('Error adding reaction:', error);
+      }
     }
   };
 
@@ -216,11 +302,57 @@ export function MessageBoard() {
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
-                        )}
+                         )}
                       </div>
                       <p className="mt-1 text-foreground whitespace-pre-wrap break-words">
                         {message.content}
                       </p>
+                      
+                      {/* Reactions */}
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        {/* Existing reactions */}
+                        {message.reactions.map((reaction) => (
+                          <button
+                            key={reaction.emoji}
+                            onClick={() => handleReaction(message.id, reaction.emoji)}
+                            className={cn(
+                              "inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-colors",
+                              reaction.userReacted
+                                ? "bg-primary/20 border border-primary/30"
+                                : "bg-muted hover:bg-muted/80 border border-transparent"
+                            )}
+                          >
+                            <span>{reaction.emoji}</span>
+                            <span className="text-xs font-medium text-muted-foreground">
+                              {reaction.count}
+                            </span>
+                          </button>
+                        ))}
+                        
+                        {/* Add reaction button */}
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted hover:bg-muted/80 transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <SmilePlus className="w-4 h-4 text-muted-foreground" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-2" align="start">
+                            <div className="flex gap-1">
+                              {REACTION_EMOJIS.map((emoji) => (
+                                <button
+                                  key={emoji}
+                                  onClick={() => handleReaction(message.id, emoji)}
+                                  className="w-8 h-8 flex items-center justify-center rounded hover:bg-muted transition-colors text-lg"
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
                   </div>
                 </div>

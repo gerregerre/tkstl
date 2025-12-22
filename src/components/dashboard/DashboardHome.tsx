@@ -116,11 +116,6 @@ export function DashboardHome() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* Page Header */}
-      <div>
-        <h1 className="section-header">Dashboard</h1>
-      </div>
-
       {/* News Carousel */}
       <NewsCarousel />
 

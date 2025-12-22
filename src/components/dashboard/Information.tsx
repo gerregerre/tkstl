@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Trophy, Target, Sword, Scale, BookOpen, Calculator } from 'lucide-react';
+import { Trophy, Target, Sword, Scale, BookOpen, Calculator, Zap } from 'lucide-react';
 
 export function Information() {
   return (
@@ -8,7 +8,7 @@ export function Information() {
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-foreground">The Sacred Compendium</h1>
         <p className="text-muted-foreground italic">
-          For those who require illumination on matters that ought to be self-evident
+          Because apparently, some of you still don't get it
         </p>
       </div>
 
@@ -17,18 +17,17 @@ export function Information() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
-            What Constitutes a "Session"
+            What the Hell is a "Session"
           </CardTitle>
         </CardHeader>
         <CardContent className="prose prose-sm max-w-none text-muted-foreground">
           <p>
-            A session, for those blissfully unaware, comprises precisely <strong>three individual games</strong>. 
-            Not two. Not four. Three. One might think this elementary, yet here we are, 
-            providing written documentation.
+            A session is <strong>three games</strong>. That's it. Three. 
+            Not "until someone gets tired." Not "best of whatever." Three games. Done.
           </p>
-          <p className="italic">
-            Each game presents its own peculiar charm, designed to test not merely one's athletic prowess, 
-            but also one's patience, partnership compatibility, and tolerance for chaos.
+          <p>
+            You show up, you play three different formats, you go home questioning 
+            your life choices. Simple.
           </p>
         </CardContent>
       </Card>
@@ -37,7 +36,7 @@ export function Information() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold text-foreground flex items-center gap-2">
           <Sword className="w-6 h-6 text-primary" />
-          The Triumvirate of Torment
+          The Three Formats (Pay Attention)
         </h2>
 
         <Accordion type="single" collapsible className="space-y-2">
@@ -50,47 +49,38 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">PwC Single</h3>
-                  <p className="text-sm text-muted-foreground">The Accountant's Paradox</p>
+                  <p className="text-sm text-muted-foreground">Corporate Chaos</p>
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               <div className="space-y-3 text-muted-foreground">
-                <h4 className="font-medium text-foreground">The Rules (For the Uninitiated)</h4>
+                <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  The court is divided—much like opinions at a family dinner—into two mini single courts 
-                  where two singles matches proceed simultaneously. One might describe this as "efficient." 
-                  Others might call it "barely controlled chaos."
+                  Court splits into two mini singles courts. Two singles matches happen 
+                  at the same time. Yes, it's chaos. That's the point.
                 </p>
                 <p>
-                  Once a point is determined in <em>either</em> singles match, the entire affair transforms 
-                  into a doubles match. The victorious singles player has earned their team a fighting 
-                  chance at a full team point. The vanquished? They must now rely on their partner to 
-                  salvage what remains of their dignity.
+                  The second someone wins their singles point, everything stops. Now it's 
+                  doubles. The team that won the singles gets to fight for the full point. 
+                  The losers? They have to claw it back or eat the L.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Winner of singles gains opportunity for full team point via doubles</li>
-                  <li>Loser must win doubles to avoid conceding the match point</li>
-                  <li>First team to <strong>9 points</strong> claims victory</li>
+                  <li>Win your singles = your team gets the doubles chance</li>
+                  <li>Lose your singles = pray your partner carries</li>
+                  <li>First to <strong>9 points</strong> wins</li>
                 </ul>
               </div>
               
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Historical Origins
+                  Why "PwC"?
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Legend has it this format was conceived during a particularly tedious quarterly 
-                  review at a prestigious accounting firm, where partners discovered that watching 
-                  paint dry was marginally more exciting than their spreadsheets. The name "PwC" 
-                  is purely coincidental and bears absolutely no relation to any Big Four firm. 
-                  Legal counsel has assured us of this.
-                </p>
-                <p className="text-sm text-muted-foreground italic">
-                  The simultaneous singles format was allegedly inspired by the firm's belief that 
-                  "if one person can do a job, surely two people doing it at once is twice as good." 
-                  This philosophy, we note, explains much about modern corporate culture.
+                  Named after the accounting firm because someone thought running 
+                  parallel operations simultaneously was "efficient." 
+                  Lawyers assure us this is purely coincidental.
                 </p>
               </div>
             </AccordionContent>
@@ -107,47 +97,38 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">Shibuya Crossing</h3>
-                  <p className="text-sm text-muted-foreground">Organised Pandemonium</p>
+                  <p className="text-sm text-muted-foreground">Controlled Disaster</p>
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               <div className="space-y-3 text-muted-foreground">
-                <h4 className="font-medium text-foreground">The Rules (Do Try to Keep Up)</h4>
+                <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  Similar to the PwC Single in its fundamental chaos, yet with a delightful twist 
-                  that makes spatial awareness absolutely essential. The matches proceed 
-                  <strong> cross-court</strong>—hence the name, for those struggling to connect 
-                  the dots.
+                  Same idea as PwC, except now the singles matches are <strong>cross-court</strong>. 
+                  You're playing diagonal to someone else who's also playing diagonal. 
+                  Balls cross paths. Collisions happen. Deal with it.
                 </p>
                 <p>
-                  Two singles matches occur simultaneously, crossing paths like the famous Tokyo 
-                  intersection. Once one match concludes, the survivors reconvene for doubles. 
-                  The winner of two points receives a full team point.
+                  One twist: you need <strong>two points</strong> for one team point. 
+                  So even if you clutch your singles, you still gotta win the doubles.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Cross-court singles format (yes, balls may intersect)</li>
-                  <li>Transitions to doubles upon first point determination</li>
-                  <li>Two points required for one team point</li>
-                  <li>First team to <strong>9 points</strong> emerges victorious</li>
+                  <li>Cross-court singles (yes, it's as messy as it sounds)</li>
+                  <li>First singles winner triggers doubles phase</li>
+                  <li>Two points = one team point</li>
+                  <li>First to <strong>9 points</strong> wins</li>
                 </ul>
               </div>
               
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Historical Origins
+                  Why "Shibuya Crossing"?
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Named after Tokyo's Shibuya Crossing—reportedly the world's busiest pedestrian 
-                  intersection—this format was developed by someone who clearly felt that regular 
-                  tennis lacked sufficient opportunities for collision and confusion.
-                </p>
-                <p className="text-sm text-muted-foreground italic">
-                  Historical records indicate the game was first played in 2019, when a group of 
-                  distinguished players, having consumed one too many post-match refreshments, 
-                  decided that playing perpendicular to one another would be "a jolly good laugh." 
-                  They were not entirely wrong.
+                  Named after Tokyo's busiest intersection where thousands of people 
+                  cross simultaneously without dying. Same energy here. Mostly.
                 </p>
               </div>
             </AccordionContent>
@@ -162,47 +143,37 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">Tug of War</h3>
-                  <p className="text-sm text-muted-foreground">The Zero-Sum Showdown</p>
+                  <p className="text-sm text-muted-foreground">Zero-Sum Brutality</p>
                 </div>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               <div className="space-y-3 text-muted-foreground">
-                <h4 className="font-medium text-foreground">The Rules (Refreshingly Simple)</h4>
+                <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  At last, a format that even the most distracted among us can comprehend. 
-                  Pure doubles. One ball. No pretense of multitasking.
+                  Finally, something simple. Pure doubles. One ball. No weird phases.
                 </p>
                 <p>
-                  The scoring operates on a <strong>zero-sum system</strong>—a concept familiar 
-                  to economists and siblings dividing dessert. Both teams commence at 5-5. 
-                  Win a point, you advance to 6 whilst your opponents retreat to 4. 
-                  It is, quite literally, a tug of war.
+                  Both teams start at <strong>5-5</strong>. You win a point, you go to 6, 
+                  they drop to 4. You lose a point, opposite happens. Every point you 
+                  gain is literally stolen from them.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Pure doubles format (one ball, two teams, infinite tension)</li>
-                  <li>Starting score: 5-5</li>
-                  <li>Every point gained is a point lost by opponents</li>
-                  <li>First team to reach <strong>10 points</strong> wins</li>
+                  <li>Straight doubles (no singles nonsense)</li>
+                  <li>Start: 5-5</li>
+                  <li>Your gain = their loss</li>
+                  <li>First to <strong>10</strong> wins</li>
                 </ul>
               </div>
               
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Historical Origins
+                  Why "Tug of War"?
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  The Tug of War format traces its lineage to ancient Greek athletic festivals, 
-                  where philosophers would debate the nature of zero-sum games whilst 
-                  simultaneously demonstrating them. Plato reportedly despised this format, 
-                  calling it "needlessly dramatic." Aristotle, predictably, thought it "perfectly 
-                  balanced."
-                </p>
-                <p className="text-sm text-muted-foreground italic">
-                  The modern iteration emerged when players grew weary of complex scoring systems 
-                  that required advanced mathematics. "What if," one visionary suggested, "we simply 
-                  made winning feel like you're stealing something?" The rest, as they say, is history.
+                  Because that's literally what it is. You pull points away from them. 
+                  They pull points away from you. Someone hits 10. Done.
                 </p>
               </div>
             </AccordionContent>
@@ -210,54 +181,115 @@ export function Information() {
         </Accordion>
       </div>
 
-      {/* Scoring System */}
+      {/* Points Breakdown - NEW SECTION */}
+      <Card className="border-destructive/30 bg-destructive/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-destructive">
+            <Zap className="w-5 h-5" />
+            How Points Actually Work (Read This)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-muted-foreground font-medium">
+            Everyone gets points. Winners. Losers. Everyone. Here's the breakdown:
+          </p>
+
+          <div className="space-y-4">
+            <div className="border rounded-lg p-4 bg-card space-y-3">
+              <h4 className="font-bold text-foreground">Games 1 & 2: PwC / Shibuya</h4>
+              <div className="grid gap-3 text-sm">
+                <div className="flex items-start gap-3">
+                  <div className="w-20 flex-shrink-0 font-semibold text-green-500">WINNER:</div>
+                  <div className="text-muted-foreground">
+                    Gets points equal to their final score. If you win 9-7, you get <strong>9 points</strong>.
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-20 flex-shrink-0 font-semibold text-red-500">LOSER:</div>
+                  <div className="text-muted-foreground">
+                    Gets points equal to their final score too. Lost 7-9? You still get <strong>7 points</strong>. 
+                    Not nothing. Just... less.
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground/70 italic">
+                So yeah, even if you choke, you walk away with something. You're welcome.
+              </p>
+            </div>
+
+            <div className="border rounded-lg p-4 bg-card space-y-3">
+              <h4 className="font-bold text-foreground">Game 3: Tug of War</h4>
+              <div className="grid gap-3 text-sm">
+                <div className="flex items-start gap-3">
+                  <div className="w-20 flex-shrink-0 font-semibold text-green-500">WINNER:</div>
+                  <div className="text-muted-foreground">
+                    Gets <strong>10 points</strong> (the winning score).
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-20 flex-shrink-0 font-semibold text-red-500">LOSER:</div>
+                  <div className="text-muted-foreground">
+                    Gets <strong>0 points</strong>. Zero-sum means zero-sum. You got dragged to 0, 
+                    you get nothing. It's brutal. That's the game.
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground/70 italic">
+                This is why Tug of War matters. It's all or nothing.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+            <h4 className="font-bold text-foreground mb-2">Example Session</h4>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p>Game 1 (PwC): Your team wins 9-5 → You get <strong>9 pts</strong></p>
+              <p>Game 2 (Shibuya): Your team loses 6-9 → You get <strong>6 pts</strong></p>
+              <p>Game 3 (Tug): Your team wins 10-0 → You get <strong>10 pts</strong></p>
+              <p className="pt-2 font-medium text-foreground">Total: 25 points from 3 games = 8.33 avg</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Leaderboard Calculation */}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calculator className="w-5 h-5 text-primary" />
-            The Mysterious Art of Scoring
+            Leaderboard Rankings
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3 text-muted-foreground">
             <p>
-              For those who've gazed upon the leaderboard with confusion and mild despair, 
-              allow us to illuminate the arcane mathematics that govern one's standing.
+              Your ranking is your <strong>average points per game</strong>. Not total points. Average. 
+              This stops people from gaming the system by just playing more.
+            </p>
+            <p className="font-medium">
+              Formula: Total Points ÷ Games Played = Your Rank
             </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-              <h4 className="font-medium text-foreground">Session Scoring</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p><strong>Games 1 & 2 (PwC Single / Shibuya Crossing):</strong></p>
-                <ul className="list-disc list-inside ml-2 space-y-1">
-                  <li>Winner: Points equal to their final score</li>
-                  <li>Loser: Points equal to their final score (yes, even in defeat)</li>
-                </ul>
-                <p className="mt-2"><strong>Game 3 (Tug of War):</strong></p>
-                <ul className="list-disc list-inside ml-2 space-y-1">
-                  <li>Winner: Awarded points for glory</li>
-                  <li>Loser: Awarded points for participation (we're nothing if not compassionate)</li>
-                </ul>
-              </div>
+              <h4 className="font-medium text-foreground">Why Averages?</h4>
+              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                <li>Can't climb by just showing up more</li>
+                <li>One bad session won't destroy you</li>
+                <li>Consistency actually matters</li>
+                <li>Quality over quantity</li>
+              </ul>
             </div>
 
             <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-              <h4 className="font-medium text-foreground">Leaderboard Calculation</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p>
-                  The leaderboard ranking is determined by one's <strong>average points per game</strong>. 
-                  This sophisticated metric ensures that:
-                </p>
-                <ul className="list-disc list-inside ml-2 space-y-1">
-                  <li>Consistency is rewarded over mere participation</li>
-                  <li>One spectacular session won't eclipse chronic mediocrity</li>
-                  <li>New players aren't unfairly advantaged by sample size</li>
-                </ul>
-                <p className="mt-2 italic">
-                  Formula: Total Points ÷ Games Played = Your Worth as a Human Being 
-                  (in tennis terms, at least)
+              <h4 className="font-medium text-foreground">The Modes</h4>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p><strong>Combined:</strong> All your games, singles + doubles</p>
+                <p><strong>Doubles:</strong> Just your doubles performance</p>
+                <p><strong>Singles:</strong> Just your singles performance</p>
+                <p className="italic text-xs mt-2">
+                  Use these to see exactly who's carrying and who's getting carried.
                 </p>
               </div>
             </div>
@@ -266,28 +298,25 @@ export function Information() {
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 space-y-2">
             <h4 className="font-medium text-foreground flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" />
-              Doubles vs Singles Distinction
+              Bottom Line
             </h4>
             <p className="text-sm text-muted-foreground">
-              The leaderboard graciously tracks both <strong>doubles</strong> and <strong>singles</strong> 
-              performance separately, for those who wish to examine exactly where their partnerships 
-              are failing them—or vice versa. One can toggle between combined, doubles-only, and 
-              singles-only views, allowing for maximally targeted self-criticism.
+              Win big, get more points. Lose close, still get decent points. 
+              Get steamrolled in Tug of War, get nothing. 
+              Play more games, your average evens out. Simple.
             </p>
           </div>
         </CardContent>
       </Card>
 
-      {/* Philosophical Closing */}
+      {/* Closing */}
       <Card className="bg-gradient-to-br from-primary/5 to-transparent border-primary/20">
         <CardContent className="py-6 text-center space-y-2">
           <p className="text-muted-foreground italic">
-            "In tennis, as in life, the scoring may seem arbitrary, the rules Byzantine, 
-            and the outcomes frequently unjust. Yet we persist, for what is sport if not 
-            a metaphor for existence itself?"
+            "Stop asking questions the rulebook already answers."
           </p>
           <p className="text-xs text-muted-foreground">
-            — Anonymous, likely after a particularly devastating loss
+            — Management
           </p>
         </CardContent>
       </Card>

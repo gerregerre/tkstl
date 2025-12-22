@@ -25,7 +25,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { ChevronDown, ChevronRight, Calendar, Trophy, Users, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Calendar, Trophy, Users, Pencil, Trash2, Loader2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -62,6 +62,9 @@ export function SessionHistory() {
   
   // Delete state
   const [deletingGame, setDeletingGame] = useState<SessionGame | null>(null);
+  
+  // Recalculate loading state
+  const [isRecalculating, setIsRecalculating] = useState(false);
 
   useEffect(() => {
     fetchSessions();
@@ -386,8 +389,10 @@ export function SessionHistory() {
   }
 
   const handleRecalculateAll = async () => {
+    setIsRecalculating(true);
     toast.info('Recalculating all stats...');
     await recalculatePlayerStats();
+    setIsRecalculating(false);
     toast.success('All player and team stats recalculated!');
   };
 
@@ -396,7 +401,8 @@ export function SessionHistory() {
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Session History</h2>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRecalculateAll}>
+          <Button variant="outline" size="sm" onClick={handleRecalculateAll} disabled={isRecalculating}>
+            {isRecalculating && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Recalculate All Stats
           </Button>
           <Badge variant="secondary">{sessions.length} Sessions</Badge>

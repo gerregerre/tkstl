@@ -3,12 +3,9 @@ import { clubHistory } from '@/data/lore';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Lock, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
 
 export function TheLore() {
   const [showClassified, setShowClassified] = useState(false);
-  const { user } = useAuth();
-  const isRoyal = user?.role === 'royalty';
 
   return (
     <div className="space-y-8 animate-fade-in-up">
@@ -93,13 +90,8 @@ export function TheLore() {
             <div className="space-y-4">
               <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4">
                 <p className="text-xs text-destructive font-mono mb-2">
-                  ⚠ CLEARANCE LEVEL: {isRoyal ? 'SOVEREIGN' : 'PEASANT (UNAUTHORIZED)'}
+                  ⚠ CLEARANCE LEVEL: READER
                 </p>
-                {!isRoyal && (
-                  <p className="text-xs text-destructive italic">
-                    Warning: Peasant access to this document has been logged.
-                  </p>
-                )}
               </div>
               <div className="font-mono text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
                 {clubHistory.theRedacted.content}

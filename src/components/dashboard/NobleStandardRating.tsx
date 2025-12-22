@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { ClipboardCheck, Clock, Target, Package, Laugh, ThermometerSun, Send } from 'lucide-react';
@@ -47,7 +46,6 @@ const categories: RatingCategory[] = [
 ];
 
 export function NobleStandardRating() {
-  const { user } = useAuth();
   const [ratings, setRatings] = useState<Record<string, number>>({
     punctuality: 5,
     commitment: 5,

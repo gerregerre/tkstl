@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useMembers } from '@/contexts/MembersContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -51,8 +50,7 @@ const nobleCategories = [
 ];
 
 export function SessionRecorder() {
-  const { members, checkedInPlayers, submitForAssent } = useMembers();
-  const { user } = useAuth();
+  const { members, checkedInPlayers, submitForAssent, getCurrentScribe } = useMembers();
   const [currentStep, setCurrentStep] = useState(0);
   
   // Game states
@@ -91,6 +89,7 @@ export function SessionRecorder() {
 
   const checkedInMembers = members.filter(m => checkedInPlayers.includes(m.id));
   const hasQuartet = checkedInPlayers.length === 4;
+  const scribe = getCurrentScribe();
 
   const steps = [
     { id: 0, title: 'Mini-Single', icon: Swords },
@@ -155,13 +154,11 @@ export function SessionRecorder() {
   };
 
   const handleSubmit = async () => {
-    if (!user) return;
-    
     setIsSubmitting(true);
     
     const games: GameResult[] = [miniSingle, shibuya, ladder];
     
-    submitForAssent(games, nobleStandard, user.id);
+    submitForAssent(games, nobleStandard, scribe.id);
     
     toast({
       title: "Submitted for Royal Assent",
@@ -263,32 +260,6 @@ export function SessionRecorder() {
       </div>
     </div>
   );
-
-  // Check if user is logged in
-  if (!user) {
-    return (
-      <div className="space-y-6 animate-fade-in-up">
-        <div className="text-center">
-          <h2 className="font-serif text-3xl font-bold text-foreground">
-            Post-Match Report
-          </h2>
-          <p className="text-muted-foreground mt-1 font-serif-body italic">
-            Chronicle the PwC session results
-          </p>
-        </div>
-        
-        <div className="bg-card rounded-lg border-2 border-destructive/30 p-8 shadow-card text-center">
-          <Lock className="w-16 h-16 text-destructive/50 mx-auto mb-4" />
-          <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-            Authentication Required
-          </h3>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            You must be logged in to record sessions.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   if (!hasQuartet) {
     return (
@@ -484,10 +455,7 @@ export function SessionRecorder() {
                     "w-8 h-8 mx-auto mb-2",
                     ladder.winner === 'A' ? "text-gold" : "text-muted-foreground"
                   )} />
-                  <span className="font-serif font-bold">Pair A Wins</span>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {ladder.pairA.map(id => members.find(m => m.id === id)?.name).join(' & ')}
-                  </p>
+                  <span className="font-semibold">Pair A Wins</span>
                 </button>
                 <button
                   onClick={() => setLadder({ ...ladder, winner: 'B' })}
@@ -502,10 +470,7 @@ export function SessionRecorder() {
                     "w-8 h-8 mx-auto mb-2",
                     ladder.winner === 'B' ? "text-gold" : "text-muted-foreground"
                   )} />
-                  <span className="font-serif font-bold">Pair B Wins</span>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {ladder.pairB.map(id => members.find(m => m.id === id)?.name).join(' & ')}
-                  </p>
+                  <span className="font-semibold">Pair B Wins</span>
                 </button>
               </div>
             </div>
@@ -514,81 +479,62 @@ export function SessionRecorder() {
       )}
 
       {currentStep === 3 && (
-        <div className="space-y-6">
-          <div className="bg-card rounded-lg border-2 border-terra-cotta/30 p-6 shadow-card">
-            <div className="flex items-center gap-3 border-b border-border pb-4 mb-6">
-              <div className="p-3 rounded-lg bg-terra-cotta/10">
-                <Target className="w-6 h-6 text-terra-cotta" />
-              </div>
-              <div>
-                <h3 className="font-serif text-xl font-bold text-foreground">Step 4: Noble Standard Survey</h3>
-                <p className="text-sm text-muted-foreground">Rate today's sacred session with honesty</p>
-              </div>
+        <div className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card space-y-6">
+          <div className="flex items-center gap-3 border-b border-border pb-4">
+            <div className="p-3 rounded-lg bg-primary/10">
+              <Target className="w-6 h-6 text-primary" />
             </div>
-            
-            <div className="space-y-8">
-              {nobleCategories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <div key={category.id} className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-muted text-muted-foreground">
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-foreground">{category.label}</h4>
-                          <p className="text-sm text-muted-foreground">{category.question}</p>
-                        </div>
-                      </div>
-                      <span className={cn(
-                        "font-serif font-bold text-xl min-w-[3rem] text-right",
-                        getScoreColor(nobleRatings[category.id as keyof NobleRatings])
-                      )}>
-                        {nobleRatings[category.id as keyof NobleRatings].toFixed(1)}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[nobleRatings[category.id as keyof NobleRatings]]}
-                      onValueChange={(value) => setNobleRatings(prev => ({
-                        ...prev,
-                        [category.id]: value[0],
-                      }))}
-                      max={10}
-                      step={0.1}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>0 - Shameful</span>
-                      <span>5 - Adequate</span>
-                      <span>10 - Divine</span>
-                    </div>
-                  </div>
-                );
-              })}
+            <div>
+              <h3 className="font-serif text-xl font-bold text-foreground">Noble Standard</h3>
+              <p className="text-sm text-muted-foreground">Rate the session quality</p>
             </div>
           </div>
 
-          {/* Noble Standard Preview */}
-          <div className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-noble text-center">
-            <h3 className="font-serif text-lg text-muted-foreground mb-2">
-              Session Noble Standard
-            </h3>
-            <div className={cn(
-              "font-serif text-5xl font-bold mb-2",
-              getScoreColor(nobleStandard)
-            )}>
+          <div className="space-y-6">
+            {nobleCategories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <div key={category.id} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-muted">
+                        <Icon className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <span className="font-medium text-foreground">{category.label}</span>
+                        <p className="text-xs text-muted-foreground">{category.question}</p>
+                      </div>
+                    </div>
+                    <span className={cn(
+                      "font-bold text-lg min-w-[3rem] text-right",
+                      getScoreColor(nobleRatings[category.id as keyof NobleRatings])
+                    )}>
+                      {nobleRatings[category.id as keyof NobleRatings].toFixed(1)}
+                    </span>
+                  </div>
+                  <Slider
+                    value={[nobleRatings[category.id as keyof NobleRatings]]}
+                    onValueChange={(value) => setNobleRatings(prev => ({ ...prev, [category.id]: value[0] }))}
+                    max={10}
+                    step={0.5}
+                    className="w-full"
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="bg-primary/5 rounded-lg p-4 border border-primary/20 text-center">
+            <p className="text-sm text-muted-foreground mb-1">Overall Noble Standard</p>
+            <p className={cn("font-serif text-4xl font-bold", getScoreColor(nobleStandard))}>
               {nobleStandard.toFixed(2)}
-            </div>
-            <p className="text-sm text-muted-foreground">
-              This score will be recorded for all 4 participants
             </p>
           </div>
         </div>
       )}
 
       {/* Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between">
         <Button
           variant="outline"
           onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
@@ -600,31 +546,23 @@ export function SessionRecorder() {
         
         {currentStep < 3 ? (
           <Button
-            variant="royal"
             onClick={() => setCurrentStep(prev => prev + 1)}
             disabled={!isStepValid(currentStep)}
           >
-            Next Step
+            Next
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         ) : (
           <Button
-            variant="royal"
             onClick={handleSubmit}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isStepValid(0) || !isStepValid(1) || !isStepValid(2)}
           >
             {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Recording...
-              </span>
+              <>Submitting...</>
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2" />
-                Submit Full Report
+                Submit for Assent
               </>
             )}
           </Button>

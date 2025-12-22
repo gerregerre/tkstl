@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
 import { 
   Home,
   BookOpen, 
@@ -7,11 +6,8 @@ import {
   Trophy,
   Swords,
   GitCompare,
-  History,
-  LogOut
+  History
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   activeTab: string;
@@ -28,9 +24,6 @@ const tabs = [
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const { signOut } = useAuth();
-  const navigate = useNavigate();
-
   const handleLogoClick = () => {
     onTabChange('home');
   };
@@ -78,17 +71,6 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           );
         })}
       </nav>
-
-      {/* Sign Out */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={signOut}
-        className="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-      >
-        <LogOut className="w-4 h-4 mr-2" />
-        Sign Out
-      </Button>
     </header>
   );
 }

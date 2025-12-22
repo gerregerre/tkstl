@@ -10,7 +10,7 @@ interface NewLeaderboardProps {
 
 export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   const { players, loading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard } = usePlayers();
-  const [mode, setMode] = useState<LeaderboardMode>('combined');
+  const [mode, setMode] = useState<LeaderboardMode>('singles');
   
   if (loading) {
     return (
@@ -51,40 +51,28 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
         {/* Mode Toggle */}
         <div className="flex items-center bg-muted rounded-lg p-1 ml-5 sm:ml-0">
           <button
-            onClick={() => setMode('combined')}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
-              mode === 'combined'
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <Trophy className="w-4 h-4" />
-            <span className="hidden sm:inline">All</span>
-          </button>
-          <button
-            onClick={() => setMode('doubles')}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
-              mode === 'doubles'
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <Users className="w-4 h-4" />
-            <span className="hidden sm:inline">Doubles</span>
-          </button>
-          <button
             onClick={() => setMode('singles')}
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all",
+              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
               mode === 'singles'
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
             <User className="w-4 h-4" />
-            <span className="hidden sm:inline">Singles</span>
+            <span>Singles</span>
+          </button>
+          <button
+            onClick={() => setMode('doubles')}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              mode === 'doubles'
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Users className="w-4 h-4" />
+            <span>Doubles</span>
           </button>
         </div>
       </div>

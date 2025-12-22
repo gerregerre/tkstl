@@ -6,9 +6,13 @@ export interface Player {
   name: string;
   total_points: number;
   games_played: number;
+  doubles_points: number;
+  doubles_games: number;
   created_at: string;
   updated_at: string;
 }
+
+export type LeaderboardMode = 'combined' | 'doubles';
 
 export function usePlayers() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -46,16 +50,24 @@ export function usePlayers() {
     };
   }, []);
 
-  const updatePlayerStats = async (playerName: string, pointsToAdd: number) => {
+  const updatePlayerStats = async (playerName: string, pointsToAdd: number, isDoubles: boolean = true) => {
     const player = players.find(p => p.name === playerName);
     if (!player) return;
 
+    const updateData: Record<string, number> = {
+      total_points: player.total_points + pointsToAdd,
+      games_played: player.games_played + 1,
+    };
+
+    // Always update doubles stats for team games
+    if (isDoubles) {
+      updateData.doubles_points = player.doubles_points + pointsToAdd;
+      updateData.doubles_games = player.doubles_games + 1;
+    }
+
     const { error } = await supabase
       .from('players')
-      .update({
-        total_points: player.total_points + pointsToAdd,
-        games_played: player.games_played + 1,
-      })
+      .update(updateData)
       .eq('name', playerName);
 
     if (error) {
@@ -63,15 +75,27 @@ export function usePlayers() {
     }
   };
 
-  const getAveragePoints = (player: Player) => {
+  const getAveragePoints = (player: Player, mode: LeaderboardMode = 'combined') => {
+    if (mode === 'doubles') {
+      if (player.doubles_games === 0) return 0;
+      return player.doubles_points / player.doubles_games;
+    }
     if (player.games_played === 0) return 0;
     return player.total_points / player.games_played;
   };
 
-  const getLeaderboard = () => {
+  const getGamesPlayed = (player: Player, mode: LeaderboardMode = 'combined') => {
+    return mode === 'doubles' ? player.doubles_games : player.games_played;
+  };
+
+  const getTotalPoints = (player: Player, mode: LeaderboardMode = 'combined') => {
+    return mode === 'doubles' ? player.doubles_points : player.total_points;
+  };
+
+  const getLeaderboard = (mode: LeaderboardMode = 'combined') => {
     return [...players].sort((a, b) => {
-      const avgA = getAveragePoints(a);
-      const avgB = getAveragePoints(b);
+      const avgA = getAveragePoints(a, mode);
+      const avgB = getAveragePoints(b, mode);
       return avgB - avgA;
     });
   };
@@ -82,6 +106,8 @@ export function usePlayers() {
     fetchPlayers,
     updatePlayerStats,
     getAveragePoints,
+    getGamesPlayed,
+    getTotalPoints,
     getLeaderboard,
   };
 }

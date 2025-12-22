@@ -1,6 +1,7 @@
-import { usePlayers } from '@/hooks/usePlayers';
+import { useState } from 'react';
+import { usePlayers, LeaderboardMode } from '@/hooks/usePlayers';
 import { cn } from '@/lib/utils';
-import { Trophy, Medal, Award, Star, ChevronRight } from 'lucide-react';
+import { Trophy, Medal, Award, Star, ChevronRight, Users, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface NewLeaderboardProps {
@@ -8,7 +9,8 @@ interface NewLeaderboardProps {
 }
 
 export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
-  const { players, loading, getAveragePoints, getLeaderboard } = usePlayers();
+  const { players, loading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard } = usePlayers();
+  const [mode, setMode] = useState<LeaderboardMode>('combined');
   
   if (loading) {
     return (
@@ -18,7 +20,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     );
   }
 
-  const leaderboard = getLeaderboard();
+  const leaderboard = getLeaderboard(mode);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -33,14 +35,47 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     }
   };
 
+  const qualificationGames = 5;
+
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Page Header */}
-      <div>
-        <h1 className="section-header">Leaderboard</h1>
-        <p className="text-muted-foreground mt-2 ml-5">
-          Ranked by Average Points Per Game
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="section-header">Leaderboard</h1>
+          <p className="text-muted-foreground mt-2 ml-5">
+            Ranked by Average Points Per Game
+          </p>
+        </div>
+
+        {/* Mode Toggle */}
+        <div className="flex items-center bg-muted rounded-lg p-1 ml-5 sm:ml-0">
+          <button
+            onClick={() => setMode('combined')}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              mode === 'combined'
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Users className="w-4 h-4" />
+            <span>All Games</span>
+          </button>
+          <button
+            onClick={() => setMode('doubles')}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+              mode === 'doubles'
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <User className="w-4 h-4" />
+            <Users className="w-4 h-4 -ml-2" />
+            <span>Doubles</span>
+          </button>
+        </div>
       </div>
 
       {/* Desktop Table */}
@@ -71,8 +106,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             </thead>
             <tbody className="divide-y divide-border">
               {leaderboard.map((player, index) => {
-                const avgPoints = getAveragePoints(player);
-                const qualifies = player.games_played >= 5;
+                const avgPoints = getAveragePoints(player, mode);
+                const gamesPlayed = getGamesPlayed(player, mode);
+                const totalPoints = getTotalPoints(player, mode);
+                const qualifies = gamesPlayed >= qualificationGames;
                 
                 return (
                   <tr
@@ -128,10 +165,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       </span>
                     </td>
                     <td className="px-4 py-4 text-center font-medium text-foreground">
-                      {player.games_played}
+                      {gamesPlayed}
                     </td>
                     <td className="px-4 py-4 text-center font-medium text-muted-foreground">
-                      {player.total_points.toFixed(1)}
+                      {totalPoints.toFixed(1)}
                     </td>
                     <td className="px-4 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
@@ -142,7 +179,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           </Badge>
                         ) : (
                           <Badge variant="outline" className="text-muted-foreground">
-                            {5 - player.games_played} games to qualify
+                            {qualificationGames - gamesPlayed} games to qualify
                           </Badge>
                         )}
                         <ChevronRight className="w-4 h-4 text-muted-foreground" />
@@ -159,8 +196,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       {/* Mobile Cards */}
       <div className="md:hidden space-y-3">
         {leaderboard.map((player, index) => {
-          const avgPoints = getAveragePoints(player);
-          const qualifies = player.games_played >= 5;
+          const avgPoints = getAveragePoints(player, mode);
+          const gamesPlayed = getGamesPlayed(player, mode);
+          const totalPoints = getTotalPoints(player, mode);
+          const qualifies = gamesPlayed >= qualificationGames;
           
           return (
             <button
@@ -225,16 +264,16 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
               <div className="grid grid-cols-2 gap-2 text-center text-sm">
                 <div className="bg-muted rounded p-2">
                   <p className="text-xs text-muted-foreground">Games Played</p>
-                  <p className="font-semibold text-foreground">{player.games_played}</p>
+                  <p className="font-semibold text-foreground">{gamesPlayed}</p>
                 </div>
                 <div className="bg-muted rounded p-2">
                   <p className="text-xs text-muted-foreground">Total Points</p>
-                  <p className="font-semibold text-foreground">{player.total_points.toFixed(1)}</p>
+                  <p className="font-semibold text-foreground">{totalPoints.toFixed(1)}</p>
                 </div>
               </div>
               {!qualifies && (
                 <div className="mt-2 text-center text-xs text-muted-foreground">
-                  {5 - player.games_played} more games to qualify for final leaderboard
+                  {qualificationGames - gamesPlayed} more games to qualify for final leaderboard
                 </div>
               )}
             </button>
@@ -254,7 +293,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </div>
         </div>
         <div className="mt-2 pt-2 border-t border-border text-sm text-muted-foreground">
-          <strong>Qualification:</strong> Players need minimum 5 games to qualify for the final leaderboard
+          <strong>Qualification:</strong> Players need minimum {qualificationGames} games to qualify for the final leaderboard
         </div>
       </div>
     </div>

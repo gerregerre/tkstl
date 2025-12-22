@@ -86,6 +86,26 @@ export function HeadToHead() {
     }
   }, [player1, player2]);
 
+  // Subscribe to realtime updates for session_games
+  useEffect(() => {
+    const channel = supabase
+      .channel('head-to-head-games')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'session_games' },
+        () => {
+          if (player1 && player2) {
+            fetchGames();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [player1, player2]);
+
   const fetchGames = async () => {
     if (!player1 || !player2) return;
     setLoadingGames(true);

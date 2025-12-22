@@ -8,8 +8,7 @@ import {
   Swords,
   GitCompare,
   History,
-  LogOut,
-  User
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +22,7 @@ const tabs = [
   { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
   { id: 'history', label: 'History', icon: History },
+  { id: 'recorder', label: 'Record Score', icon: Swords },
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'members', label: 'Members', icon: Users },
 ];

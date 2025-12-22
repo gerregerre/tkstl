@@ -6,12 +6,10 @@ import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
 import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
-import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
-import { SinglesRecorder } from '@/components/dashboard/SinglesRecorder';
+import { ScoreRecorder } from '@/components/dashboard/ScoreRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
-
 export default function Dashboard() {
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
@@ -41,10 +39,8 @@ export default function Dashboard() {
         return <HeadToHead />;
       case 'history':
         return <SessionHistory />;
-      case 'session':
-        return <NewSessionRecorder />;
-      case 'singles':
-        return <SinglesRecorder />;
+      case 'recorder':
+        return <ScoreRecorder />;
       case 'lore':
         return <TheLore />;
       case 'members':

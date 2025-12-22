@@ -40,7 +40,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     }
   };
 
-  const qualificationGames = 5;
+  const qualificationGames = 18;
 
   return (
     <div className="space-y-6 animate-fade-in-up">

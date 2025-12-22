@@ -108,7 +108,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   }
 
   const avgPoints = getAveragePoints(player);
-  const qualifies = player.games_played >= 5;
+  const qualifies = player.games_played >= 18;
 
   // Calculate performance trend data
   let cumulativePoints = 0;
@@ -243,7 +243,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           </Badge>
         ) : (
           <Badge variant="outline" className="text-muted-foreground">
-            {5 - player.games_played} more games to qualify
+            {18 - player.games_played} more games to qualify
           </Badge>
         )}
         {recentGames.length > 0 && (

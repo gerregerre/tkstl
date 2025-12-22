@@ -131,7 +131,7 @@ export default function NewsCarousel() {
           {newsItems.map((item) => (
             <div
               key={item.id}
-              className="w-full flex-shrink-0 p-8 relative"
+              className="w-full flex-shrink-0 px-10 py-4 relative"
             >
               {/* Gradient overlay based on type */}
               <div className={cn(
@@ -139,27 +139,27 @@ export default function NewsCarousel() {
                 typeColors[item.type]
               )} />
               
-              <div className="relative z-10 text-center space-y-4">
+              <div className="relative z-10 text-center space-y-2">
                 {/* Type Badge */}
                 <span className={cn(
-                  "inline-block px-3 py-1 rounded-full text-xs uppercase tracking-wider font-medium",
+                  "inline-block px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-medium",
                   typeBadgeColors[item.type]
                 )}>
                   {item.type}
                 </span>
                 
                 {/* Title */}
-                <h4 className="font-serif text-xl md:text-2xl font-semibold text-foreground">
+                <h4 className="font-serif text-lg font-semibold text-foreground">
                   {item.title}
                 </h4>
                 
                 {/* Description */}
-                <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto leading-relaxed">
+                <p className="text-muted-foreground text-sm max-w-md mx-auto leading-snug line-clamp-2">
                   {item.description}
                 </p>
                 
                 {/* Date */}
-                <p className="text-xs text-muted-foreground/70 uppercase tracking-wider">
+                <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">
                   {item.date_label}
                 </p>
               </div>
@@ -169,7 +169,7 @@ export default function NewsCarousel() {
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-2">
         {newsItems.map((_, index) => (
           <button
             key={index}

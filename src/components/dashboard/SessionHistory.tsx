@@ -3,8 +3,31 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
-import { ChevronDown, ChevronRight, Calendar, Trophy, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { ChevronDown, ChevronRight, Calendar, Trophy, Users, Pencil, Trash2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { toast } from 'sonner';
 
 interface SessionGame {
   id: string;
@@ -29,6 +52,16 @@ export function SessionHistory() {
   const [sessions, setSessions] = useState<GroupedSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [openSessions, setOpenSessions] = useState<Set<string>>(new Set());
+  
+  // Edit state
+  const [editingGame, setEditingGame] = useState<SessionGame | null>(null);
+  const [editScoreA, setEditScoreA] = useState('');
+  const [editScoreB, setEditScoreB] = useState('');
+  const [editWinner, setEditWinner] = useState<'Team A' | 'Team B'>('Team A');
+  const [isGame3, setIsGame3] = useState(false);
+  
+  // Delete state
+  const [deletingGame, setDeletingGame] = useState<SessionGame | null>(null);
 
   useEffect(() => {
     fetchSessions();
@@ -47,7 +80,6 @@ export function SessionHistory() {
       return;
     }
 
-    // Group games by date
     const grouped = (data || []).reduce((acc: Record<string, SessionGame[]>, game) => {
       const dateKey = format(parseISO(game.session_date), 'yyyy-MM-dd');
       if (!acc[dateKey]) {
@@ -57,7 +89,6 @@ export function SessionHistory() {
       return acc;
     }, {});
 
-    // Convert to array and extract unique players per session
     const sessionArray: GroupedSession[] = Object.entries(grouped).map(([date, games]) => {
       const playerSet = new Set<string>();
       games.forEach(game => {
@@ -89,6 +120,155 @@ export function SessionHistory() {
     });
   };
 
+  const openEditDialog = (game: SessionGame) => {
+    setEditingGame(game);
+    const gameIsGame3 = game.game_number === 3;
+    setIsGame3(gameIsGame3);
+    
+    if (gameIsGame3) {
+      setEditWinner(game.winner as 'Team A' | 'Team B' || 'Team A');
+    } else {
+      setEditScoreA(game.team_a_score?.toString() || '0');
+      setEditScoreB(game.team_b_score?.toString() || '0');
+    }
+  };
+
+  const handleEditSave = async () => {
+    if (!editingGame) return;
+
+    let updateData: Partial<SessionGame>;
+    
+    if (isGame3) {
+      updateData = {
+        winner: editWinner,
+        team_a_score: null,
+        team_b_score: null,
+      };
+    } else {
+      const scoreA = parseInt(editScoreA) || 0;
+      const scoreB = parseInt(editScoreB) || 0;
+      updateData = {
+        team_a_score: scoreA,
+        team_b_score: scoreB,
+        winner: scoreA > scoreB ? 'Team A' : scoreB > scoreA ? 'Team B' : null,
+      };
+    }
+
+    const { error } = await supabase
+      .from('session_games')
+      .update(updateData)
+      .eq('id', editingGame.id);
+
+    if (error) {
+      console.error('Error updating game:', error);
+      toast.error('Failed to update game');
+      return;
+    }
+
+    // Recalculate player stats
+    await recalculatePlayerStats();
+    
+    toast.success('Game updated successfully');
+    setEditingGame(null);
+    fetchSessions();
+  };
+
+  const handleDelete = async () => {
+    if (!deletingGame) return;
+
+    const { error } = await supabase
+      .from('session_games')
+      .delete()
+      .eq('id', deletingGame.id);
+
+    if (error) {
+      console.error('Error deleting game:', error);
+      toast.error('Failed to delete game');
+      return;
+    }
+
+    // Recalculate player stats
+    await recalculatePlayerStats();
+    
+    toast.success('Game deleted successfully');
+    setDeletingGame(null);
+    fetchSessions();
+  };
+
+  const recalculatePlayerStats = async () => {
+    // Fetch all games
+    const { data: allGames, error: gamesError } = await supabase
+      .from('session_games')
+      .select('*');
+
+    if (gamesError) {
+      console.error('Error fetching games for recalculation:', gamesError);
+      return;
+    }
+
+    // Fetch all players
+    const { data: players, error: playersError } = await supabase
+      .from('players')
+      .select('*');
+
+    if (playersError) {
+      console.error('Error fetching players:', playersError);
+      return;
+    }
+
+    // Calculate stats for each player
+    const playerStats: Record<string, { games: number; points: number }> = {};
+
+    players?.forEach(player => {
+      playerStats[player.name] = { games: 0, points: 0 };
+    });
+
+    allGames?.forEach(game => {
+      const teamAPlayers = [game.team_a_player1, game.team_a_player2];
+      const teamBPlayers = [game.team_b_player1, game.team_b_player2];
+      const allPlayers = [...teamAPlayers, ...teamBPlayers];
+
+      // Increment games played
+      allPlayers.forEach(playerName => {
+        if (playerStats[playerName]) {
+          playerStats[playerName].games += 1;
+        }
+      });
+
+      // Calculate points
+      if (game.game_number === 3) {
+        // Game 3: Win = 5 points, Loss = 0
+        if (game.winner === 'Team A') {
+          teamAPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += 5; });
+        } else if (game.winner === 'Team B') {
+          teamBPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += 5; });
+        }
+      } else {
+        // Games 1 & 2: Points = own score
+        if (game.team_a_score !== null) {
+          teamAPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += game.team_a_score!; });
+        }
+        if (game.team_b_score !== null) {
+          teamBPlayers.forEach(p => { if (playerStats[p]) playerStats[p].points += game.team_b_score!; });
+        }
+      }
+    });
+
+    // Update all players in database
+    for (const player of players || []) {
+      const stats = playerStats[player.name];
+      if (stats) {
+        await supabase
+          .from('players')
+          .update({
+            games_played: stats.games,
+            total_points: stats.points,
+          })
+          .eq('name', player.name);
+      }
+    }
+  };
+
   const getScoreDisplay = (game: SessionGame) => {
     if (game.team_a_score !== null && game.team_b_score !== null) {
       return `${game.team_a_score} - ${game.team_b_score}`;
@@ -102,7 +282,7 @@ export function SessionHistory() {
   const getWinnerBadge = (game: SessionGame) => {
     if (!game.winner) return null;
     return (
-      <Badge variant="outline" className="ml-2 bg-primary/10 text-primary border-primary/20">
+      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
         <Trophy className="w-3 h-3 mr-1" />
         {game.winner}
       </Badge>
@@ -176,10 +356,36 @@ export function SessionHistory() {
                         className="p-4 rounded-lg bg-muted/30 border border-border/50"
                       >
                         <div className="flex items-center justify-between mb-3">
-                          <span className="font-semibold text-sm">
-                            Game {game.game_number}
-                          </span>
-                          {getWinnerBadge(game)}
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-sm">
+                              Game {game.game_number}
+                            </span>
+                            {getWinnerBadge(game)}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openEditDialog(game);
+                              }}
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-destructive hover:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDeletingGame(game);
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
                         
                         <div className="grid grid-cols-3 gap-4 items-center">
@@ -218,6 +424,103 @@ export function SessionHistory() {
           </Collapsible>
         ))}
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={!!editingGame} onOpenChange={() => setEditingGame(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Game {editingGame?.game_number}</DialogTitle>
+            <DialogDescription>
+              Update the score for this game. Player stats will be recalculated.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {editingGame && (
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-4 text-center text-sm text-muted-foreground">
+                <div>
+                  <div className="font-medium text-foreground">{editingGame.team_a_player1}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_a_player2}</div>
+                </div>
+                <div>
+                  <div className="font-medium text-foreground">{editingGame.team_b_player1}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_b_player2}</div>
+                </div>
+              </div>
+
+              {isGame3 ? (
+                <div className="space-y-3">
+                  <Label>Winner</Label>
+                  <div className="flex items-center justify-center gap-4">
+                    <Button
+                      variant={editWinner === 'Team A' ? 'default' : 'outline'}
+                      onClick={() => setEditWinner('Team A')}
+                    >
+                      Team A Wins
+                    </Button>
+                    <Button
+                      variant={editWinner === 'Team B' ? 'default' : 'outline'}
+                      onClick={() => setEditWinner('Team B')}
+                    >
+                      Team B Wins
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Team A Score</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="9"
+                      value={editScoreA}
+                      onChange={(e) => setEditScoreA(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Team B Score</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="9"
+                      value={editScoreB}
+                      onChange={(e) => setEditScoreB(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingGame(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleEditSave}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deletingGame} onOpenChange={() => setDeletingGame(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Game?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete Game {deletingGame?.game_number} and recalculate all player statistics. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

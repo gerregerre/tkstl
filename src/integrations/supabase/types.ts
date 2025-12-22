@@ -163,7 +163,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_player_stats: {
+        Args: {
+          p_doubles_points: number
+          p_player_name: string
+          p_points: number
+          p_singles_points: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -8,6 +8,7 @@ import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
+import { Information } from '@/components/dashboard/Information';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('home');
@@ -37,6 +38,8 @@ export default function Dashboard() {
         return <NewSessionRecorder />;
       case 'lore':
         return <TheLore />;
+      case 'info':
+        return <Information />;
       case 'members':
         return <MemberProfiles />;
       case 'profile':

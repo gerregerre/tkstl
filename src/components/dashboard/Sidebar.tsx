@@ -4,7 +4,8 @@ import {
   Users, 
   Swords,
   GitCompare,
-  History
+  History,
+  Info
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -17,6 +18,7 @@ const tabs = [
   { id: 'history', label: 'History', icon: History },
   { id: 'recorder', label: 'Record Score', icon: Swords },
   { id: 'lore', label: 'The Lore', icon: BookOpen },
+  { id: 'info', label: 'Information', icon: Info },
   { id: 'members', label: 'Members', icon: Users },
 ];
 

@@ -385,11 +385,22 @@ export function SessionHistory() {
     );
   }
 
+  const handleRecalculateAll = async () => {
+    toast.info('Recalculating all stats...');
+    await recalculatePlayerStats();
+    toast.success('All player and team stats recalculated!');
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Session History</h2>
-        <Badge variant="secondary">{sessions.length} Sessions</Badge>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleRecalculateAll}>
+            Recalculate All Stats
+          </Button>
+          <Badge variant="secondary">{sessions.length} Sessions</Badge>
+        </div>
       </div>
 
       <div className="space-y-3">

@@ -9,7 +9,7 @@ import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
-import { MessageBoard } from '@/components/dashboard/MessageBoard';
+
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('home');
@@ -29,8 +29,6 @@ export default function Dashboard() {
     switch (activeTab) {
       case 'home':
         return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
-      case 'messages':
-        return <MessageBoard />;
       case 'leaderboard':
         return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
       case 'headtohead':

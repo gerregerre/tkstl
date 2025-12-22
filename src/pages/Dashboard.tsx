@@ -6,7 +6,7 @@ import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
 import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
-import { ScoreRecorder } from '@/components/dashboard/ScoreRecorder';
+import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
@@ -40,7 +40,7 @@ export default function Dashboard() {
       case 'history':
         return <SessionHistory />;
       case 'recorder':
-        return <ScoreRecorder />;
+        return <NewSessionRecorder />;
       case 'lore':
         return <TheLore />;
       case 'members':

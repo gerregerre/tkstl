@@ -52,22 +52,19 @@ export function usePlayers() {
     };
   }, []);
 
-  const updatePlayerStats = async (playerName: string, pointsToAdd: number, gameType: 'doubles' | 'singles' = 'doubles') => {
+  const updatePlayerStats = async (playerName: string, pointsToAdd: number) => {
     const player = players.find(p => p.name === playerName);
     if (!player) return;
 
+    // Doubles games update both singles and doubles stats
     const updateData: Record<string, number> = {
       total_points: player.total_points + pointsToAdd,
       games_played: player.games_played + 1,
+      doubles_points: player.doubles_points + pointsToAdd,
+      doubles_games: player.doubles_games + 1,
+      singles_points: player.singles_points + pointsToAdd,
+      singles_games: player.singles_games + 1,
     };
-
-    if (gameType === 'doubles') {
-      updateData.doubles_points = player.doubles_points + pointsToAdd;
-      updateData.doubles_games = player.doubles_games + 1;
-    } else {
-      updateData.singles_points = player.singles_points + pointsToAdd;
-      updateData.singles_games = player.singles_games + 1;
-    }
 
     const { error } = await supabase
       .from('players')

@@ -15,12 +15,12 @@ interface SidebarProps {
 }
 
 const tabs = [
-  { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
   { id: 'history', label: 'History', icon: History },
   { id: 'recorder', label: 'Record Score', icon: Swords },
   { id: 'lore', label: 'The Lore', icon: BookOpen },
   { id: 'info', label: 'Information', icon: Info },
+  { id: 'messages', label: 'Messageboard', icon: MessageSquare },
   { id: 'members', label: 'Members', icon: Users },
 ];
 

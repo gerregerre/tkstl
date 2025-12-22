@@ -1,52 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
 
 interface NewsItem {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  date: string;
+  date_label: string;
   type: 'update' | 'announcement' | 'result' | 'feature';
 }
-
-const newsData: NewsItem[] = [
-  {
-    id: 1,
-    title: "Session History Now Available",
-    description: "Track all your past games with our new session history feature. View scores, teams, and match details.",
-    date: "Dec 2024",
-    type: "feature"
-  },
-  {
-    id: 2,
-    title: "Edit & Delete Games",
-    description: "Made a scoring mistake? You can now edit or delete recorded session games directly from the history.",
-    date: "Dec 2024",
-    type: "update"
-  },
-  {
-    id: 3,
-    title: "New Leaderboard Design",
-    description: "Check out the refreshed leaderboard with improved player cards and real-time stat updates.",
-    date: "Nov 2024",
-    type: "feature"
-  },
-  {
-    id: 4,
-    title: "Head-to-Head Stats",
-    description: "Compare your performance against any player with our new head-to-head statistics feature.",
-    date: "Nov 2024",
-    type: "feature"
-  },
-  {
-    id: 5,
-    title: "Welcome to TKSTL",
-    description: "The official digital home of Tennisklubben Stora Tennisligan. Track scores, compete, and rise through the ranks!",
-    date: "Est. 2017",
-    type: "announcement"
-  }
-];
 
 const typeColors = {
   update: 'from-blue-500/20 to-blue-600/10 border-blue-500/30',
@@ -63,24 +26,65 @@ const typeBadgeColors = {
 };
 
 export default function NewsCarousel() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % newsData.length);
+  useEffect(() => {
+    const fetchNews = async () => {
+      const { data, error } = await supabase
+        .from('news_items')
+        .select('id, title, description, date_label, type')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (!error && data) {
+        setNewsItems(data as NewsItem[]);
+      }
+      setLoading(false);
+    };
+
+    fetchNews();
   }, []);
+
+  const goToNext = useCallback(() => {
+    if (newsItems.length === 0) return;
+    setCurrentIndex((prev) => (prev + 1) % newsItems.length);
+  }, [newsItems.length]);
 
   const goToPrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + newsData.length) % newsData.length);
-  }, []);
+    if (newsItems.length === 0) return;
+    setCurrentIndex((prev) => (prev - 1 + newsItems.length) % newsItems.length);
+  }, [newsItems.length]);
 
   useEffect(() => {
-    if (!isAutoPlaying || isHovered) return;
+    if (!isAutoPlaying || isHovered || newsItems.length === 0) return;
 
     const interval = setInterval(goToNext, 5000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, isHovered, goToNext]);
+  }, [isAutoPlaying, isHovered, goToNext, newsItems.length]);
+
+  if (loading) {
+    return (
+      <div className="w-full max-w-2xl mx-auto">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <h3 className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
+            Latest Updates
+          </h3>
+          <Sparkles className="h-4 w-4 text-primary" />
+        </div>
+        <div className="h-40 bg-card/50 rounded-xl animate-pulse" />
+      </div>
+    );
+  }
+
+  if (newsItems.length === 0) {
+    return null;
+  }
 
   return (
     <div 
@@ -124,7 +128,7 @@ export default function NewsCarousel() {
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {newsData.map((item) => (
+          {newsItems.map((item) => (
             <div
               key={item.id}
               className="w-full flex-shrink-0 p-8 relative"
@@ -156,7 +160,7 @@ export default function NewsCarousel() {
                 
                 {/* Date */}
                 <p className="text-xs text-muted-foreground/70 uppercase tracking-wider">
-                  {item.date}
+                  {item.date_label}
                 </p>
               </div>
             </div>
@@ -166,7 +170,7 @@ export default function NewsCarousel() {
 
       {/* Dots Navigation */}
       <div className="flex justify-center gap-2 mt-4">
-        {newsData.map((_, index) => (
+        {newsItems.map((_, index) => (
           <button
             key={index}
             onClick={() => {

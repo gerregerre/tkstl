@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ScrollText, User, Trophy, Clock, Users } from 'lucide-react';
 import { NewLeaderboard } from './NewLeaderboard';
-import { PendingSessionsList } from './PendingSessionsList';
 import { MessageBoard } from './MessageBoard';
 import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
@@ -281,9 +280,6 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
           </div>
         </div>
       </div>
-
-      {/* Pending Sessions */}
-      <PendingSessionsList />
 
       {/* Messageboard */}
       <MessageBoard />

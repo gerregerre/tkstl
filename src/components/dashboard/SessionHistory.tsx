@@ -65,6 +65,20 @@ export function SessionHistory() {
 
   useEffect(() => {
     fetchSessions();
+
+    // Subscribe to realtime updates for session_games
+    const channel = supabase
+      .channel('session-history-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'session_games' },
+        () => fetchSessions()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchSessions = async () => {

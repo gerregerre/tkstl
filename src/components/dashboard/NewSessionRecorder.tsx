@@ -116,7 +116,7 @@ export function NewSessionRecorder() {
           await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
 
           // Record game in database
-          await supabase.from('session_games').insert({
+          const { error: insertError } = await supabase.from('session_games').insert({
             game_number: gameIndex + 1,
             team_a_player1: teams.teamA[0],
             team_a_player2: teams.teamA[1],
@@ -124,7 +124,11 @@ export function NewSessionRecorder() {
             team_b_player2: teams.teamB[1],
             team_a_score: score.teamAScore,
             team_b_score: score.teamBScore,
+            winner: score.teamAScore > score.teamBScore ? 'A' : 'B',
           });
+          if (insertError) {
+            console.error('Error inserting game:', insertError);
+          }
         } else {
           // Game 3: Win/Loss toggle
           const teamAWon = score.teamAWon === true;
@@ -144,14 +148,19 @@ export function NewSessionRecorder() {
           await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
 
           // Record game in database
-          await supabase.from('session_games').insert({
+          const { error: insertError } = await supabase.from('session_games').insert({
             game_number: 3,
             team_a_player1: teams.teamA[0],
             team_a_player2: teams.teamA[1],
             team_b_player1: teams.teamB[0],
             team_b_player2: teams.teamB[1],
+            team_a_score: null,
+            team_b_score: null,
             winner: teamAWon ? 'A' : 'B',
           });
+          if (insertError) {
+            console.error('Error inserting game 3:', insertError);
+          }
         }
       }
 

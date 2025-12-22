@@ -499,22 +499,6 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </div>
         </>
       )}
-
-      {/* Legend */}
-      <div className="bg-muted rounded p-4 border border-border">
-        <h3 className="font-serif font-semibold text-sm mb-2 uppercase tracking-wide">Scoring System</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
-          <div>
-            <strong>Games 1 & 2:</strong> Winners get 10 pts, Losers get (Score/9)×10 pts
-          </div>
-          <div>
-            <strong>Game 3 (Ladder):</strong> Winners get 10 pts, Losers get 5 pts
-          </div>
-        </div>
-        <div className="mt-2 pt-2 border-t border-border text-sm text-muted-foreground">
-          <strong>Qualification:</strong> {mode === 'singles' ? 'Players' : 'Teams'} need minimum {qualificationGames} games to qualify for the final leaderboard
-        </div>
-      </div>
     </div>
   );
 }

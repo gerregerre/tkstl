@@ -49,7 +49,7 @@ export default function Dashboard() {
           <NewLeaderboard onPlayerSelect={handlePlayerSelect} />
         );
       default:
-        return <DashboardHome />;
+        return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
     }
   };
 

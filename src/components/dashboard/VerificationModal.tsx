@@ -31,15 +31,15 @@ interface VerificationModalProps {
 
 export function VerificationModal({ session, isOpen, onClose }: VerificationModalProps) {
   const { members, castVote } = useMembers();
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [isVoting, setIsVoting] = useState(false);
 
-  if (!user) return null;
+  if (!profile) return null;
 
-  const isRoyal = user.role === 'royalty';
+  const isRoyal = profile.role === 'royalty';
   const scribe = members.find(m => m.id === session.scribeId);
-  const hasVoted = session.votes.some(v => v.memberId === user.id);
-  const userVote = session.votes.find(v => v.memberId === user.id);
+  const hasVoted = session.votes.some(v => v.memberId === profile.member_id);
+  const userVote = session.votes.find(v => v.memberId === profile.member_id);
 
   const handleVote = async (vote: 'confirm' | 'disagree') => {
     setIsVoting(true);
@@ -47,7 +47,7 @@ export function VerificationModal({ session, isOpen, onClose }: VerificationModa
     // Add artificial delay for dramatic effect
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    castVote(session.id, user.id, user.role, vote);
+    castVote(session.id, profile.member_id, profile.role, vote);
     
     if (vote === 'confirm') {
       if (isRoyal) {

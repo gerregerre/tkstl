@@ -49,12 +49,12 @@ const initialDecrees: Decree[] = [
 ];
 
 export function Noteboard() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [decrees, setDecrees] = useState<Decree[]>(initialDecrees);
   const [newMessage, setNewMessage] = useState('');
   const [filter, setFilter] = useState<'all' | 'decrees' | 'pleas'>('all');
 
-  const isRoyal = user?.role === 'royalty';
+  const isRoyal = profile?.role === 'royalty';
 
   const filteredDecrees = decrees.filter(decree => {
     if (filter === 'all') return true;
@@ -67,7 +67,7 @@ export function Noteboard() {
 
     const newDecree: Decree = {
       id: Date.now().toString(),
-      author: user?.name || 'Anonymous',
+      author: profile?.name || 'Anonymous',
       content: newMessage,
       timestamp: new Date(),
       isPeasantPlea: !isRoyal,

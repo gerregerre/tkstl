@@ -116,6 +116,42 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          member_id: string
+          name: string
+          role: string
+          title: string | null
+          updated_at: string
+          years_of_service: number | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id: string
+          member_id: string
+          name: string
+          role: string
+          title?: string | null
+          updated_at?: string
+          years_of_service?: number | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          member_id?: string
+          name?: string
+          role?: string
+          title?: string | null
+          updated_at?: string
+          years_of_service?: number | null
+        }
+        Relationships: []
+      }
       session_games: {
         Row: {
           created_at: string
@@ -193,6 +229,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_role: { Args: { user_id: string }; Returns: string }
       increment_player_stats: {
         Args: {
           p_doubles_points: number

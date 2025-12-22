@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useMembers, PendingSession } from '@/contexts/MembersContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { VerificationModal } from './VerificationModal';
 import { Button } from '@/components/ui/button';
 import { CrownIcon } from '@/components/icons/CrownIcon';
@@ -19,7 +18,6 @@ import { cn } from '@/lib/utils';
 
 export function PendingSessionsList() {
   const { members, pendingSessions } = useMembers();
-  const { user } = useAuth();
   const [selectedSession, setSelectedSession] = useState<PendingSession | null>(null);
 
   const getStatusIcon = (status: PendingSession['status']) => {
@@ -49,10 +47,8 @@ export function PendingSessionsList() {
   const getPlayerName = (id: string) => members.find(m => m.id === id)?.name || id;
   const founders = getRoyalty();
 
-  // Sessions relevant to current user (they're a participant)
-  const relevantSessions = pendingSessions.filter(
-    s => s.players.includes(user?.id || '') || user?.role === 'royalty'
-  );
+  // Show all non-finalized sessions
+  const relevantSessions = pendingSessions.filter(s => s.status !== 'finalized');
 
   if (relevantSessions.length === 0) {
     return null;
@@ -69,8 +65,7 @@ export function PendingSessionsList() {
         {relevantSessions.map(session => {
           const StatusIcon = getStatusIcon(session.status);
           const scribe = members.find(m => m.id === session.scribeId);
-          const userHasVoted = session.votes.some(v => v.memberId === user?.id);
-          const needsUserAction = session.status === 'pending' && !userHasVoted && session.players.includes(user?.id || '');
+          const needsAction = session.status === 'pending';
           
           // Count founder approvals
           const founderApprovals = session.votes.filter(v => 
@@ -80,11 +75,11 @@ export function PendingSessionsList() {
           return (
             <div
               key={session.id}
-              className={cn(
-                "bg-card rounded-lg border-2 p-4 shadow-card transition-all",
-                needsUserAction ? "border-gold animate-pulse-subtle" : "border-border",
-                session.status === 'contested' && "border-destructive/50"
-              )}
+            className={cn(
+              "bg-card rounded-lg border-2 p-4 shadow-card transition-all",
+              needsAction ? "border-gold" : "border-border",
+              session.status === 'contested' && "border-destructive/50"
+            )}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -103,11 +98,11 @@ export function PendingSessionsList() {
                 {session.status === 'pending' && (
                   <Button
                     size="sm"
-                    variant={needsUserAction ? "royal" : "outline"}
+                    variant="outline"
                     onClick={() => setSelectedSession(session)}
                   >
                     <Eye className="w-4 h-4 mr-1" />
-                    {needsUserAction ? 'Review & Vote' : 'View'}
+                    View
                   </Button>
                 )}
               </div>

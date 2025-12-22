@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { CrownIcon } from '@/components/icons/CrownIcon';
@@ -49,12 +48,9 @@ const initialDecrees: Decree[] = [
 ];
 
 export function Noteboard() {
-  const { profile } = useAuth();
   const [decrees, setDecrees] = useState<Decree[]>(initialDecrees);
   const [newMessage, setNewMessage] = useState('');
   const [filter, setFilter] = useState<'all' | 'decrees' | 'pleas'>('all');
-
-  const isRoyal = profile?.role === 'royalty';
 
   const filteredDecrees = decrees.filter(decree => {
     if (filter === 'all') return true;
@@ -67,20 +63,18 @@ export function Noteboard() {
 
     const newDecree: Decree = {
       id: Date.now().toString(),
-      author: profile?.name || 'Anonymous',
+      author: 'Member',
       content: newMessage,
       timestamp: new Date(),
-      isPeasantPlea: !isRoyal,
+      isPeasantPlea: true,
     };
 
     setDecrees([newDecree, ...decrees]);
     setNewMessage('');
 
     toast({
-      title: isRoyal ? "Royal Decree Issued" : "Peasant Plea Submitted",
-      description: isRoyal 
-        ? "Your decree has been proclaimed to all members."
-        : "Your plea has been humbly submitted for consideration.",
+      title: "Message Posted",
+      description: "Your message has been added to the board.",
     });
   };
 
@@ -110,35 +104,22 @@ export function Noteboard() {
       {/* Compose */}
       <div className="bg-card rounded-lg border border-border p-6 shadow-card">
         <div className="flex items-center gap-3 mb-4">
-          {isRoyal ? (
-            <>
-              <CrownIcon className="w-5 h-5 text-gold" />
-              <span className="font-semibold text-gold">Issue a Royal Decree</span>
-            </>
-          ) : (
-            <>
-              <DirtIcon className="w-5 h-5 text-burlap" />
-              <span className="font-semibold text-burlap">Submit a Humble Plea</span>
-            </>
-          )}
+          <DirtIcon className="w-5 h-5 text-burlap" />
+          <span className="font-semibold text-burlap">Post a Message</span>
         </div>
         <Textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder={isRoyal 
-            ? "Proclaim your royal decree..." 
-            : "Humbly submit your plea for consideration..."
-          }
+          placeholder="Write your message..."
           className="min-h-[100px] mb-4"
         />
         <div className="flex justify-end">
           <Button
             onClick={submitMessage}
-            variant={isRoyal ? "royal" : "peasant"}
             disabled={!newMessage.trim()}
           >
             <Send className="w-4 h-4 mr-2" />
-            {isRoyal ? "Issue Decree" : "Submit Plea"}
+            Post Message
           </Button>
         </div>
       </div>

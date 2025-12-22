@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Trophy, Target, Sword, Scale, BookOpen, Calculator, Zap } from 'lucide-react';
+import { Trophy, Target, Sword, Scale, BookOpen, Calculator, Zap, Scroll } from 'lucide-react';
 
 export function Information() {
   return (
@@ -8,26 +8,64 @@ export function Information() {
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-foreground">The Sacred Compendium</h1>
         <p className="text-muted-foreground italic">
-          Because apparently, some of you still don't get it
+          A chronicle of noble traditions and their legendary origins
         </p>
       </div>
+
+      {/* The Legend of PwC - NEW HISTORICAL SECTION */}
+      <Card className="border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-transparent">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-amber-600">
+            <Scroll className="w-5 h-5" />
+            The Legend of the Naming
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="prose prose-sm max-w-none text-muted-foreground space-y-4">
+          <p>
+            In the autumn of 2023, a humble accountant named <strong>Hampus</strong> toiled away in the 
+            great marble halls of <strong>PricewaterhouseCoopers</strong>—one of the Four Horsemen of 
+            the accounting apocalypse. Day after day, he balanced ledgers and reconciled spreadsheets, 
+            his dreams of badminton glory seemingly crushed beneath mountains of quarterly reports.
+          </p>
+          <p>
+            But fate had other plans. When the Council of Nobles convened to establish the Sacred Formats, 
+            tradition demanded that only those of noble blood—or at minimum, management consultants—could 
+            bestow names upon the games. Hampus, a mere <em>Senior Associate</em>, was expected to remain silent.
+          </p>
+          <p>
+            Yet, in an act of unprecedented courage that historians would later compare to David facing Goliath 
+            (if Goliath had a Bloomberg terminal), Hampus rose during the naming ceremony. His voice trembled 
+            as he spoke: <em>"What if... we called it PwC Single?"</em>
+          </p>
+          <p>
+            Gasps echoed through the court. A peasant—an <em>accountant</em>—daring to name a noble sport 
+            after his corporate overlords? Some say the shuttle itself paused mid-flight in disbelief. 
+            The elders deliberated for approximately 0.3 seconds before realizing it was actually quite clever.
+          </p>
+          <p className="italic text-amber-600/80">
+            And thus, against all odds and several HR policies, the format was christened. 
+            Hampus returned to his spreadsheets a legend.
+          </p>
+        </CardContent>
+      </Card>
 
       {/* Session Overview */}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
-            What the Hell is a "Session"
+            What Exactly is a "Session"
           </CardTitle>
         </CardHeader>
         <CardContent className="prose prose-sm max-w-none text-muted-foreground">
           <p>
-            A session is <strong>three games</strong>. That's it. Three. 
-            Not "until someone gets tired." Not "best of whatever." Three games. Done.
+            A session consists of <strong>three games</strong>. Not more, not less. This sacred number 
+            was established in the Treaty of the First Serve (2023), when the founders realized that 
+            four games made people grumpy and two games left everyone unsatisfied.
           </p>
           <p>
-            You show up, you play three different formats, you go home questioning 
-            your life choices. Simple.
+            Each session features three distinct formats, carefully designed to test every aspect 
+            of your badminton prowess—and your ability to handle chaos.
           </p>
         </CardContent>
       </Card>
@@ -36,7 +74,7 @@ export function Information() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold text-foreground flex items-center gap-2">
           <Sword className="w-6 h-6 text-primary" />
-          The Three Formats (Pay Attention)
+          The Three Sacred Formats
         </h2>
 
         <Accordion type="single" collapsible className="space-y-2">
@@ -49,7 +87,7 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">PwC Single</h3>
-                  <p className="text-sm text-muted-foreground">Corporate Chaos</p>
+                  <p className="text-sm text-muted-foreground">The Accountant's Legacy</p>
                 </div>
               </div>
             </AccordionTrigger>
@@ -57,30 +95,32 @@ export function Information() {
               <div className="space-y-3 text-muted-foreground">
                 <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  Court splits into two mini singles courts. Two singles matches happen 
-                  at the same time. Yes, it's chaos. That's the point.
+                  The court splits into two mini singles courts. Two singles matches happen 
+                  simultaneously—a concept inspired by PwC's famous motto: "Why do one thing 
+                  when you can bill for two?"
                 </p>
                 <p>
-                  The second someone wins their singles point, everything stops. Now it's 
-                  doubles. The team that won the singles gets to fight for the full point. 
-                  The losers? They have to claw it back or eat the L.
+                  The moment someone wins their singles point, everything freezes. Now it's 
+                  doubles time. The team that won the singles gets to fight for the full point, 
+                  while the other team tries to claw it back.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Win your singles = your team gets the doubles chance</li>
-                  <li>Lose your singles = pray your partner carries</li>
-                  <li>First to <strong>9 points</strong> wins</li>
+                  <li>Win your singles = your team gets the doubles opportunity</li>
+                  <li>Lose your singles = hope your partner is better than you</li>
+                  <li>First to <strong>9 points</strong> claims victory</li>
                 </ul>
               </div>
               
-              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+              <div className="bg-amber-500/10 rounded-lg p-4 space-y-2 border border-amber-500/20">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  Why "PwC"?
+                  <Scroll className="w-4 h-4 text-amber-600" />
+                  Historical Note
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Named after the accounting firm because someone thought running 
-                  parallel operations simultaneously was "efficient." 
-                  Lawyers assure us this is purely coincidental.
+                  Named by Hampus the Brave, who worked at the actual accounting firm PwC. 
+                  Legend has it he proposed the name during a tax audit, forever linking 
+                  parallel efficiency with parallel badminton. His manager still doesn't 
+                  understand what any of this means.
                 </p>
               </div>
             </AccordionContent>
@@ -97,7 +137,7 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">Shibuya Crossing</h3>
-                  <p className="text-sm text-muted-foreground">Controlled Disaster</p>
+                  <p className="text-sm text-muted-foreground">Organized Chaos</p>
                 </div>
               </div>
             </AccordionTrigger>
@@ -105,18 +145,18 @@ export function Information() {
               <div className="space-y-3 text-muted-foreground">
                 <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  Same idea as PwC, except now the singles matches are <strong>cross-court</strong>. 
-                  You're playing diagonal to someone else who's also playing diagonal. 
-                  Balls cross paths. Collisions happen. Deal with it.
+                  Similar concept to PwC, but now the singles matches are <strong>cross-court</strong>. 
+                  You're playing diagonally while someone else is also playing diagonally. 
+                  Shuttles cross paths. Confusion ensues. It's beautiful.
                 </p>
                 <p>
-                  One twist: you need <strong>two points</strong> for one team point. 
-                  So even if you clutch your singles, you still gotta win the doubles.
+                  Key difference: you need <strong>two points</strong> to earn one team point. 
+                  Win your singles, then you still need to win the doubles to secure the point.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Cross-court singles (yes, it's as messy as it sounds)</li>
+                  <li>Cross-court singles (paths may intersect)</li>
                   <li>First singles winner triggers doubles phase</li>
-                  <li>Two points = one team point</li>
+                  <li>Two sub-points = one team point</li>
                   <li>First to <strong>9 points</strong> wins</li>
                 </ul>
               </div>
@@ -124,11 +164,13 @@ export function Information() {
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Why "Shibuya Crossing"?
+                  Origin Story
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Named after Tokyo's busiest intersection where thousands of people 
-                  cross simultaneously without dying. Same energy here. Mostly.
+                  Named after Tokyo's legendary Shibuya Crossing, where up to 3,000 people 
+                  cross simultaneously without collision. The founders visited once, watched 
+                  in awe, and thought: "What if we made this... a badminton thing?" 
+                  The answer was yes.
                 </p>
               </div>
             </AccordionContent>
@@ -143,7 +185,7 @@ export function Information() {
                 </div>
                 <div className="text-left">
                   <h3 className="font-semibold text-foreground">Tug of War</h3>
-                  <p className="text-sm text-muted-foreground">Zero-Sum Brutality</p>
+                  <p className="text-sm text-muted-foreground">Zero-Sum Drama</p>
                 </div>
               </div>
             </AccordionTrigger>
@@ -151,16 +193,16 @@ export function Information() {
               <div className="space-y-3 text-muted-foreground">
                 <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
-                  Finally, something simple. Pure doubles. One ball. No weird phases.
+                  Finally, something straightforward. Pure doubles. One shuttle. No phases or transitions.
                 </p>
                 <p>
-                  Both teams start at <strong>5-5</strong>. You win a point, you go to 6, 
-                  they drop to 4. You lose a point, opposite happens. Every point you 
-                  gain is literally stolen from them.
+                  Both teams start at <strong>5-5</strong>. Win a point, you move up one, 
+                  they move down one. Every point you gain is literally taken from your opponents. 
+                  It's a tug of war. Hence the name.
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Straight doubles (no singles nonsense)</li>
-                  <li>Start: 5-5</li>
+                  <li>Traditional doubles format</li>
+                  <li>Starting score: 5-5</li>
                   <li>Your gain = their loss</li>
                   <li>First to <strong>10</strong> wins</li>
                 </ul>
@@ -169,11 +211,12 @@ export function Information() {
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                 <h4 className="font-medium text-foreground flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Why "Tug of War"?
+                  The Philosophy
                 </h4>
                 <p className="text-sm text-muted-foreground italic">
-                  Because that's literally what it is. You pull points away from them. 
-                  They pull points away from you. Someone hits 10. Done.
+                  Inspired by ancient rope-pulling contests dating back to 2500 BC, this format 
+                  channels that primal energy into badminton. Historians believe the Egyptians 
+                  would have approved, had they invented rackets instead of pyramids.
                 </p>
               </div>
             </AccordionContent>
@@ -181,17 +224,17 @@ export function Information() {
         </Accordion>
       </div>
 
-      {/* Points Breakdown - NEW SECTION */}
-      <Card className="border-destructive/30 bg-destructive/5">
+      {/* Points Breakdown */}
+      <Card className="border-primary/30 bg-primary/5">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-destructive">
-            <Zap className="w-5 h-5" />
-            How Points Actually Work (Read This)
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="w-5 h-5 text-primary" />
+            How Points Actually Work
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-muted-foreground font-medium">
-            Everyone gets points. Winners. Losers. Everyone. Here's the breakdown:
+            Here's the important part: everyone gets points. Winners get more, but losers don't walk away empty-handed (usually).
           </p>
 
           <div className="space-y-4">
@@ -201,19 +244,19 @@ export function Information() {
                 <div className="flex items-start gap-3">
                   <div className="w-20 flex-shrink-0 font-semibold text-green-500">WINNER:</div>
                   <div className="text-muted-foreground">
-                    Gets points equal to their final score. If you win 9-7, you get <strong>9 points</strong>.
+                    Receives points equal to their final score. Win 9-7? That's <strong>9 points</strong> for you.
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-20 flex-shrink-0 font-semibold text-red-500">LOSER:</div>
                   <div className="text-muted-foreground">
-                    Gets points equal to their final score too. Lost 7-9? You still get <strong>7 points</strong>. 
-                    Not nothing. Just... less.
+                    Also receives points equal to their score. Lose 7-9? You still take home <strong>7 points</strong>. 
+                    Not a win, but not nothing either.
                   </div>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground/70 italic">
-                So yeah, even if you choke, you walk away with something. You're welcome.
+                This system rewards competitive play—close losses are less painful than blowouts.
               </p>
             </div>
 
@@ -223,19 +266,19 @@ export function Information() {
                 <div className="flex items-start gap-3">
                   <div className="w-20 flex-shrink-0 font-semibold text-green-500">WINNER:</div>
                   <div className="text-muted-foreground">
-                    Gets <strong>10 points</strong> (the winning score).
+                    Receives <strong>10 points</strong> (the winning score).
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-20 flex-shrink-0 font-semibold text-red-500">LOSER:</div>
                   <div className="text-muted-foreground">
-                    Gets <strong>0 points</strong>. Zero-sum means zero-sum. You got dragged to 0, 
-                    you get nothing. It's brutal. That's the game.
+                    Receives <strong>0 points</strong>. Zero-sum means zero-sum—when the winner reaches 10, 
+                    the loser is at 0. It's dramatic. It's intentional.
                   </div>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground/70 italic">
-                This is why Tug of War matters. It's all or nothing.
+                This is why Game 3 matters so much. High risk, high reward.
               </p>
             </div>
           </div>
@@ -243,10 +286,10 @@ export function Information() {
           <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
             <h4 className="font-bold text-foreground mb-2">Example Session</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>Game 1 (PwC): Your team wins 9-5 → You get <strong>9 pts</strong></p>
-              <p>Game 2 (Shibuya): Your team loses 6-9 → You get <strong>6 pts</strong></p>
-              <p>Game 3 (Tug): Your team wins 10-0 → You get <strong>10 pts</strong></p>
-              <p className="pt-2 font-medium text-foreground">Total: 25 points from 3 games = 8.33 avg</p>
+              <p>Game 1 (PwC): Your team wins 9-5 → You receive <strong>9 pts</strong></p>
+              <p>Game 2 (Shibuya): Your team loses 6-9 → You receive <strong>6 pts</strong></p>
+              <p>Game 3 (Tug): Your team wins 10-0 → You receive <strong>10 pts</strong></p>
+              <p className="pt-2 font-medium text-foreground">Total: 25 points from 3 games = 8.33 average</p>
             </div>
           </div>
         </CardContent>
@@ -263,11 +306,11 @@ export function Information() {
         <CardContent className="space-y-6">
           <div className="space-y-3 text-muted-foreground">
             <p>
-              Your ranking is your <strong>average points per game</strong>. Not total points. Average. 
-              This stops people from gaming the system by just playing more.
+              Your ranking is based on <strong>average points per game</strong>—not total points. 
+              This prevents anyone from climbing the ranks simply by playing more often.
             </p>
             <p className="font-medium">
-              Formula: Total Points ÷ Games Played = Your Rank
+              Formula: Total Points ÷ Games Played = Your Ranking Score
             </p>
           </div>
 
@@ -275,10 +318,10 @@ export function Information() {
             <div className="bg-muted/50 rounded-lg p-4 space-y-3">
               <h4 className="font-medium text-foreground">Why Averages?</h4>
               <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                <li>Can't climb by just showing up more</li>
-                <li>One bad session won't destroy you</li>
-                <li>Consistency actually matters</li>
-                <li>Quality over quantity</li>
+                <li>Quantity doesn't trump quality</li>
+                <li>A bad session won't ruin everything</li>
+                <li>Rewards consistency over time</li>
+                <li>Everyone's on equal footing</li>
               </ul>
             </div>
 
@@ -289,7 +332,7 @@ export function Information() {
                 <p><strong>Doubles:</strong> Just your doubles performance</p>
                 <p><strong>Singles:</strong> Just your singles performance</p>
                 <p className="italic text-xs mt-2">
-                  Use these to see exactly who's carrying and who's getting carried.
+                  Use these to analyze specific strengths and weaknesses.
                 </p>
               </div>
             </div>
@@ -298,25 +341,24 @@ export function Information() {
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 space-y-2">
             <h4 className="font-medium text-foreground flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" />
-              Bottom Line
+              Summary
             </h4>
             <p className="text-sm text-muted-foreground">
-              Win big, get more points. Lose close, still get decent points. 
-              Get steamrolled in Tug of War, get nothing. 
-              Play more games, your average evens out. Simple.
+              Win decisively, earn more points. Lose closely, still earn respectable points. 
+              Get swept in Tug of War, earn nothing. Over time, your average tells the true story.
             </p>
           </div>
         </CardContent>
       </Card>
 
       {/* Closing */}
-      <Card className="bg-gradient-to-br from-primary/5 to-transparent border-primary/20">
+      <Card className="bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/20">
         <CardContent className="py-6 text-center space-y-2">
           <p className="text-muted-foreground italic">
-            "Stop asking questions the rulebook already answers."
+            "In the end, it matters not whether you are noble or peasant—only whether you can clear to the back court."
           </p>
           <p className="text-xs text-muted-foreground">
-            — Management
+            — Hampus, probably (2023)
           </p>
         </CardContent>
       </Card>

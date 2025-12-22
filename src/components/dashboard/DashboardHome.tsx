@@ -6,6 +6,10 @@ import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
 import { supabase } from '@/integrations/supabase/client';
 import NewsCarousel from '@/components/home/NewsCarousel';
+
+interface DashboardHomeProps {
+  onPlayerSelect?: (playerName: string) => void;
+}
 interface MatchResult {
   id: string;
   match_type: string;
@@ -56,7 +60,7 @@ function getWeekRange() {
   return `${formatDate(monday)} - ${formatDate(sunday)}`;
 }
 
-export function DashboardHome() {
+export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
   const [recentResults, setRecentResults] = useState<MatchResult[]>([]);
   const [loadingResults, setLoadingResults] = useState(true);
@@ -165,7 +169,7 @@ export function DashboardHome() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Leaderboard - Takes 2 columns */}
         <div className="lg:col-span-2">
-          <NewLeaderboard />
+          <NewLeaderboard onPlayerSelect={onPlayerSelect} />
         </div>
 
         {/* Right Panel - Recent Results & Next Session */}

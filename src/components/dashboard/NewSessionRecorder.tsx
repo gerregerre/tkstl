@@ -50,7 +50,7 @@ function calculatePointsGame3(isWinner: boolean): number {
 }
 
 export function NewSessionRecorder() {
-  const { players, loading, updatePlayerStats } = usePlayers();
+  const { players, loading, updateSinglesStats, updateTeamStats } = usePlayers();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState<'select' | 'games' | 'confirm'>('select');
   const [gameScores, setGameScores] = useState<GameScore[]>([
@@ -103,13 +103,17 @@ export function NewSessionRecorder() {
           const teamAPoints = calculatePointsGame12(score.teamAScore, teamAWon);
           const teamBPoints = calculatePointsGame12(score.teamBScore, !teamAWon);
 
-          // Update all players
+          // Update singles stats for all players
           for (const player of teams.teamA) {
-            await updatePlayerStats(player, teamAPoints);
+            await updateSinglesStats(player, teamAPoints);
           }
           for (const player of teams.teamB) {
-            await updatePlayerStats(player, teamBPoints);
+            await updateSinglesStats(player, teamBPoints);
           }
+
+          // Update team stats for doubles
+          await updateTeamStats(teams.teamA[0], teams.teamA[1], teamAPoints);
+          await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
 
           // Record game in database
           await supabase.from('session_games').insert({
@@ -127,12 +131,17 @@ export function NewSessionRecorder() {
           const teamAPoints = calculatePointsGame3(teamAWon);
           const teamBPoints = calculatePointsGame3(!teamAWon);
 
+          // Update singles stats for all players
           for (const player of teams.teamA) {
-            await updatePlayerStats(player, teamAPoints);
+            await updateSinglesStats(player, teamAPoints);
           }
           for (const player of teams.teamB) {
-            await updatePlayerStats(player, teamBPoints);
+            await updateSinglesStats(player, teamBPoints);
           }
+
+          // Update team stats for doubles
+          await updateTeamStats(teams.teamA[0], teams.teamA[1], teamAPoints);
+          await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
 
           // Record game in database
           await supabase.from('session_games').insert({

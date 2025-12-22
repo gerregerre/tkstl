@@ -52,17 +52,28 @@ export function usePlayers() {
     };
   }, []);
 
-  const updatePlayerStats = async (playerName: string, pointsToAdd: number) => {
-    // Use atomic increment function to avoid stale data issues
-    const { error } = await supabase.rpc('increment_player_stats', {
+  const updateSinglesStats = async (playerName: string, pointsToAdd: number) => {
+    // Use atomic increment function for singles stats only
+    const { error } = await supabase.rpc('increment_singles_stats', {
       p_player_name: playerName,
       p_points: pointsToAdd,
-      p_doubles_points: pointsToAdd,
-      p_singles_points: pointsToAdd,
     });
 
     if (error) {
-      console.error('Error updating player stats:', error);
+      console.error('Error updating singles stats:', error);
+    }
+  };
+
+  const updateTeamStats = async (player1: string, player2: string, pointsToAdd: number) => {
+    // Use atomic increment function for team stats
+    const { error } = await supabase.rpc('increment_team_stats', {
+      p_player1: player1,
+      p_player2: player2,
+      p_points: pointsToAdd,
+    });
+
+    if (error) {
+      console.error('Error updating team stats:', error);
     }
   };
 
@@ -103,7 +114,8 @@ export function usePlayers() {
     players,
     loading,
     fetchPlayers,
-    updatePlayerStats,
+    updateSinglesStats,
+    updateTeamStats,
     getAveragePoints,
     getGamesPlayed,
     getTotalPoints,

@@ -1,9 +1,7 @@
 import { cn } from '@/lib/utils';
 import { 
-  Home,
   BookOpen, 
   Users, 
-  Trophy,
   Swords,
   GitCompare,
   History
@@ -15,7 +13,6 @@ interface SidebarProps {
 }
 
 const tabs = [
-  { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
   { id: 'headtohead', label: 'Head-to-Head', icon: GitCompare },
   { id: 'history', label: 'History', icon: History },
   { id: 'recorder', label: 'Record Score', icon: Swords },

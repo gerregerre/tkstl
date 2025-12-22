@@ -80,6 +80,8 @@ export type Database = {
       players: {
         Row: {
           created_at: string
+          doubles_games: number
+          doubles_points: number
           games_played: number
           id: string
           name: string
@@ -88,6 +90,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          doubles_games?: number
+          doubles_points?: number
           games_played?: number
           id?: string
           name: string
@@ -96,6 +100,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          doubles_games?: number
+          doubles_points?: number
           games_played?: number
           id?: string
           name?: string

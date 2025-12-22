@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CrownIcon } from '@/components/icons/CrownIcon';
 import { UserMenu } from '@/components/dashboard/UserMenu';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { LogIn } from 'lucide-react';
 

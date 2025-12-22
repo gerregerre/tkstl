@@ -88,39 +88,39 @@ export default function NewsCarousel() {
 
   return (
     <div 
-      className="relative w-full max-w-2xl mx-auto"
+      className="relative w-full max-w-xl mx-auto"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
-      <div className="flex items-center justify-center gap-2 mb-4">
-        <Sparkles className="h-4 w-4 text-primary" />
-        <h3 className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
-          Latest Updates
+      <div className="flex items-center justify-center gap-1.5 mb-2">
+        <Sparkles className="h-3 w-3 text-primary" />
+        <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+          Updates
         </h3>
-        <Sparkles className="h-4 w-4 text-primary" />
+        <Sparkles className="h-3 w-3 text-primary" />
       </div>
 
       {/* Carousel Container */}
-      <div className="relative overflow-hidden rounded-xl">
+      <div className="relative overflow-hidden rounded-lg">
         {/* Glassmorphism Background */}
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-xl border border-border/50 rounded-xl" />
+        <div className="absolute inset-0 bg-background/40 backdrop-blur-xl border border-border/50 rounded-lg" />
         
         {/* Navigation Arrows */}
         <button
           onClick={goToPrev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200 hover:scale-110"
+          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 p-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200"
           aria-label="Previous news"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-3 w-3" />
         </button>
         
         <button
           onClick={goToNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200 hover:scale-110"
+          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 p-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200"
           aria-label="Next news"
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-3 w-3" />
         </button>
 
         {/* Slides Container */}
@@ -131,36 +131,23 @@ export default function NewsCarousel() {
           {newsItems.map((item) => (
             <div
               key={item.id}
-              className="w-full flex-shrink-0 px-10 py-4 relative"
+              className="w-full flex-shrink-0 px-8 py-3 relative"
             >
               {/* Gradient overlay based on type */}
               <div className={cn(
-                "absolute inset-0 bg-gradient-to-br opacity-50 rounded-xl",
+                "absolute inset-0 bg-gradient-to-br opacity-50 rounded-lg",
                 typeColors[item.type]
               )} />
               
-              <div className="relative z-10 text-center space-y-2">
-                {/* Type Badge */}
-                <span className={cn(
-                  "inline-block px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-medium",
-                  typeBadgeColors[item.type]
-                )}>
-                  {item.type}
-                </span>
-                
+              <div className="relative z-10 text-center space-y-1">
                 {/* Title */}
-                <h4 className="font-serif text-lg font-semibold text-foreground">
+                <h4 className="font-serif text-sm font-semibold text-foreground">
                   {item.title}
                 </h4>
                 
                 {/* Description */}
-                <p className="text-muted-foreground text-sm max-w-md mx-auto leading-snug line-clamp-2">
+                <p className="text-muted-foreground text-xs max-w-sm mx-auto leading-snug line-clamp-2">
                   {item.description}
-                </p>
-                
-                {/* Date */}
-                <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">
-                  {item.date_label}
                 </p>
               </div>
             </div>
@@ -169,7 +156,7 @@ export default function NewsCarousel() {
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex justify-center gap-2 mt-2">
+      <div className="flex justify-center gap-1.5 mt-1.5">
         {newsItems.map((_, index) => (
           <button
             key={index}
@@ -178,23 +165,15 @@ export default function NewsCarousel() {
               setIsAutoPlaying(false);
             }}
             className={cn(
-              "w-2 h-2 rounded-full transition-all duration-300",
+              "w-1.5 h-1.5 rounded-full transition-all duration-300",
               index === currentIndex 
-                ? "bg-primary w-6" 
+                ? "bg-primary w-4" 
                 : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
-
-      {/* Auto-play indicator */}
-      <button
-        onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-        className="mt-3 mx-auto block text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
-      >
-        {isAutoPlaying ? '⏸ Auto-playing' : '▶ Paused'}
-      </button>
     </div>
   );
 }

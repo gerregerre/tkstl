@@ -316,13 +316,18 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {doublesLeaderboard.length === 0 ? (
+                  {doublesLeaderboard.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
-                        No team data yet. Record a session to see team rankings.
+                      <td colSpan={6} className="px-4 py-12 text-center">
+                        <div className="flex flex-col items-center gap-2">
+                          <Users className="w-12 h-12 text-muted-foreground/50" />
+                          <p className="text-muted-foreground">No doubles matches recorded yet</p>
+                          <p className="text-sm text-muted-foreground/70">Record a session to see team rankings</p>
+                        </div>
                       </td>
                     </tr>
-                  ) : (
+                  )}
+                  {doublesLeaderboard.length > 0 && (
                     doublesLeaderboard.map((team, index) => {
                       const avgPoints = getTeamAvgPoints(team);
                       const qualifies = team.games_played >= qualificationGames;
@@ -410,11 +415,16 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
 
           {/* Doubles Mobile Cards */}
           <div className="md:hidden space-y-3">
-            {doublesLeaderboard.length === 0 ? (
-              <div className="bg-card rounded border border-border p-8 text-center text-muted-foreground">
-                No team data yet. Record a session to see team rankings.
+            {doublesLeaderboard.length === 0 && (
+              <div className="bg-card rounded border border-border p-8 text-center">
+                <div className="flex flex-col items-center gap-2">
+                  <Users className="w-12 h-12 text-muted-foreground/50" />
+                  <p className="text-muted-foreground">No doubles matches recorded yet</p>
+                  <p className="text-sm text-muted-foreground/70">Record a session to see team rankings</p>
+                </div>
               </div>
-            ) : (
+            )}
+            {doublesLeaderboard.length > 0 && (
               doublesLeaderboard.map((team, index) => {
                 const avgPoints = getTeamAvgPoints(team);
                 const qualifies = team.games_played >= qualificationGames;

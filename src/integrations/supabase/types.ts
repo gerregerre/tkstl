@@ -324,6 +324,7 @@ export type Database = {
         Args: { p_player1: string; p_player2: string; p_points: number }
         Returns: undefined
       }
+      recalculate_player_stats: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

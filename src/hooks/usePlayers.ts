@@ -110,6 +110,16 @@ export function usePlayers() {
     });
   };
 
+  const recalculateStats = async () => {
+    const { error } = await supabase.rpc('recalculate_player_stats');
+    if (error) {
+      console.error('Error recalculating stats:', error);
+      throw error;
+    }
+    // Refresh the players data after recalculation
+    await fetchPlayers();
+  };
+
   return {
     players,
     loading,
@@ -120,5 +130,6 @@ export function usePlayers() {
     getGamesPlayed,
     getTotalPoints,
     getLeaderboard,
+    recalculateStats,
   };
 }

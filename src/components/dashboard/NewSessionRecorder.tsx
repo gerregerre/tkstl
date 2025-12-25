@@ -208,10 +208,10 @@ export function NewSessionRecorder() {
       </div>
 
       {/* Step 1: Player Selection */}
-      <div className="bg-card rounded border border-border p-6 shadow-card">
+      <div className="bg-card rounded-lg border border-border p-6 shadow-card">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-display text-xl font-semibold text-foreground uppercase tracking-wide">
+            <h3 className="font-serif text-xl font-semibold text-foreground">
               Select 4 Players
             </h3>
             <p className="text-sm text-muted-foreground">
@@ -219,7 +219,7 @@ export function NewSessionRecorder() {
             </p>
           </div>
           <div className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium",
+            "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium",
             selectedPlayers.length === 4 
               ? "bg-secondary/20 text-secondary" 
               : "bg-muted text-muted-foreground"
@@ -230,9 +230,9 @@ export function NewSessionRecorder() {
         </div>
 
         {selectedPlayers.length < 4 && (
-          <div className="flex items-center gap-2 p-3 bg-primary/10 rounded mb-4 text-sm border border-primary/20">
-            <AlertCircle className="w-4 h-4 text-primary" />
-            <span className="text-foreground">
+          <div className="flex items-center gap-2 p-3 bg-accent/10 rounded-lg mb-4 text-sm">
+            <AlertCircle className="w-4 h-4 text-accent" />
+            <span className="text-accent-foreground">
               {4 - selectedPlayers.length} more player{4 - selectedPlayers.length !== 1 ? 's' : ''} needed
             </span>
           </div>
@@ -248,14 +248,14 @@ export function NewSessionRecorder() {
                 key={player.id}
                 onClick={() => togglePlayer(player.name)}
                 className={cn(
-                  "flex items-center gap-3 p-4 rounded border-2 transition-all text-left",
+                  "flex items-center gap-3 p-4 rounded-lg border-2 transition-all text-left",
                   isSelected
                     ? "border-primary bg-primary/10"
-                    : "border-border hover:border-primary/30 bg-card"
+                    : "border-border hover:border-muted-foreground/30 bg-background"
                 )}
               >
                 <div className={cn(
-                  "w-10 h-10 rounded flex items-center justify-center font-display font-bold",
+                  "w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold",
                   isSelected
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground"
@@ -281,7 +281,7 @@ export function NewSessionRecorder() {
       {selectedPlayers.length === 4 && (
         <div className="space-y-4">
           <div>
-            <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-wide">
+            <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
               Round Robin Games
             </h3>
             <p className="text-sm text-muted-foreground">
@@ -290,13 +290,13 @@ export function NewSessionRecorder() {
           </div>
 
           {/* Game 1 */}
-          <div className="bg-card rounded border-2 border-primary/30 p-6 shadow-card">
+          <div className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center font-bold text-primary">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
                 1
               </div>
               <div>
-                <h4 className="font-display text-lg font-bold text-foreground uppercase">Game 1</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">Game 1</h4>
                 <p className="text-sm text-muted-foreground">Score 0-9 • Winners: 10pts • Losers: (Score/9)×10 pts</p>
               </div>
             </div>
@@ -310,7 +310,7 @@ export function NewSessionRecorder() {
                   {roundRobinTeams[0]?.teamA.join(' & ')}
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Score (0-9)</Label>
+                  <Label className="text-xs text-muted-foreground">Score (0-9)</Label>
                   <Input
                     type="number"
                     min="0"
@@ -330,7 +330,7 @@ export function NewSessionRecorder() {
                   {roundRobinTeams[0]?.teamB.join(' & ')}
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Score (0-9)</Label>
+                  <Label className="text-xs text-muted-foreground">Score (0-9)</Label>
                   <Input
                     type="number"
                     min="0"
@@ -345,13 +345,13 @@ export function NewSessionRecorder() {
           </div>
 
           {/* Game 2 */}
-          <div className="bg-card rounded border-2 border-secondary/30 p-6 shadow-card">
+          <div className="bg-card rounded-lg border-2 border-secondary/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded bg-secondary/20 flex items-center justify-center font-bold text-secondary">
+              <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center font-bold text-secondary">
                 2
               </div>
               <div>
-                <h4 className="font-display text-lg font-bold text-foreground uppercase">Game 2</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">Game 2</h4>
                 <p className="text-sm text-muted-foreground">Score 0-9 • Winners: 10pts • Losers: (Score/9)×10 pts</p>
               </div>
             </div>
@@ -365,7 +365,7 @@ export function NewSessionRecorder() {
                   {roundRobinTeams[1]?.teamA.join(' & ')}
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Score (0-9)</Label>
+                  <Label className="text-xs text-muted-foreground">Score (0-9)</Label>
                   <Input
                     type="number"
                     min="0"
@@ -385,7 +385,7 @@ export function NewSessionRecorder() {
                   {roundRobinTeams[1]?.teamB.join(' & ')}
                 </div>
                 <div>
-                  <Label className="text-xs text-muted-foreground uppercase tracking-wide">Score (0-9)</Label>
+                  <Label className="text-xs text-muted-foreground">Score (0-9)</Label>
                   <Input
                     type="number"
                     min="0"
@@ -400,13 +400,13 @@ export function NewSessionRecorder() {
           </div>
 
           {/* Game 3 */}
-          <div className="bg-card rounded border-2 border-accent/30 p-6 shadow-card">
+          <div className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded bg-accent/20 flex items-center justify-center font-bold text-accent">
+              <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center font-bold text-gold">
                 3
               </div>
               <div>
-                <h4 className="font-display text-lg font-bold text-foreground uppercase">Game 3 (Ladder)</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">Game 3 (Ladder)</h4>
                 <p className="text-sm text-muted-foreground">Win/Loss only • Winners: 10pts • Losers: 5pts</p>
               </div>
             </div>
@@ -432,12 +432,12 @@ export function NewSessionRecorder() {
             </div>
 
             <div className="mt-4 pt-4 border-t border-border">
-              <Label className="text-sm font-medium mb-3 block uppercase tracking-wide">Who Won?</Label>
+              <Label className="text-sm font-medium mb-3 block">Who Won?</Label>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => updateGameScore(2, 'teamAWon', true)}
                   className={cn(
-                    "p-4 rounded border-2 transition-all flex items-center justify-center gap-2",
+                    "p-4 rounded-lg border-2 transition-all flex items-center justify-center gap-2",
                     gameScores[2].teamAWon === true
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border hover:border-primary/50"
@@ -449,7 +449,7 @@ export function NewSessionRecorder() {
                 <button
                   onClick={() => updateGameScore(2, 'teamAWon', false)}
                   className={cn(
-                    "p-4 rounded border-2 transition-all flex items-center justify-center gap-2",
+                    "p-4 rounded-lg border-2 transition-all flex items-center justify-center gap-2",
                     gameScores[2].teamAWon === false
                       ? "border-secondary bg-secondary/10 text-secondary"
                       : "border-border hover:border-secondary/50"
@@ -461,28 +461,24 @@ export function NewSessionRecorder() {
               </div>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Submit Button */}
-      {selectedPlayers.length === 4 && (
-        <div className="flex justify-end">
+          {/* Submit Button */}
           <Button
             onClick={handleSubmit}
-            disabled={!canSubmit || isSubmitting}
-            variant="atp"
+            variant="default"
             size="lg"
-            className="gap-2"
+            className="w-full"
+            disabled={!canSubmit || isSubmitting}
           >
             {isSubmitting ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
                 Recording...
               </>
             ) : (
               <>
-                <Send className="w-4 h-4" />
-                Record Session
+                <Send className="w-4 h-4 mr-2" />
+                Submit Session Results
               </>
             )}
           </Button>

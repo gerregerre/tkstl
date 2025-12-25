@@ -59,16 +59,16 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="pt-16 min-h-screen">
-        <div className="p-8 max-w-7xl mx-auto">
+        <div className={activeTab === 'home' ? '' : 'p-8 max-w-7xl mx-auto'}>
           {renderContent()}
         </div>
 
-        <footer className="border-t border-border py-8 mt-16 px-8 bg-secondary">
-          <div className="max-w-7xl mx-auto text-center">
-            <p className="font-serif text-lg text-secondary-foreground italic mb-2">
+        <footer className="border-t border-border py-12 mt-16 bg-forest">
+          <div className="max-w-7xl mx-auto text-center px-8">
+            <p className="font-serif text-2xl text-cream italic mb-3">
               TKSTL
             </p>
-            <p className="text-sm text-secondary-foreground/60">
+            <p className="text-sm text-cream/70">
               Where Tradition Meets Excellence · Est. 2017
             </p>
           </div>

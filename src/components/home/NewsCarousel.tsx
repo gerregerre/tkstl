@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -10,20 +10,6 @@ interface NewsItem {
   date_label: string;
   type: 'update' | 'announcement' | 'result' | 'feature';
 }
-
-const typeColors = {
-  update: 'from-blue-500/20 to-blue-600/10 border-blue-500/30',
-  announcement: 'from-amber-500/20 to-amber-600/10 border-amber-500/30',
-  result: 'from-green-500/20 to-green-600/10 border-green-500/30',
-  feature: 'from-purple-500/20 to-purple-600/10 border-purple-500/30'
-};
-
-const typeBadgeColors = {
-  update: 'bg-blue-500/20 text-blue-300',
-  announcement: 'bg-amber-500/20 text-amber-300',
-  result: 'bg-green-500/20 text-green-300',
-  feature: 'bg-purple-500/20 text-purple-300'
-};
 
 export default function NewsCarousel() {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
@@ -70,14 +56,14 @@ export default function NewsCarousel() {
   if (loading) {
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <h3 className="text-sm uppercase tracking-widest text-muted-foreground font-medium">
-            Latest Updates
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="h-px flex-1 bg-border" />
+          <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+            Club News
           </h3>
-          <Sparkles className="h-4 w-4 text-primary" />
+          <div className="h-px flex-1 bg-border" />
         </div>
-        <div className="h-40 bg-card/50 rounded-xl animate-pulse" />
+        <div className="h-24 bg-card border border-border rounded-sm animate-pulse" />
       </div>
     );
   }
@@ -93,23 +79,20 @@ export default function NewsCarousel() {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
-      <div className="flex items-center justify-center gap-1.5 mb-2">
-        <Sparkles className="h-3 w-3 text-primary" />
+      <div className="flex items-center justify-center gap-3 mb-3">
+        <div className="h-px flex-1 bg-border" />
         <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
-          Updates
+          Club News
         </h3>
-        <Sparkles className="h-3 w-3 text-primary" />
+        <div className="h-px flex-1 bg-border" />
       </div>
 
       {/* Carousel Container */}
-      <div className="relative overflow-hidden rounded-lg">
-        {/* Glassmorphism Background */}
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-xl border border-border/50 rounded-lg" />
-        
+      <div className="relative overflow-hidden rounded-sm border border-border bg-card shadow-card">
         {/* Navigation Arrows */}
         <button
           onClick={goToPrev}
-          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 p-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-sm bg-background/80 border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-200"
           aria-label="Previous news"
         >
           <ChevronLeft className="h-3 w-3" />
@@ -117,7 +100,7 @@ export default function NewsCarousel() {
         
         <button
           onClick={goToNext}
-          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 p-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground hover:bg-background/80 transition-all duration-200"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-sm bg-background/80 border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-200"
           aria-label="Next news"
         >
           <ChevronRight className="h-3 w-3" />
@@ -131,22 +114,16 @@ export default function NewsCarousel() {
           {newsItems.map((item) => (
             <div
               key={item.id}
-              className="w-full flex-shrink-0 px-8 py-3 relative"
+              className="w-full flex-shrink-0 px-10 py-4 relative"
             >
-              {/* Gradient overlay based on type */}
-              <div className={cn(
-                "absolute inset-0 bg-gradient-to-br opacity-50 rounded-lg",
-                typeColors[item.type]
-              )} />
-              
-              <div className="relative z-10 text-center space-y-1">
+              <div className="relative z-10 text-center space-y-1.5">
                 {/* Title */}
-                <h4 className="font-serif text-sm font-semibold text-foreground">
+                <h4 className="font-serif text-base font-semibold text-foreground">
                   {item.title}
                 </h4>
                 
                 {/* Description */}
-                <p className="text-muted-foreground text-xs max-w-sm mx-auto leading-snug line-clamp-2">
+                <p className="text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed line-clamp-2">
                   {item.description}
                 </p>
               </div>
@@ -156,7 +133,7 @@ export default function NewsCarousel() {
       </div>
 
       {/* Dots Navigation */}
-      <div className="flex justify-center gap-1.5 mt-1.5">
+      <div className="flex justify-center gap-2 mt-3">
         {newsItems.map((_, index) => (
           <button
             key={index}
@@ -167,8 +144,8 @@ export default function NewsCarousel() {
             className={cn(
               "w-1.5 h-1.5 rounded-full transition-all duration-300",
               index === currentIndex 
-                ? "bg-primary w-4" 
-                : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                ? "bg-primary w-5" 
+                : "bg-border hover:bg-muted-foreground/50"
             )}
             aria-label={`Go to slide ${index + 1}`}
           />

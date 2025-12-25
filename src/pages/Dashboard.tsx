@@ -55,7 +55,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-background">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="pt-16 min-h-screen">
@@ -63,10 +63,13 @@ export default function Dashboard() {
           {renderContent()}
         </div>
 
-        <footer className="border-t border-border py-6 mt-12 px-8 bg-background">
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground">
-              TKSTL — Est. 2017 — Long May We Reign
+        <footer className="border-t border-border py-8 mt-16 px-8 bg-secondary">
+          <div className="max-w-7xl mx-auto text-center">
+            <p className="font-serif text-lg text-secondary-foreground italic mb-2">
+              TKSTL
+            </p>
+            <p className="text-sm text-secondary-foreground/60">
+              Where Tradition Meets Excellence · Est. 2017
             </p>
           </div>
         </footer>

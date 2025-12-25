@@ -122,17 +122,34 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
     : members.slice(0, 4);
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-8 animate-fade-in-up">
+      {/* Hero Section */}
+      <div className="text-center py-8">
+        <p className="text-primary font-medium tracking-widest text-sm uppercase mb-4">
+          Est. 2017
+        </p>
+        <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground mb-2">
+          Where Tradition
+        </h1>
+        <h2 className="font-serif text-4xl md:text-5xl font-semibold text-primary italic mb-6">
+          Meets Excellence
+        </h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          Experience the finest doubles tennis in an atmosphere of timeless elegance. 
+          Our weekly sessions offer an unforgettable journey through competition and camaraderie.
+        </p>
+      </div>
+
       {/* News Carousel */}
       <NewsCarousel />
 
       {/* Compact Info Bar - Next Session & Duty Roster */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Compact Countdown */}
-        <div className="bg-card border border-border rounded px-4 py-3 flex items-center gap-4">
-          <Calendar className="w-4 h-4 text-primary shrink-0" />
+        <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
+          <Calendar className="w-5 h-5 text-primary shrink-0" />
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Next Session:</span>
+            <span className="text-sm text-muted-foreground font-medium">Next Session:</span>
             <div className="flex items-center gap-2">
               {[
                 { value: formatNumber(countdown.days), label: 'd' },
@@ -141,28 +158,25 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
                 { value: formatNumber(countdown.secs), label: 's' },
               ].map((item, i) => (
                 <span key={item.label} className="flex items-center">
-                  <span className="font-mono font-semibold text-primary">{item.value}</span>
+                  <span className="font-mono font-semibold text-primary text-lg">{item.value}</span>
                   <span className="text-xs text-muted-foreground ml-0.5">{item.label}</span>
-                  {i < 3 && <span className="text-muted-foreground mx-1">:</span>}
+                  {i < 3 && <span className="text-border mx-1.5">:</span>}
                 </span>
               ))}
             </div>
-            <span className="text-xs text-muted-foreground">(Mon 19:00)</span>
           </div>
         </div>
 
         {/* Compact Duty Roster */}
-        <div className="bg-card border border-border rounded px-4 py-3 flex items-center gap-4">
-          <ScrollText className="w-4 h-4 text-primary shrink-0" />
+        <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
+          <ScrollText className="w-5 h-5 text-primary shrink-0" />
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-sm text-muted-foreground shrink-0">Scribe:</span>
+            <span className="text-sm text-muted-foreground font-medium shrink-0">Scribe:</span>
             <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <User className="w-4 h-4 text-primary" />
               </div>
-              <div className="min-w-0">
-                <span className="font-medium text-foreground truncate block">{scribe.name}</span>
-              </div>
+              <span className="font-medium text-foreground truncate">{scribe.name}</span>
             </div>
             <span className="text-xs text-muted-foreground ml-auto shrink-0">{getWeekRange()}</span>
           </div>
@@ -179,15 +193,15 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
         {/* Right Panel - Recent Results & Next Session */}
         <div className="space-y-6">
           {/* Next Scheduled Session */}
-          <div className="bg-card border border-border rounded overflow-hidden">
-            <div className="bg-primary px-4 py-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-primary-foreground" />
-              <h3 className="font-serif text-sm font-semibold text-primary-foreground uppercase tracking-wide">
+          <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
+            <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
+              <Clock className="w-4 h-4 text-secondary-foreground" />
+              <h3 className="font-serif text-base font-semibold text-secondary-foreground">
                 Next Session
               </h3>
             </div>
-            <div className="p-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+            <div className="p-5">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <Calendar className="w-4 h-4" />
                 <span>
                   {nextSession.toLocaleDateString('en-US', { 
@@ -200,25 +214,25 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
               
               <div className="flex items-center gap-2 mb-3">
                 <Users className="w-4 h-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground uppercase tracking-wide">Participants</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Participants</span>
               </div>
               
               <div className="space-y-2">
                 {sessionParticipants.map((player) => (
                   <div 
                     key={player?.id} 
-                    className="flex items-center gap-2 px-3 py-2 bg-muted/30 rounded"
+                    className="flex items-center gap-3 px-3 py-2.5 bg-muted/50 rounded-sm border border-border/50"
                   >
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
                       player?.role === 'royalty' 
-                        ? 'bg-[#dc6900]/20 text-[#dc6900]' 
+                        ? 'bg-primary/20 text-primary border border-primary/30' 
                         : 'bg-muted text-muted-foreground'
                     }`}>
                       {player?.name?.[0]}
                     </div>
                     <span className="text-sm font-medium text-foreground">{player?.name}</span>
                     {player?.role === 'royalty' && (
-                      <span className="text-[9px] px-1.5 py-0.5 bg-[#dc6900]/10 text-[#dc6900] rounded font-medium ml-auto">
+                      <span className="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded font-semibold ml-auto border border-primary/20">
                         RF
                       </span>
                     )}
@@ -229,20 +243,20 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
           </div>
 
           {/* Recent Results */}
-          <div className="bg-card border border-border rounded overflow-hidden">
-            <div className="bg-secondary px-4 py-3 flex items-center gap-2">
+          <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
+            <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
               <Trophy className="w-4 h-4 text-secondary-foreground" />
-              <h3 className="font-serif text-sm font-semibold text-secondary-foreground uppercase tracking-wide">
+              <h3 className="font-serif text-base font-semibold text-secondary-foreground">
                 Recent Results
               </h3>
             </div>
             <div className="divide-y divide-border">
               {loadingResults ? (
-                <div className="p-4 text-center text-sm text-muted-foreground">
+                <div className="p-5 text-center text-sm text-muted-foreground">
                   Loading results...
                 </div>
               ) : recentResults.length === 0 ? (
-                <div className="p-4 text-center text-sm text-muted-foreground">
+                <div className="p-5 text-center text-sm text-muted-foreground">
                   No session games yet
                 </div>
               ) : (
@@ -256,9 +270,9 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
                     : game.winner ? (teamAWon ? 'W - L' : 'L - W') : 'TBD';
                   
                   return (
-                    <div key={game.id} className="p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                    <div key={game.id} className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
                           Game {game.game_number}
                         </span>
                         <span className="text-[10px] text-muted-foreground">
@@ -271,15 +285,15 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
                             {teamADisplay}
                           </span>
                           {teamAWon && (
-                            <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold shrink-0">W</span>
+                            <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
                           )}
                         </div>
-                        <span className="font-mono text-sm font-bold text-foreground mx-2 shrink-0">
+                        <span className="font-mono text-sm font-bold text-foreground mx-3 shrink-0">
                           {scoreDisplay}
                         </span>
                         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                           {teamBWon && (
-                            <span className="text-[8px] px-1 py-0.5 bg-green-500/10 text-green-600 rounded font-bold shrink-0">W</span>
+                            <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
                           )}
                           <span className={`text-xs font-medium truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
                             {teamBDisplay}

@@ -185,7 +185,7 @@ export function SessionScheduler() {
 
         <Button
           onClick={confirmSession}
-          variant="royal"
+          variant="gold"
           size="lg"
           className="w-full mt-6"
           disabled={checkedInPlayers.length !== 4}

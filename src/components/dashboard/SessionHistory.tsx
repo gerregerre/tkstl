@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import {
   Dialog,
   DialogContent,
@@ -68,6 +69,7 @@ export function SessionHistory() {
   useEffect(() => {
     fetchSessions();
 
+    // Subscribe to realtime updates for session_games
     const channel = supabase
       .channel('session-history-changes')
       .on(
@@ -180,6 +182,7 @@ export function SessionHistory() {
       return;
     }
 
+    // Recalculate player stats
     await recalculatePlayerStats();
     
     toast.success('Game updated successfully');
@@ -201,6 +204,7 @@ export function SessionHistory() {
       return;
     }
 
+    // Recalculate player stats
     await recalculatePlayerStats();
     
     toast.success('Game deleted successfully');
@@ -209,6 +213,7 @@ export function SessionHistory() {
   };
 
   const recalculatePlayerStats = async () => {
+    // Use the database function for atomic recalculation
     const { error } = await supabase.rpc('recalculate_player_stats');
     
     if (error) {
@@ -230,7 +235,7 @@ export function SessionHistory() {
   const getWinnerBadge = (game: SessionGame) => {
     if (!game.winner) return null;
     return (
-      <Badge className="bg-primary/20 text-primary border-primary/30 font-bold uppercase">
+      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
         <Trophy className="w-3 h-3 mr-1" />
         {game.winner}
       </Badge>
@@ -247,10 +252,12 @@ export function SessionHistory() {
 
   if (sessions.length === 0) {
     return (
-      <div className="bg-card border border-border rounded p-12 text-center">
-        <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <p className="text-muted-foreground font-medium">No sessions recorded yet</p>
-      </div>
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <Calendar className="w-12 h-12 text-muted-foreground mb-4" />
+          <p className="text-muted-foreground">No sessions recorded yet</p>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -263,26 +270,15 @@ export function SessionHistory() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
-      {/* Header - ATP Style */}
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-1 h-12 bg-primary rounded-full" />
-          <div>
-            <h1 className="font-display text-2xl font-black text-foreground uppercase tracking-tight">
-              Session History
-            </h1>
-            <p className="text-muted-foreground text-sm font-medium">
-              All recorded match results
-            </p>
-          </div>
-        </div>
+        <h2 className="text-2xl font-bold">Session History</h2>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRecalculateAll} disabled={isRecalculating} className="font-bold uppercase">
+          <Button variant="outline" size="sm" onClick={handleRecalculateAll} disabled={isRecalculating}>
             {isRecalculating && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Recalculate Stats
+            Recalculate All Stats
           </Button>
-          <Badge className="bg-primary text-primary-foreground font-bold">{sessions.length} Sessions</Badge>
+          <Badge variant="secondary">{sessions.length} Sessions</Badge>
         </div>
       </div>
 
@@ -293,42 +289,42 @@ export function SessionHistory() {
             open={openSessions.has(session.date)}
             onOpenChange={() => toggleSession(session.date)}
           >
-            <div className="bg-card border border-border rounded overflow-hidden">
+            <Card>
               <CollapsibleTrigger asChild>
-                <div className="cursor-pointer hover:bg-secondary/30 transition-colors p-5">
+                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {openSessions.has(session.date) ? (
-                        <ChevronDown className="w-5 h-5 text-primary" />
+                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
                       ) : (
                         <ChevronRight className="w-5 h-5 text-muted-foreground" />
                       )}
                       <div>
-                        <h3 className="font-display text-lg font-bold uppercase tracking-tight">
+                        <CardTitle className="text-lg">
                           {format(parseISO(session.date), 'EEEE, MMMM d, yyyy')}
-                        </h3>
+                        </CardTitle>
                         <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
                           <Users className="w-4 h-4" />
                           <span>{session.players.join(', ')}</span>
                         </div>
                       </div>
                     </div>
-                    <Badge variant="outline" className="font-bold">{session.games.length} Games</Badge>
+                    <Badge>{session.games.length} Games</Badge>
                   </div>
-                </div>
+                </CardHeader>
               </CollapsibleTrigger>
               
               <CollapsibleContent>
-                <div className="px-5 pb-5">
+                <CardContent className="pt-0">
                   <div className="space-y-3">
                     {session.games.map((game) => (
                       <div
                         key={game.id}
-                        className="p-4 rounded bg-secondary/30 border border-border/50"
+                        className="p-4 rounded-lg bg-muted/30 border border-border/50"
                       >
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-sm uppercase tracking-wide">
+                            <span className="font-semibold text-sm">
                               Game {game.game_number}
                             </span>
                             {getWinnerBadge(game)}
@@ -361,27 +357,27 @@ export function SessionHistory() {
                         
                         <div className="grid grid-cols-3 gap-4 items-center">
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1 font-bold uppercase">Team A</div>
-                            <div className="font-semibold text-sm">
+                            <div className="text-xs text-muted-foreground mb-1">Team A</div>
+                            <div className="font-medium text-sm">
                               {game.team_a_player1}
                             </div>
-                            <div className="font-semibold text-sm">
+                            <div className="font-medium text-sm">
                               {game.team_a_player2}
                             </div>
                           </div>
                           
                           <div className="text-center">
-                            <div className="text-2xl font-black text-primary font-display">
+                            <div className="text-2xl font-bold text-primary">
                               {getScoreDisplay(game)}
                             </div>
                           </div>
                           
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1 font-bold uppercase">Team B</div>
-                            <div className="font-semibold text-sm">
+                            <div className="text-xs text-muted-foreground mb-1">Team B</div>
+                            <div className="font-medium text-sm">
                               {game.team_b_player1}
                             </div>
-                            <div className="font-semibold text-sm">
+                            <div className="font-medium text-sm">
                               {game.team_b_player2}
                             </div>
                           </div>
@@ -389,9 +385,9 @@ export function SessionHistory() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </CardContent>
               </CollapsibleContent>
-            </div>
+            </Card>
           </Collapsible>
         ))}
       </div>
@@ -400,7 +396,7 @@ export function SessionHistory() {
       <Dialog open={!!editingGame} onOpenChange={() => setEditingGame(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="font-display uppercase">Edit Game {editingGame?.game_number}</DialogTitle>
+            <DialogTitle>Edit Game {editingGame?.game_number}</DialogTitle>
             <DialogDescription>
               Update the score for this game. Player stats will be recalculated.
             </DialogDescription>
@@ -410,27 +406,27 @@ export function SessionHistory() {
             <div className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4 text-center text-sm text-muted-foreground">
                 <div>
-                  <div className="font-bold text-foreground">{editingGame.team_a_player1}</div>
-                  <div className="font-bold text-foreground">{editingGame.team_a_player2}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_a_player1}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_a_player2}</div>
                 </div>
                 <div>
-                  <div className="font-bold text-foreground">{editingGame.team_b_player1}</div>
-                  <div className="font-bold text-foreground">{editingGame.team_b_player2}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_b_player1}</div>
+                  <div className="font-medium text-foreground">{editingGame.team_b_player2}</div>
                 </div>
               </div>
 
               {isGame3 ? (
                 <div className="space-y-3">
-                  <Label className="font-bold uppercase">Winner</Label>
+                  <Label>Winner</Label>
                   <div className="flex items-center justify-center gap-4">
                     <Button
-                      variant={editWinner === 'Team A' ? 'atp' : 'outline'}
+                      variant={editWinner === 'Team A' ? 'default' : 'outline'}
                       onClick={() => setEditWinner('Team A')}
                     >
                       Team A Wins
                     </Button>
                     <Button
-                      variant={editWinner === 'Team B' ? 'atp' : 'outline'}
+                      variant={editWinner === 'Team B' ? 'default' : 'outline'}
                       onClick={() => setEditWinner('Team B')}
                     >
                       Team B Wins
@@ -440,7 +436,7 @@ export function SessionHistory() {
               ) : (
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="font-bold uppercase">Team A Score</Label>
+                    <Label>Team A Score</Label>
                     <Input
                       type="number"
                       min="0"
@@ -450,7 +446,7 @@ export function SessionHistory() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="font-bold uppercase">Team B Score</Label>
+                    <Label>Team B Score</Label>
                     <Input
                       type="number"
                       min="0"
@@ -468,7 +464,7 @@ export function SessionHistory() {
             <Button variant="outline" onClick={() => setEditingGame(null)}>
               Cancel
             </Button>
-            <Button variant="atp" onClick={handleEditSave}>
+            <Button onClick={handleEditSave}>
               Save Changes
             </Button>
           </DialogFooter>
@@ -479,7 +475,7 @@ export function SessionHistory() {
       <AlertDialog open={!!deletingGame} onOpenChange={() => setDeletingGame(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-display uppercase">Delete Game?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Game?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete Game {deletingGame?.game_number} and recalculate all player statistics. This action cannot be undone.
             </AlertDialogDescription>

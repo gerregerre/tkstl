@@ -63,12 +63,16 @@ export default function Dashboard() {
           {renderContent()}
         </div>
 
-        <footer className="border-t border-border py-12 mt-16 glass">
+        {/* ATP-Style Footer */}
+        <footer className="border-t border-border py-12 mt-16 bg-card/50">
           <div className="max-w-7xl mx-auto text-center px-8">
-            <p className="text-xl font-light text-foreground mb-3 tracking-tight">
-              TKSTL
-            </p>
-            <p className="text-sm text-muted-foreground font-light">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="w-1 h-6 bg-primary rounded-full" />
+              <p className="font-display text-xl font-black text-foreground tracking-tight uppercase">
+                TKSTL
+              </p>
+            </div>
+            <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
               Where Tradition Meets Excellence · Est. 2017
             </p>
           </div>

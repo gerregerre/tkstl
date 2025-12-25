@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Calendar, ScrollText, User, Trophy, Clock, Users } from 'lucide-react';
 import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
+import { HeroSection } from './HeroSection';
 import { useMembers } from '@/contexts/MembersContext';
 import { members } from '@/data/members';
 import { supabase } from '@/integrations/supabase/client';
@@ -70,6 +71,11 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
   const nextSession = getNextMonday();
   const { getCurrentScribe, checkedInPlayers } = useMembers();
   const scribe = getCurrentScribe();
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollDown = () => {
+    contentRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -122,195 +128,184 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
     : members.slice(0, 4);
 
   return (
-    <div className="space-y-8 animate-fade-in-up">
+    <div className="animate-fade-in-up">
       {/* Hero Section */}
-      <div className="text-center py-8">
-        <p className="text-primary font-medium tracking-widest text-sm uppercase mb-4">
-          Est. 2017
-        </p>
-        <h1 className="font-serif text-4xl md:text-5xl font-semibold text-foreground mb-2">
-          Where Tradition
-        </h1>
-        <h2 className="font-serif text-4xl md:text-5xl font-semibold text-primary italic mb-6">
-          Meets Excellence
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Experience the finest doubles tennis in an atmosphere of timeless elegance. 
-          Our weekly sessions offer an unforgettable journey through competition and camaraderie.
-        </p>
-      </div>
+      <HeroSection onScrollDown={handleScrollDown} />
 
-      {/* News Carousel */}
-      <NewsCarousel />
+      {/* Main Content */}
+      <div ref={contentRef} className="space-y-8 pt-4">
+        {/* News Carousel */}
+        <NewsCarousel />
 
-      {/* Compact Info Bar - Next Session & Duty Roster */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Compact Countdown */}
-        <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
-          <Calendar className="w-5 h-5 text-primary shrink-0" />
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground font-medium">Next Session:</span>
-            <div className="flex items-center gap-2">
-              {[
-                { value: formatNumber(countdown.days), label: 'd' },
-                { value: formatNumber(countdown.hours), label: 'h' },
-                { value: formatNumber(countdown.mins), label: 'm' },
-                { value: formatNumber(countdown.secs), label: 's' },
-              ].map((item, i) => (
-                <span key={item.label} className="flex items-center">
-                  <span className="font-mono font-semibold text-primary text-lg">{item.value}</span>
-                  <span className="text-xs text-muted-foreground ml-0.5">{item.label}</span>
-                  {i < 3 && <span className="text-border mx-1.5">:</span>}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Compact Duty Roster */}
-        <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
-          <ScrollText className="w-5 h-5 text-primary shrink-0" />
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-sm text-muted-foreground font-medium shrink-0">Scribe:</span>
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <User className="w-4 h-4 text-primary" />
-              </div>
-              <span className="font-medium text-foreground truncate">{scribe.name}</span>
-            </div>
-            <span className="text-xs text-muted-foreground ml-auto shrink-0">{getWeekRange()}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content - Leaderboard & Right Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Leaderboard - Takes 2 columns */}
-        <div className="lg:col-span-2">
-          <NewLeaderboard onPlayerSelect={onPlayerSelect} />
-        </div>
-
-        {/* Right Panel - Recent Results & Next Session */}
-        <div className="space-y-6">
-          {/* Next Scheduled Session */}
-          <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
-            <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
-              <Clock className="w-4 h-4 text-secondary-foreground" />
-              <h3 className="font-serif text-base font-semibold text-secondary-foreground">
-                Next Session
-              </h3>
-            </div>
-            <div className="p-5">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                <Calendar className="w-4 h-4" />
-                <span>
-                  {nextSession.toLocaleDateString('en-US', { 
-                    weekday: 'short', 
-                    month: 'short', 
-                    day: 'numeric' 
-                  })} at 19:00
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-2 mb-3">
-                <Users className="w-4 h-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Participants</span>
-              </div>
-              
-              <div className="space-y-2">
-                {sessionParticipants.map((player) => (
-                  <div 
-                    key={player?.id} 
-                    className="flex items-center gap-3 px-3 py-2.5 bg-muted/50 rounded-sm border border-border/50"
-                  >
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
-                      player?.role === 'royalty' 
-                        ? 'bg-primary/20 text-primary border border-primary/30' 
-                        : 'bg-muted text-muted-foreground'
-                    }`}>
-                      {player?.name?.[0]}
-                    </div>
-                    <span className="text-sm font-medium text-foreground">{player?.name}</span>
-                    {player?.role === 'royalty' && (
-                      <span className="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded font-semibold ml-auto border border-primary/20">
-                        RF
-                      </span>
-                    )}
-                  </div>
+        {/* Compact Info Bar - Next Session & Duty Roster */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Compact Countdown */}
+          <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
+            <Calendar className="w-5 h-5 text-primary shrink-0" />
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground font-medium">Next Session:</span>
+              <div className="flex items-center gap-2">
+                {[
+                  { value: formatNumber(countdown.days), label: 'd' },
+                  { value: formatNumber(countdown.hours), label: 'h' },
+                  { value: formatNumber(countdown.mins), label: 'm' },
+                  { value: formatNumber(countdown.secs), label: 's' },
+                ].map((item, i) => (
+                  <span key={item.label} className="flex items-center">
+                    <span className="font-mono font-semibold text-primary text-lg">{item.value}</span>
+                    <span className="text-xs text-muted-foreground ml-0.5">{item.label}</span>
+                    {i < 3 && <span className="text-border mx-1.5">:</span>}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Recent Results */}
-          <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
-            <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
-              <Trophy className="w-4 h-4 text-secondary-foreground" />
-              <h3 className="font-serif text-base font-semibold text-secondary-foreground">
-                Recent Results
-              </h3>
-            </div>
-            <div className="divide-y divide-border">
-              {loadingResults ? (
-                <div className="p-5 text-center text-sm text-muted-foreground">
-                  Loading results...
+          {/* Compact Duty Roster */}
+          <div className="bg-card border border-border rounded-sm px-5 py-4 flex items-center gap-4 shadow-card">
+            <ScrollText className="w-5 h-5 text-primary shrink-0" />
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <span className="text-sm text-muted-foreground font-medium shrink-0">Scribe:</span>
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <User className="w-4 h-4 text-primary" />
                 </div>
-              ) : recentResults.length === 0 ? (
-                <div className="p-5 text-center text-sm text-muted-foreground">
-                  No session games yet
-                </div>
-              ) : (
-                recentResults.map((game) => {
-                  const teamAWon = game.winner === 'A';
-                  const teamBWon = game.winner === 'B';
-                  const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
-                  const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
-                  const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null
-                    ? `${game.team_a_score} - ${game.team_b_score}`
-                    : game.winner ? (teamAWon ? 'W - L' : 'L - W') : 'TBD';
-                  
-                  return (
-                    <div key={game.id} className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                          Game {game.game_number}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">
-                          {new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <span className={`text-xs font-medium truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
-                            {teamADisplay}
-                          </span>
-                          {teamAWon && (
-                            <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
-                          )}
-                        </div>
-                        <span className="font-mono text-sm font-bold text-foreground mx-3 shrink-0">
-                          {scoreDisplay}
-                        </span>
-                        <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
-                          {teamBWon && (
-                            <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
-                          )}
-                          <span className={`text-xs font-medium truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
-                            {teamBDisplay}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
+                <span className="font-medium text-foreground truncate">{scribe.name}</span>
+              </div>
+              <span className="text-xs text-muted-foreground ml-auto shrink-0">{getWeekRange()}</span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Messageboard */}
-      <MessageBoard />
+        {/* Main Content - Leaderboard & Right Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Leaderboard - Takes 2 columns */}
+          <div className="lg:col-span-2">
+            <NewLeaderboard onPlayerSelect={onPlayerSelect} />
+          </div>
+
+          {/* Right Panel - Recent Results & Next Session */}
+          <div className="space-y-6">
+            {/* Next Scheduled Session */}
+            <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
+              <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
+                <Clock className="w-4 h-4 text-secondary-foreground" />
+                <h3 className="font-serif text-base font-semibold text-secondary-foreground">
+                  Next Session
+                </h3>
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                  <Calendar className="w-4 h-4" />
+                  <span>
+                    {nextSession.toLocaleDateString('en-US', { 
+                      weekday: 'short', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })} at 19:00
+                  </span>
+                </div>
+                
+                <div className="flex items-center gap-2 mb-3">
+                  <Users className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Participants</span>
+                </div>
+                
+                <div className="space-y-2">
+                  {sessionParticipants.map((player) => (
+                    <div 
+                      key={player?.id} 
+                      className="flex items-center gap-3 px-3 py-2.5 bg-muted/50 rounded-sm border border-border/50"
+                    >
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
+                        player?.role === 'royalty' 
+                          ? 'bg-primary/20 text-primary border border-primary/30' 
+                          : 'bg-muted text-muted-foreground'
+                      }`}>
+                        {player?.name?.[0]}
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{player?.name}</span>
+                      {player?.role === 'royalty' && (
+                        <span className="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded font-semibold ml-auto border border-primary/20">
+                          RF
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Results */}
+            <div className="bg-card border border-border rounded-sm overflow-hidden shadow-card">
+              <div className="bg-secondary px-5 py-4 flex items-center gap-3 border-b border-sidebar-border">
+                <Trophy className="w-4 h-4 text-secondary-foreground" />
+                <h3 className="font-serif text-base font-semibold text-secondary-foreground">
+                  Recent Results
+                </h3>
+              </div>
+              <div className="divide-y divide-border">
+                {loadingResults ? (
+                  <div className="p-5 text-center text-sm text-muted-foreground">
+                    Loading results...
+                  </div>
+                ) : recentResults.length === 0 ? (
+                  <div className="p-5 text-center text-sm text-muted-foreground">
+                    No session games yet
+                  </div>
+                ) : (
+                  recentResults.map((game) => {
+                    const teamAWon = game.winner === 'A';
+                    const teamBWon = game.winner === 'B';
+                    const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
+                    const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
+                    const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null
+                      ? `${game.team_a_score} - ${game.team_b_score}`
+                      : game.winner ? (teamAWon ? 'W - L' : 'L - W') : 'TBD';
+                    
+                    return (
+                      <div key={game.id} className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+                            Game {game.game_number}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">
+                            {new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <span className={`text-xs font-medium truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                              {teamADisplay}
+                            </span>
+                            {teamAWon && (
+                              <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
+                            )}
+                          </div>
+                          <span className="font-mono text-sm font-bold text-foreground mx-3 shrink-0">
+                            {scoreDisplay}
+                          </span>
+                          <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                            {teamBWon && (
+                              <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0">W</span>
+                            )}
+                            <span className={`text-xs font-medium truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                              {teamBDisplay}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Messageboard */}
+        <MessageBoard />
+      </div>
     </div>
   );
 }

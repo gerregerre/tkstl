@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'serif'],
-        sans: ['"Outfit"', 'system-ui', 'sans-serif'],
+        serif: ['"Inter"', 'system-ui', 'sans-serif'],
+        sans: ['"Inter"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -140,9 +140,11 @@ export default {
         "number-pop": "number-pop 0.3s ease-out",
       },
       backgroundImage: {
-        'gradient-gold': 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-dark)) 100%)',
-        'gradient-forest': 'linear-gradient(180deg, hsl(var(--forest)) 0%, hsl(var(--forest-dark)) 100%)',
-        'gradient-elegant': 'linear-gradient(135deg, hsl(var(--forest)) 0%, hsl(var(--forest-dark)) 50%, hsl(var(--forest)) 100%)',
+        'gradient-gold': 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%)',
+        'gradient-forest': 'linear-gradient(180deg, hsl(220 25% 12%) 0%, hsl(220 20% 6%) 100%)',
+        'gradient-elegant': 'linear-gradient(135deg, hsl(220 25% 14%) 0%, hsl(220 25% 8%) 100%)',
+        'gradient-glass': 'linear-gradient(135deg, hsl(220 25% 12% / 0.8) 0%, hsl(220 25% 8% / 0.6) 100%)',
+        'gradient-radial-glow': 'radial-gradient(ellipse at center, hsl(175 80% 50% / 0.15) 0%, transparent 70%)',
       },
     },
   },

@@ -17,14 +17,14 @@ const navLinks = [
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-card flex items-center z-50 border-b border-border shadow-sm">
+    <header className="fixed top-0 left-0 right-0 h-16 glass flex items-center z-50">
       {/* Left section with logo */}
       <div className="flex items-center pl-8">
         <button 
           onClick={() => onTabChange('home')}
           className="flex items-center hover:opacity-80 transition-opacity"
         >
-          <span className="font-serif text-xl font-semibold text-forest tracking-wide">
+          <span className="text-xl font-semibold text-foreground tracking-tight">
             TKSTL
           </span>
         </button>
@@ -39,11 +39,11 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             <button
               key={link.id}
               onClick={() => onTabChange(link.id)}
-              className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
+            className={cn(
+                "px-4 py-2 text-sm font-medium transition-all rounded-lg",
                 isActive
-                  ? "text-forest"
-                  : "text-muted-foreground hover:text-forest"
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
               {link.label}

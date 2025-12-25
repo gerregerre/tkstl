@@ -2,114 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Prestigious Tennis Club - Inspired by classic golf club aesthetics */
-    /* Deep Forest Green & Gold Theme */
+    /* High-End Dark Mode Glassmorphism Theme */
     
-    --background: 40 20% 96%;
-    --foreground: 150 25% 18%;
+    --background: 220 20% 6%;
+    --foreground: 210 20% 95%;
 
-    --card: 40 30% 98%;
-    --card-foreground: 150 25% 18%;
+    --card: 220 20% 10%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 150 25% 18%;
+    --popover: 220 25% 12%;
+    --popover-foreground: 210 20% 95%;
 
-    /* Gold - Primary Brand Color */
-    --primary: 43 75% 48%;
-    --primary-foreground: 150 30% 12%;
+    /* Cyan/Teal Primary */
+    --primary: 175 80% 50%;
+    --primary-foreground: 220 20% 6%;
 
-    /* Deep Forest Green - Secondary */
-    --secondary: 150 30% 25%;
-    --secondary-foreground: 40 30% 95%;
+    /* Dark Blue-Gray Secondary */
+    --secondary: 220 25% 14%;
+    --secondary-foreground: 210 20% 90%;
 
-    /* Muted - Sage tones */
-    --muted: 40 15% 92%;
-    --muted-foreground: 150 15% 40%;
+    /* Muted tones */
+    --muted: 220 20% 16%;
+    --muted-foreground: 215 15% 55%;
 
-    /* Accent - Warm Gold */
-    --accent: 38 85% 55%;
-    --accent-foreground: 150 30% 12%;
+    /* Accent - Electric Cyan */
+    --accent: 175 100% 45%;
+    --accent-foreground: 220 20% 6%;
 
     /* Destructive */
-    --destructive: 0 65% 50%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 43 75% 48%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 175 80% 50%;
 
-    --radius: 0.25rem;
+    --radius: 0.75rem;
 
-    /* Custom Colors - Prestigious Club Palette */
-    --forest: 150 30% 25%;
-    --forest-light: 150 25% 35%;
-    --forest-dark: 150 35% 18%;
-    --gold: 43 75% 48%;
-    --gold-light: 43 65% 62%;
-    --gold-dark: 43 80% 38%;
-    --cream: 40 30% 96%;
-    --cream-dark: 40 25% 90%;
-    --ivory: 40 40% 98%;
-    --sage: 150 15% 55%;
-    --sage-light: 150 12% 75%;
+    /* Custom Colors - Glassmorphism Palette */
+    --forest: 175 50% 35%;
+    --forest-light: 175 45% 45%;
+    --forest-dark: 175 55% 25%;
+    --gold: 175 80% 50%;
+    --gold-light: 175 70% 65%;
+    --gold-dark: 175 85% 40%;
+    --cream: 210 20% 95%;
+    --cream-dark: 215 15% 85%;
+    --ivory: 210 25% 98%;
+    --sage: 200 15% 50%;
+    --sage-light: 200 12% 65%;
 
-    /* Shadows */
-    --shadow-elegant: 0 4px 24px -6px hsl(150 30% 20% / 0.12);
-    --shadow-card: 0 1px 4px 0 hsl(150 20% 20% / 0.06);
-    --shadow-gold: 0 4px 20px -4px hsl(43 75% 48% / 0.25);
+    /* Glass Effects */
+    --glass-bg: 220 25% 12% / 0.6;
+    --glass-border: 210 20% 95% / 0.08;
+    --glass-highlight: 210 20% 95% / 0.05;
 
-    /* Sidebar - Forest Green Theme */
-    --sidebar-background: 150 30% 25%;
-    --sidebar-foreground: 40 30% 95%;
-    --sidebar-primary: 43 75% 48%;
-    --sidebar-primary-foreground: 150 30% 12%;
-    --sidebar-accent: 150 28% 32%;
-    --sidebar-accent-foreground: 40 30% 95%;
-    --sidebar-border: 150 25% 30%;
-    --sidebar-ring: 43 75% 48%;
+    /* Shadows - Subtle Glows */
+    --shadow-elegant: 0 8px 32px -8px hsl(175 80% 50% / 0.15);
+    --shadow-card: 0 4px 24px -4px hsl(220 50% 5% / 0.4);
+    --shadow-gold: 0 0 30px -5px hsl(175 80% 50% / 0.3);
+    --shadow-glow: 0 0 60px -15px hsl(175 80% 50% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 220 25% 8%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 175 80% 50%;
+    --sidebar-primary-foreground: 220 20% 6%;
+    --sidebar-accent: 220 25% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 20% 15%;
+    --sidebar-ring: 175 80% 50%;
   }
 
   .dark {
-    --background: 150 25% 8%;
-    --foreground: 40 20% 92%;
-
-    --card: 150 25% 12%;
-    --card-foreground: 40 20% 92%;
-
-    --popover: 150 25% 12%;
-    --popover-foreground: 40 20% 92%;
-
-    --primary: 43 75% 52%;
-    --primary-foreground: 150 30% 8%;
-
-    --secondary: 150 25% 20%;
-    --secondary-foreground: 40 20% 92%;
-
-    --muted: 150 20% 16%;
-    --muted-foreground: 40 15% 60%;
-
-    --accent: 38 80% 55%;
-    --accent-foreground: 150 30% 8%;
-
-    --destructive: 0 60% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 150 20% 18%;
-    --input: 150 20% 18%;
-    --ring: 43 75% 52%;
-
-    --sidebar-background: 150 30% 10%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 43 75% 52%;
-    --sidebar-primary-foreground: 150 30% 8%;
-    --sidebar-accent: 150 25% 16%;
-    --sidebar-accent-foreground: 40 20% 92%;
-    --sidebar-border: 150 20% 18%;
-    --sidebar-ring: 43 75% 52%;
+    /* Same as root - already dark mode */
   }
 }
 
@@ -120,40 +90,71 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.025em;
   }
 }
 
 @layer utilities {
   .font-serif-display {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.02em;
   }
 
   .font-sans-body {
-    font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
-  /* Prestigious section header style */
+  /* Glass Card Styles */
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .glass-subtle {
+    background: hsl(220 25% 10% / 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      hsl(220 25% 12% / 0.8) 0%,
+      hsl(220 25% 8% / 0.6) 100%
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(210 20% 95% / 0.06);
+    box-shadow: 
+      0 8px 32px -8px hsl(220 50% 5% / 0.5),
+      inset 0 1px 0 0 hsl(210 20% 95% / 0.05);
+  }
+
+  /* Section header style */
   .section-header {
-    @apply font-serif-display text-2xl font-semibold tracking-tight;
-    @apply border-l-4 border-primary pl-4;
+    @apply font-sans-body text-xl font-semibold tracking-tight;
+    @apply border-l-2 border-primary pl-4;
   }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-dark)) 100%);
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-noble {
-    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(175 70% 70%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -171,14 +172,37 @@
     box-shadow: var(--shadow-gold);
   }
 
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.5);
+  }
+
+  .glow-subtle {
+    box-shadow: 0 0 40px -10px hsl(var(--primary) / 0.3);
+  }
+
+  /* Thin border utilities */
+  .border-thin {
+    border-width: 1px;
+    border-color: hsl(210 20% 95% / 0.08);
+  }
+
+  .border-glow {
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
   /* News feed item style */
   .news-item {
-    @apply py-4 border-b border-border last:border-b-0;
+    @apply py-4 border-b border-border/50 last:border-b-0;
     @apply flex items-start gap-4;
   }
 
   .news-date {
-    @apply text-primary font-semibold text-sm;
+    @apply text-primary font-medium text-sm;
   }
 
   /* Elegant divider */
@@ -189,7 +213,8 @@
   .divider-elegant::before,
   .divider-elegant::after {
     content: '';
-    @apply flex-1 h-px bg-border;
+    @apply flex-1 h-px;
+    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
   }
 
   .divider-elegant::before {
@@ -199,24 +224,33 @@
   .divider-elegant::after {
     @apply ml-4;
   }
+
+  /* Gradient backgrounds */
+  .bg-gradient-dark {
+    background: linear-gradient(180deg, hsl(220 20% 8%) 0%, hsl(220 25% 5%) 100%);
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(ellipse at top, hsl(220 25% 12%) 0%, hsl(220 20% 6%) 70%);
+  }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Dark theme */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: hsl(220 20% 8%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--sage));
+  background: hsl(220 20% 20%);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.6);
 }
 
 /* Animations */
@@ -233,10 +267,10 @@
 
 @keyframes pulse-subtle {
   0%, 100% {
-    border-color: hsl(var(--primary) / 0.3);
+    opacity: 0.6;
   }
   50% {
-    border-color: hsl(var(--primary) / 0.8);
+    opacity: 1;
   }
 }
 
@@ -246,6 +280,15 @@
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.5);
   }
 }
 
@@ -260,10 +303,14 @@
 .animate-shimmer {
   background: linear-gradient(
     90deg,
-    hsl(var(--gold) / 0) 0%,
-    hsl(var(--gold) / 0.3) 50%,
-    hsl(var(--gold) / 0) 100%
+    hsl(var(--primary) / 0) 0%,
+    hsl(var(--primary) / 0.2) 50%,
+    hsl(var(--primary) / 0) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
 }

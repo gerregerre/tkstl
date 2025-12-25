@@ -63,12 +63,12 @@ export default function Dashboard() {
           {renderContent()}
         </div>
 
-        <footer className="border-t border-border py-12 mt-16 bg-forest">
+        <footer className="border-t border-border py-12 mt-16 glass">
           <div className="max-w-7xl mx-auto text-center px-8">
-            <p className="font-serif text-2xl text-cream italic mb-3">
+            <p className="text-xl font-light text-foreground mb-3 tracking-tight">
               TKSTL
             </p>
-            <p className="text-sm text-cream/70">
+            <p className="text-sm text-muted-foreground font-light">
               Where Tradition Meets Excellence · Est. 2017
             </p>
           </div>

@@ -57,13 +57,13 @@ export default function NewsCarousel() {
     return (
       <div className="w-full max-w-2xl mx-auto">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="h-px flex-1 bg-border" />
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
           <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
             Club News
           </h3>
-          <div className="h-px flex-1 bg-border" />
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
         </div>
-        <div className="h-24 bg-card border border-border rounded-sm animate-pulse" />
+        <div className="h-24 glass-card rounded-xl animate-pulse" />
       </div>
     );
   }
@@ -80,19 +80,19 @@ export default function NewsCarousel() {
     >
       {/* Header */}
       <div className="flex items-center justify-center gap-3 mb-3">
-        <div className="h-px flex-1 bg-border" />
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
           Club News
         </h3>
-        <div className="h-px flex-1 bg-border" />
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       </div>
 
       {/* Carousel Container */}
-      <div className="relative overflow-hidden rounded-sm border border-border bg-card shadow-card">
+      <div className="relative overflow-hidden rounded-xl glass-card">
         {/* Navigation Arrows */}
         <button
           onClick={goToPrev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-sm bg-background/80 border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-200"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-lg bg-muted/50 border border-border/30 text-muted-foreground hover:text-primary hover:border-primary/30 transition-all duration-200"
           aria-label="Previous news"
         >
           <ChevronLeft className="h-3 w-3" />
@@ -100,7 +100,7 @@ export default function NewsCarousel() {
         
         <button
           onClick={goToNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-sm bg-background/80 border border-border text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-200"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-lg bg-muted/50 border border-border/30 text-muted-foreground hover:text-primary hover:border-primary/30 transition-all duration-200"
           aria-label="Next news"
         >
           <ChevronRight className="h-3 w-3" />
@@ -118,7 +118,7 @@ export default function NewsCarousel() {
             >
               <div className="relative z-10 text-center space-y-1.5">
                 {/* Title */}
-                <h4 className="font-serif text-base font-semibold text-foreground">
+                <h4 className="text-base font-semibold text-foreground">
                   {item.title}
                 </h4>
                 

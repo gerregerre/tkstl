@@ -128,12 +128,12 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
     : members.slice(0, 4);
 
   return (
-    <div className="animate-fade-in-up">
+    <div className="animate-fade-in-up -mx-8 -mt-8">
       {/* Hero Section */}
       <HeroSection onScrollDown={handleScrollDown} />
 
       {/* Main Content */}
-      <div ref={contentRef} className="space-y-8 pt-4">
+      <div ref={contentRef} className="space-y-8 pt-16 px-8 max-w-7xl mx-auto">
         {/* News Carousel */}
         <NewsCarousel />
 

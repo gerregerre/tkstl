@@ -163,7 +163,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
     <div className="space-y-6 animate-fade-in-up">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button onClick={onBack} variant="outline" size="sm">
+        <Button onClick={onBack} variant="atp-outline" size="sm">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
@@ -175,14 +175,14 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-card rounded-lg border border-border p-4 shadow-card">
+        <div className="bg-card rounded border border-border p-4 shadow-card hover:border-primary/30 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
-            <Target className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wide">Avg Points</span>
+            <Target className="w-4 h-4 text-primary" />
+            <span className="text-xs uppercase tracking-wide font-medium">Avg Points</span>
           </div>
           <div className="flex items-center gap-2">
             <span className={cn(
-              "text-3xl font-bold font-serif",
+              "text-3xl font-bold font-display",
               avgPoints >= 8 && "text-secondary",
               avgPoints >= 6 && avgPoints < 8 && "text-primary",
               avgPoints < 6 && "text-muted-foreground"
@@ -195,26 +195,26 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           </div>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 shadow-card">
+        <div className="bg-card rounded border border-border p-4 shadow-card hover:border-primary/30 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
-            <Calendar className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wide">Games Played</span>
+            <Calendar className="w-4 h-4 text-primary" />
+            <span className="text-xs uppercase tracking-wide font-medium">Games Played</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold font-serif text-foreground">
+            <span className="text-3xl font-bold font-display text-foreground">
               {player.games_played}
             </span>
-            {qualifies && <Star className="w-5 h-5 text-gold" />}
+            {qualifies && <Star className="w-5 h-5 text-secondary" />}
           </div>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 shadow-card">
+        <div className="bg-card rounded border border-border p-4 shadow-card hover:border-primary/30 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
-            <Trophy className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wide">Win Rate</span>
+            <Trophy className="w-4 h-4 text-primary" />
+            <span className="text-xs uppercase tracking-wide font-medium">Win Rate</span>
           </div>
           <span className={cn(
-            "text-3xl font-bold font-serif",
+            "text-3xl font-bold font-display",
             winRate >= 60 && "text-secondary",
             winRate >= 40 && winRate < 60 && "text-foreground",
             winRate < 40 && "text-muted-foreground"
@@ -223,26 +223,26 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           </span>
         </div>
 
-        <div className="bg-card rounded-lg border border-border p-4 shadow-card">
+        <div className="bg-card rounded border border-border p-4 shadow-card hover:border-primary/30 transition-colors">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
-            <Award className="w-4 h-4" />
-            <span className="text-xs uppercase tracking-wide">Total Points</span>
+            <Award className="w-4 h-4 text-primary" />
+            <span className="text-xs uppercase tracking-wide font-medium">Total Points</span>
           </div>
-          <span className="text-3xl font-bold font-serif text-foreground">
+          <span className="text-3xl font-bold font-display text-foreground">
             {player.total_points.toFixed(1)}
           </span>
         </div>
       </div>
 
       {/* Status Badge */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         {qualifies ? (
           <Badge variant="default" className="bg-secondary text-secondary-foreground">
             <Star className="w-3 h-3 mr-1" />
             Qualified for Final Leaderboard
           </Badge>
         ) : (
-          <Badge variant="outline" className="text-muted-foreground">
+          <Badge variant="outline" className="text-muted-foreground border-border">
             {18 - player.games_played} more games to qualify
           </Badge>
         )}
@@ -259,8 +259,8 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
 
       {/* Performance Trend Chart */}
       {trendData.length > 0 && (
-        <div className="bg-card rounded-lg border border-border p-6 shadow-card">
-          <h3 className="font-serif text-lg font-semibold mb-4">Performance Trend</h3>
+        <div className="bg-card rounded border border-border p-6 shadow-card">
+          <h3 className="font-display text-lg font-semibold mb-4 uppercase tracking-wide">Performance Trend</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData}>
@@ -280,7 +280,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
                   contentStyle={{
                     backgroundColor: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',
-                    borderRadius: '6px',
+                    borderRadius: '4px',
                   }}
                   labelFormatter={(value) => `Game ${value}`}
                 />
@@ -318,9 +318,9 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
       )}
 
       {/* Game History */}
-      <div className="bg-card rounded-lg border border-border shadow-card overflow-hidden">
-        <div className="p-4 border-b border-border">
-          <h3 className="font-serif text-lg font-semibold">Game History</h3>
+      <div className="bg-card rounded border border-border shadow-card overflow-hidden">
+        <div className="p-4 border-b border-border bg-muted/30">
+          <h3 className="font-display text-lg font-semibold uppercase tracking-wide">Game History</h3>
           <p className="text-sm text-muted-foreground">All recorded games</p>
         </div>
 
@@ -355,11 +355,11 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
               const points = calculateGamePoints(game, playerName);
 
               return (
-                <div key={game.id} className="p-4 hover:bg-muted/50 transition-colors">
+                <div key={game.id} className="p-4 hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm",
+                        "w-10 h-10 rounded flex items-center justify-center font-bold text-sm",
                         won ? "bg-secondary/20 text-secondary" : "bg-muted text-muted-foreground"
                       )}>
                         G{game.game_number}
@@ -385,7 +385,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
                           {game.game_number !== 3 && (
                             <>
                               <span>•</span>
-                              <span>
+                              <span className="font-medium">
                                 {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
                               </span>
                             </>
@@ -400,7 +400,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
                         {won ? 'Won' : 'Lost'}
                       </Badge>
                       <span className={cn(
-                        "font-bold text-lg",
+                        "font-bold text-lg font-display",
                         points >= 8 && "text-secondary",
                         points >= 5 && points < 8 && "text-primary",
                         points < 5 && "text-muted-foreground"

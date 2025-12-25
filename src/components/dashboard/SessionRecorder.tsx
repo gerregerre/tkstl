@@ -183,8 +183,8 @@ export function SessionRecorder() {
     <div className="grid grid-cols-2 gap-4">
       {/* Pair A */}
       <div className="space-y-3">
-        <Label className="font-serif font-semibold text-lg flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-terra-cotta" />
+        <Label className="font-display font-semibold text-lg flex items-center gap-2 uppercase tracking-wide">
+          <div className="w-3 h-3 rounded bg-primary" />
           {pairALabel}
         </Label>
         <div className="space-y-2">
@@ -196,23 +196,23 @@ export function SessionRecorder() {
                 key={member.id}
                 onClick={() => togglePlayerInPair(member.id, 'A', game, setGame)}
                 className={cn(
-                  "w-full flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left",
+                  "w-full flex items-center gap-3 p-3 rounded border-2 transition-all text-left",
                   currentPair === 'A'
-                    ? "border-terra-cotta bg-terra-cotta/10"
+                    ? "border-primary bg-primary/10"
                     : currentPair === 'B'
                     ? "border-muted bg-muted/30 opacity-50"
-                    : "border-border hover:border-terra-cotta/50"
+                    : "border-border hover:border-primary/50"
                 )}
               >
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center font-serif font-bold text-sm",
-                  isRoyal ? "bg-gradient-noble" : "bg-gradient-peasant"
+                  "w-8 h-8 rounded flex items-center justify-center font-display font-bold text-sm",
+                  isRoyal ? "bg-secondary/20 text-secondary" : "bg-muted text-muted-foreground"
                 )}>
                   {member.name[0]}
                 </div>
                 <span className="font-medium text-foreground">{member.name}</span>
                 {isRoyal && (
-                  <Crown className="w-4 h-4 text-primary ml-auto" />
+                  <Crown className="w-4 h-4 text-secondary ml-auto" />
                 )}
               </button>
             );
@@ -222,8 +222,8 @@ export function SessionRecorder() {
       
       {/* Pair B */}
       <div className="space-y-3">
-        <Label className="font-serif font-semibold text-lg flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-hunter-green" />
+        <Label className="font-display font-semibold text-lg flex items-center gap-2 uppercase tracking-wide">
+          <div className="w-3 h-3 rounded bg-secondary" />
           {pairBLabel}
         </Label>
         <div className="space-y-2">
@@ -235,23 +235,23 @@ export function SessionRecorder() {
                 key={member.id}
                 onClick={() => togglePlayerInPair(member.id, 'B', game, setGame)}
                 className={cn(
-                  "w-full flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left",
+                  "w-full flex items-center gap-3 p-3 rounded border-2 transition-all text-left",
                   currentPair === 'B'
-                    ? "border-hunter-green bg-hunter-green/10"
+                    ? "border-secondary bg-secondary/10"
                     : currentPair === 'A'
                     ? "border-muted bg-muted/30 opacity-50"
-                    : "border-border hover:border-hunter-green/50"
+                    : "border-border hover:border-secondary/50"
                 )}
               >
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center font-serif font-bold text-sm",
-                  isRoyal ? "bg-gradient-noble" : "bg-gradient-peasant"
+                  "w-8 h-8 rounded flex items-center justify-center font-display font-bold text-sm",
+                  isRoyal ? "bg-secondary/20 text-secondary" : "bg-muted text-muted-foreground"
                 )}>
                   {member.name[0]}
                 </div>
                 <span className="font-medium text-foreground">{member.name}</span>
                 {isRoyal && (
-                  <Crown className="w-4 h-4 text-primary ml-auto" />
+                  <Crown className="w-4 h-4 text-secondary ml-auto" />
                 )}
               </button>
             );
@@ -265,17 +265,17 @@ export function SessionRecorder() {
     return (
       <div className="space-y-6 animate-fade-in-up">
         <div className="text-center">
-          <h2 className="font-serif text-3xl font-bold text-foreground">
+          <h2 className="font-display text-3xl font-bold text-foreground uppercase tracking-wide">
             Post-Match Report
           </h2>
-          <p className="text-muted-foreground mt-1 font-serif-body italic">
+          <p className="text-muted-foreground mt-1">
             Chronicle the PwC session results
           </p>
         </div>
         
-        <div className="bg-card rounded-lg border-2 border-destructive/30 p-8 shadow-card text-center">
+        <div className="bg-card rounded border-2 border-destructive/30 p-8 shadow-card text-center">
           <Lock className="w-16 h-16 text-destructive/50 mx-auto mb-4" />
-          <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
+          <h3 className="font-display text-xl font-semibold text-foreground mb-2 uppercase tracking-wide">
             Access Restricted
           </h3>
           <p className="text-muted-foreground max-w-md mx-auto">
@@ -294,10 +294,10 @@ export function SessionRecorder() {
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div className="text-center">
-        <h2 className="font-serif text-3xl font-bold text-foreground">
+        <h2 className="font-display text-3xl font-bold text-foreground uppercase tracking-wide">
           Post-Match Report
         </h2>
-        <p className="text-muted-foreground mt-1 font-serif-body italic">
+        <p className="text-muted-foreground mt-1">
           Chronicle the PwC session results
         </p>
       </div>
@@ -317,8 +317,8 @@ export function SessionRecorder() {
                 isActive
                   ? "border-primary bg-primary/10"
                   : isCompleted
-                  ? "border-secondary/50 bg-secondary/5"
-                  : "border-border bg-background hover:border-primary/30"
+                  ? "border-secondary/50 bg-secondary/10"
+                  : "border-border bg-card hover:border-primary/30"
               )}
             >
               {isCompleted ? (
@@ -327,7 +327,7 @@ export function SessionRecorder() {
                 <Icon className={cn("w-4 h-4", isActive ? "text-primary" : "text-muted-foreground")} />
               )}
               <span className={cn(
-                "font-medium text-sm",
+                "font-medium text-sm uppercase tracking-wide",
                 isActive ? "text-foreground" : "text-muted-foreground"
               )}>
                 {step.title}
@@ -339,13 +339,13 @@ export function SessionRecorder() {
 
       {/* Step Content */}
       {currentStep === 0 && (
-        <div className="bg-card rounded-lg border-2 border-terra-cotta/30 p-6 shadow-card space-y-6">
+        <div className="bg-card rounded border-2 border-primary/30 p-6 shadow-card space-y-6">
           <div className="flex items-center gap-3 border-b border-border pb-4">
-            <div className="p-3 rounded-lg bg-terra-cotta/10">
-              <Swords className="w-6 h-6 text-terra-cotta" />
+            <div className="p-3 rounded bg-primary/10">
+              <Swords className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-serif text-xl font-bold text-foreground">Game 1: Mini-Single</h3>
+              <h3 className="font-display text-xl font-bold text-foreground uppercase tracking-wide">Game 1: Mini-Single</h3>
               <p className="text-sm text-muted-foreground">2v2 Doubles • Points count toward +/-</p>
             </div>
           </div>
@@ -355,24 +355,22 @@ export function SessionRecorder() {
           {miniSingle.pairA.length === 2 && miniSingle.pairB.length === 2 && (
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
               <div className="space-y-2">
-                <Label className="text-terra-cotta font-semibold">Pair A Score</Label>
+                <Label className="text-primary font-semibold uppercase tracking-wide text-sm">Pair A Score</Label>
                 <Input
                   type="number"
                   min="0"
                   value={miniSingle.pairAScore || ''}
                   onChange={(e) => setMiniSingle({ ...miniSingle, pairAScore: parseInt(e.target.value) || 0 })}
-                  className="border-terra-cotta/30 focus:ring-terra-cotta"
                   placeholder="Points"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-hunter-green font-semibold">Pair B Score</Label>
+                <Label className="text-secondary font-semibold uppercase tracking-wide text-sm">Pair B Score</Label>
                 <Input
                   type="number"
                   min="0"
                   value={miniSingle.pairBScore || ''}
                   onChange={(e) => setMiniSingle({ ...miniSingle, pairBScore: parseInt(e.target.value) || 0 })}
-                  className="border-hunter-green/30 focus:ring-hunter-green"
                   placeholder="Points"
                 />
               </div>
@@ -382,13 +380,13 @@ export function SessionRecorder() {
       )}
 
       {currentStep === 1 && (
-        <div className="bg-card rounded-lg border-2 border-hunter-green/30 p-6 shadow-card space-y-6">
+        <div className="bg-card rounded border-2 border-secondary/30 p-6 shadow-card space-y-6">
           <div className="flex items-center gap-3 border-b border-border pb-4">
-            <div className="p-3 rounded-lg bg-hunter-green/10">
-              <Shuffle className="w-6 h-6 text-hunter-green" />
+            <div className="p-3 rounded bg-secondary/10">
+              <Shuffle className="w-6 h-6 text-secondary" />
             </div>
             <div>
-              <h3 className="font-serif text-xl font-bold text-foreground">Game 2: Shibuya Crossing</h3>
+              <h3 className="font-display text-xl font-bold text-foreground uppercase tracking-wide">Game 2: Shibuya Crossing</h3>
               <p className="text-sm text-muted-foreground">2v2 Doubles • Teams may shuffle • Points count toward +/-</p>
             </div>
           </div>
@@ -398,24 +396,22 @@ export function SessionRecorder() {
           {shibuya.pairA.length === 2 && shibuya.pairB.length === 2 && (
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
               <div className="space-y-2">
-                <Label className="text-terra-cotta font-semibold">Pair A Score</Label>
+                <Label className="text-primary font-semibold uppercase tracking-wide text-sm">Pair A Score</Label>
                 <Input
                   type="number"
                   min="0"
                   value={shibuya.pairAScore || ''}
                   onChange={(e) => setShibuya({ ...shibuya, pairAScore: parseInt(e.target.value) || 0 })}
-                  className="border-terra-cotta/30 focus:ring-terra-cotta"
                   placeholder="Points"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-hunter-green font-semibold">Pair B Score</Label>
+                <Label className="text-secondary font-semibold uppercase tracking-wide text-sm">Pair B Score</Label>
                 <Input
                   type="number"
                   min="0"
                   value={shibuya.pairBScore || ''}
                   onChange={(e) => setShibuya({ ...shibuya, pairBScore: parseInt(e.target.value) || 0 })}
-                  className="border-hunter-green/30 focus:ring-hunter-green"
                   placeholder="Points"
                 />
               </div>
@@ -425,13 +421,13 @@ export function SessionRecorder() {
       )}
 
       {currentStep === 2 && (
-        <div className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-card space-y-6">
+        <div className="bg-card rounded border-2 border-accent/30 p-6 shadow-card space-y-6">
           <div className="flex items-center gap-3 border-b border-border pb-4">
-            <div className="p-3 rounded-lg bg-gold/10">
-              <Trophy className="w-6 h-6 text-gold" />
+            <div className="p-3 rounded bg-accent/10">
+              <Trophy className="w-6 h-6 text-accent" />
             </div>
             <div>
-              <h3 className="font-serif text-xl font-bold text-foreground">Game 3: Ladder</h3>
+              <h3 className="font-display text-xl font-bold text-foreground uppercase tracking-wide">Game 3: Ladder</h3>
               <p className="text-sm text-muted-foreground">2v2 Doubles • Binary result only • No point differential</p>
             </div>
           </div>
@@ -440,35 +436,35 @@ export function SessionRecorder() {
           
           {ladder.pairA.length === 2 && ladder.pairB.length === 2 && (
             <div className="pt-4 border-t border-border">
-              <Label className="text-gold font-semibold mb-3 block">Who Won?</Label>
+              <Label className="text-accent font-semibold mb-3 block uppercase tracking-wide">Who Won?</Label>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setLadder({ ...ladder, winner: 'A' })}
                   className={cn(
-                    "p-4 rounded-lg border-2 transition-all text-center",
+                    "p-4 rounded border-2 transition-all text-center",
                     ladder.winner === 'A'
-                      ? "border-gold bg-gold/10"
-                      : "border-border hover:border-gold/50"
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
                   )}
                 >
                   <Trophy className={cn(
                     "w-8 h-8 mx-auto mb-2",
-                    ladder.winner === 'A' ? "text-gold" : "text-muted-foreground"
+                    ladder.winner === 'A' ? "text-primary" : "text-muted-foreground"
                   )} />
                   <span className="font-semibold">Pair A Wins</span>
                 </button>
                 <button
                   onClick={() => setLadder({ ...ladder, winner: 'B' })}
                   className={cn(
-                    "p-4 rounded-lg border-2 transition-all text-center",
+                    "p-4 rounded border-2 transition-all text-center",
                     ladder.winner === 'B'
-                      ? "border-gold bg-gold/10"
-                      : "border-border hover:border-gold/50"
+                      ? "border-secondary bg-secondary/10"
+                      : "border-border hover:border-secondary/50"
                   )}
                 >
                   <Trophy className={cn(
                     "w-8 h-8 mx-auto mb-2",
-                    ladder.winner === 'B' ? "text-gold" : "text-muted-foreground"
+                    ladder.winner === 'B' ? "text-secondary" : "text-muted-foreground"
                   )} />
                   <span className="font-semibold">Pair B Wins</span>
                 </button>
@@ -479,13 +475,13 @@ export function SessionRecorder() {
       )}
 
       {currentStep === 3 && (
-        <div className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card space-y-6">
+        <div className="bg-card rounded border-2 border-primary/30 p-6 shadow-card space-y-6">
           <div className="flex items-center gap-3 border-b border-border pb-4">
-            <div className="p-3 rounded-lg bg-primary/10">
+            <div className="p-3 rounded bg-primary/10">
               <Target className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-serif text-xl font-bold text-foreground">Noble Standard</h3>
+              <h3 className="font-display text-xl font-bold text-foreground uppercase tracking-wide">Noble Standard</h3>
               <p className="text-sm text-muted-foreground">Rate the session quality</p>
             </div>
           </div>
@@ -497,7 +493,7 @@ export function SessionRecorder() {
                 <div key={category.id} className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-muted">
+                      <div className="p-2 rounded bg-muted">
                         <Icon className="w-4 h-4 text-muted-foreground" />
                       </div>
                       <div>
@@ -506,7 +502,7 @@ export function SessionRecorder() {
                       </div>
                     </div>
                     <span className={cn(
-                      "font-bold text-lg min-w-[3rem] text-right",
+                      "font-bold text-lg min-w-[3rem] text-right font-display",
                       getScoreColor(nobleRatings[category.id as keyof NobleRatings])
                     )}>
                       {nobleRatings[category.id as keyof NobleRatings].toFixed(1)}
@@ -524,9 +520,9 @@ export function SessionRecorder() {
             })}
           </div>
 
-          <div className="bg-primary/5 rounded-lg p-4 border border-primary/20 text-center">
-            <p className="text-sm text-muted-foreground mb-1">Overall Noble Standard</p>
-            <p className={cn("font-serif text-4xl font-bold", getScoreColor(nobleStandard))}>
+          <div className="bg-primary/5 rounded p-4 border border-primary/20 text-center">
+            <p className="text-sm text-muted-foreground mb-1 uppercase tracking-wide">Overall Noble Standard</p>
+            <p className={cn("font-display text-4xl font-bold", getScoreColor(nobleStandard))}>
               {nobleStandard.toFixed(2)}
             </p>
           </div>
@@ -536,7 +532,7 @@ export function SessionRecorder() {
       {/* Navigation */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
+          variant="atp-outline"
           onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
           disabled={currentStep === 0}
         >
@@ -546,6 +542,7 @@ export function SessionRecorder() {
         
         {currentStep < 3 ? (
           <Button
+            variant="atp"
             onClick={() => setCurrentStep(prev => prev + 1)}
             disabled={!isStepValid(currentStep)}
           >
@@ -554,6 +551,7 @@ export function SessionRecorder() {
           </Button>
         ) : (
           <Button
+            variant="atp"
             onClick={handleSubmit}
             disabled={isSubmitting || !isStepValid(0) || !isStepValid(1) || !isStepValid(2)}
           >

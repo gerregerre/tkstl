@@ -14,17 +14,16 @@ export default {
   	},
   	extend: {
   		fontFamily: {
-  			serif: [
-  				'Libre Caslon Text',
-  				'ui-serif',
-  				'Georgia',
-  				'Cambria',
-  				'Times New Roman',
-  				'Times',
-  				'serif'
+  			display: [
+  				'Montserrat',
+  				'Inter',
+  				'ui-sans-serif',
+  				'system-ui',
+  				'sans-serif'
   			],
   			sans: [
-  				'Roboto',
+  				'Inter',
+  				'Montserrat',
   				'ui-sans-serif',
   				'system-ui',
   				'-apple-system',
@@ -32,18 +31,15 @@ export default {
   				'Segoe UI',
   				'Helvetica Neue',
   				'Arial',
-  				'Noto Sans',
   				'sans-serif'
   			],
   			mono: [
-  				'Roboto Mono',
+  				'JetBrains Mono',
   				'ui-monospace',
   				'SFMono-Regular',
   				'Menlo',
   				'Monaco',
   				'Consolas',
-  				'Liberation Mono',
-  				'Courier New',
   				'monospace'
   			]
   		},
@@ -91,24 +87,16 @@ export default {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			},
-  			forest: {
-  				DEFAULT: 'hsl(var(--forest))',
-  				light: 'hsl(var(--forest-light))',
-  				dark: 'hsl(var(--forest-dark))'
-  			},
-  			gold: {
-  				DEFAULT: 'hsl(var(--gold))',
-  				light: 'hsl(var(--gold-light))',
-  				dark: 'hsl(var(--gold-dark))'
-  			},
-  			cream: {
-  				DEFAULT: 'hsl(var(--cream))',
-  				dark: 'hsl(var(--cream-dark))'
-  			},
-  			ivory: 'hsl(var(--ivory))',
-  			sage: {
-  				DEFAULT: 'hsl(var(--sage))',
-  				light: 'hsl(var(--sage-light))'
+  			// ATP Tour Custom Colors
+  			atp: {
+  				navy: 'hsl(var(--atp-navy))',
+  				'navy-dark': 'hsl(var(--atp-navy-dark))',
+  				cyan: 'hsl(var(--atp-cyan))',
+  				'cyan-light': 'hsl(var(--atp-cyan-light))',
+  				'cyan-dark': 'hsl(var(--atp-cyan-dark))',
+  				white: 'hsl(var(--atp-white))',
+  				gray: 'hsl(var(--atp-gray))',
+  				'gray-light': 'hsl(var(--atp-gray-light))'
   			}
   		},
   		borderRadius: {
@@ -207,6 +195,19 @@ export default {
   				'100%': {
   					transform: 'scale(1)'
   				}
+  			},
+  			'speed-line': {
+  				'0%': {
+  					transform: 'translateX(-100%) skewX(-15deg)',
+  					opacity: '0'
+  				},
+  				'50%': {
+  					opacity: '1'
+  				},
+  				'100%': {
+  					transform: 'translateX(100%) skewX(-15deg)',
+  					opacity: '0'
+  				}
   			}
   		},
   		animation: {
@@ -218,14 +219,16 @@ export default {
   			'position-up': 'position-up 0.6s ease-out forwards',
   			'position-down': 'position-down 0.6s ease-out forwards',
   			'highlight-pulse': 'highlight-pulse 1.5s ease-in-out',
-  			'number-pop': 'number-pop 0.3s ease-out'
+  			'number-pop': 'number-pop 0.3s ease-out',
+  			'speed-line': 'speed-line 2s ease-in-out infinite'
   		},
   		backgroundImage: {
-  			'gradient-gold': 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%)',
-  			'gradient-forest': 'linear-gradient(180deg, hsl(220 25% 12%) 0%, hsl(220 20% 6%) 100%)',
-  			'gradient-elegant': 'linear-gradient(135deg, hsl(220 25% 14%) 0%, hsl(220 25% 8%) 100%)',
-  			'gradient-glass': 'linear-gradient(135deg, hsl(220 25% 12% / 0.8) 0%, hsl(220 25% 8% / 0.6) 100%)',
-  			'gradient-radial-glow': 'radial-gradient(ellipse at center, hsl(175 80% 50% / 0.15) 0%, transparent 70%)'
+  			'gradient-atp': 'linear-gradient(180deg, hsl(216 100% 8%) 0%, hsl(216 100% 5%) 100%)',
+  			'gradient-cyan': 'linear-gradient(135deg, hsl(var(--atp-cyan)) 0%, hsl(var(--atp-cyan-light)) 100%)',
+  			'gradient-elegant': 'linear-gradient(135deg, hsl(216 80% 14%) 0%, hsl(216 80% 10%) 100%)',
+  			'gradient-glass': 'linear-gradient(135deg, hsl(216 80% 14% / 0.9) 0%, hsl(216 80% 10% / 0.85) 100%)',
+  			'gradient-radial-glow': 'radial-gradient(ellipse at center, hsl(197 100% 47% / 0.15) 0%, transparent 70%)',
+  			'gradient-diagonal': 'linear-gradient(-45deg, hsl(197 100% 47% / 0.1) 0%, transparent 50%)'
   		},
   		boxShadow: {
   			'2xs': 'var(--shadow-2xs)',
@@ -234,7 +237,9 @@ export default {
   			md: 'var(--shadow-md)',
   			lg: 'var(--shadow-lg)',
   			xl: 'var(--shadow-xl)',
-  			'2xl': 'var(--shadow-2xl)'
+  			'2xl': 'var(--shadow-2xl)',
+  			'cyan': '0 0 30px -5px hsl(197 100% 47% / 0.3)',
+  			'glow': '0 0 60px -15px hsl(197 100% 47% / 0.4)'
   		}
   	}
   },

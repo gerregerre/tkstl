@@ -1,16 +1,18 @@
 import heroImage from '@/assets/hero-tennis-court.jpg';
 import { Button } from '@/components/ui/button';
+
 interface HeroSectionProps {
   onScrollDown?: () => void;
 }
-export function HeroSection({
-  onScrollDown
-}: HeroSectionProps) {
-  return <section className="relative w-screen h-screen -ml-[calc((100vw-100%)/2)] left-0 overflow-hidden">
+
+export function HeroSection({ onScrollDown }: HeroSectionProps) {
+  return (
+    <section className="relative w-screen h-screen -ml-[calc((100vw-100%)/2)] left-0 overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105" style={{
-      backgroundImage: `url(${heroImage})`
-    }} />
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      />
       
       {/* ATP-Style Gradient Overlay - Cool Black with diagonal accent */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background" />
@@ -22,7 +24,7 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
       
       {/* Content */}
-      <div className="relative z-10 h-[300px] flex flex-col items-center justify-center text-center px-6">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         {/* ATP-Style Badge */}
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-4 py-1.5 mb-8 animate-fade-in">
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -32,48 +34,49 @@ export function HeroSection({
         </div>
         
         {/* Main Heading - Bold Montserrat */}
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-foreground mb-2 animate-fade-in tracking-tight uppercase" style={{
-        animationDelay: '0.1s'
-      }}>
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-foreground mb-2 animate-fade-in tracking-tight uppercase" style={{ animationDelay: '0.1s' }}>
           Where Tradition
         </h1>
         
-        <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gradient-cyan mb-8 animate-fade-in tracking-tight uppercase" style={{
-        animationDelay: '0.2s'
-      }}>
+        <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gradient-cyan mb-8 animate-fade-in tracking-tight uppercase" style={{ animationDelay: '0.2s' }}>
           Meets Excellence
         </h2>
         
         {/* Subheading */}
-        <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed mb-12 animate-fade-in font-medium" style={{
-        animationDelay: '0.3s'
-      }}>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed mb-12 animate-fade-in font-medium" style={{ animationDelay: '0.3s' }}>
           Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
         </p>
 
         {/* CTA Buttons - ATP Style */}
-        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{
-        animationDelay: '0.4s'
-      }}>
+        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <Button variant="atp" size="lg" className="min-w-[180px] px-8">
             View Leaderboard
           </Button>
-          <Button variant="outline" size="lg" className="min-w-[180px] px-8">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="min-w-[180px] px-8"
+          >
             Explore the Club
           </Button>
         </div>
       </div>
 
       {/* Scroll Indicator - ATP Style */}
-      {onScrollDown && <button onClick={onScrollDown} className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors animate-fade-in cursor-pointer group" style={{
-      animationDelay: '0.6s'
-    }}>
+      {onScrollDown && (
+        <button 
+          onClick={onScrollDown}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors animate-fade-in cursor-pointer group"
+          style={{ animationDelay: '0.6s' }}
+        >
           <div className="w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1.5 group-hover:border-primary transition-colors">
             <div className="w-1.5 h-3 bg-current rounded-full animate-bounce group-hover:bg-primary transition-colors" />
           </div>
-        </button>}
+        </button>
+      )}
 
       {/* Bottom Edge - Speed Line Accent */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
-    </section>;
+    </section>
+  );
 }

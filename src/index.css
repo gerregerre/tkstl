@@ -2,110 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Roland-Garros Inspired - Clean & Elegant */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    /* Prestigious Tennis Club - Inspired by classic golf club aesthetics */
+    /* Deep Forest Green & Gold Theme */
+    
+    --background: 40 20% 96%;
+    --foreground: 150 25% 18%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card: 40 30% 98%;
+    --card-foreground: 150 25% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover: 40 30% 98%;
+    --popover-foreground: 150 25% 18%;
 
-    /* Terra Cotta Orange - Primary Brand Color */
-    --primary: 18 75% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* Gold - Primary Brand Color */
+    --primary: 43 75% 48%;
+    --primary-foreground: 150 30% 12%;
 
     /* Deep Forest Green - Secondary */
-    --secondary: 150 45% 23%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 150 30% 25%;
+    --secondary-foreground: 40 30% 95%;
 
-    /* Muted - Light Gray */
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    /* Muted - Sage tones */
+    --muted: 40 15% 92%;
+    --muted-foreground: 150 15% 40%;
 
-    /* Accent - Warm Orange */
-    --accent: 24 90% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Warm Gold */
+    --accent: 38 85% 55%;
+    --accent-foreground: 150 30% 12%;
 
     /* Destructive */
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 18 75% 50%;
-
-    --radius: 0.375rem;
-
-    /* Custom Colors - Roland Garros Palette */
-    --terra-cotta: 18 75% 50%;
-    --terra-cotta-light: 18 65% 65%;
-    --hunter-green: 150 45% 23%;
-    --hunter-green-light: 150 30% 40%;
-    --cream: 40 50% 97%;
-    --cream-dark: 40 30% 92%;
-    --gold: 43 90% 50%;
-    --gold-light: 43 80% 65%;
-    --burlap: 35 25% 55%;
-    --burlap-light: 35 20% 75%;
-    --parchment: 40 40% 94%;
-
-    /* Shadows */
-    --shadow-noble: 0 4px 20px -4px hsl(18 75% 50% / 0.15);
-    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.05);
-
-    --sidebar-background: 150 45% 23%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 18 75% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 35% 30%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 150 35% 28%;
-    --sidebar-ring: 18 75% 50%;
-  }
-
-  .dark {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 95%;
-
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
-
-    --primary: 18 70% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 150 40% 30%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 24 85% 55%;
-    --accent-foreground: 0 0% 100%;
-
     --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 18 70% 55%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 43 75% 48%;
 
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 18 70% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 18 70% 55%;
+    --radius: 0.25rem;
+
+    /* Custom Colors - Prestigious Club Palette */
+    --forest: 150 30% 25%;
+    --forest-light: 150 25% 35%;
+    --forest-dark: 150 35% 18%;
+    --gold: 43 75% 48%;
+    --gold-light: 43 65% 62%;
+    --gold-dark: 43 80% 38%;
+    --cream: 40 30% 96%;
+    --cream-dark: 40 25% 90%;
+    --ivory: 40 40% 98%;
+    --sage: 150 15% 55%;
+    --sage-light: 150 12% 75%;
+
+    /* Shadows */
+    --shadow-elegant: 0 4px 24px -6px hsl(150 30% 20% / 0.12);
+    --shadow-card: 0 1px 4px 0 hsl(150 20% 20% / 0.06);
+    --shadow-gold: 0 4px 20px -4px hsl(43 75% 48% / 0.25);
+
+    /* Sidebar - Forest Green Theme */
+    --sidebar-background: 150 30% 25%;
+    --sidebar-foreground: 40 30% 95%;
+    --sidebar-primary: 43 75% 48%;
+    --sidebar-primary-foreground: 150 30% 12%;
+    --sidebar-accent: 150 28% 32%;
+    --sidebar-accent-foreground: 40 30% 95%;
+    --sidebar-border: 150 25% 30%;
+    --sidebar-ring: 43 75% 48%;
+  }
+
+  .dark {
+    --background: 150 25% 8%;
+    --foreground: 40 20% 92%;
+
+    --card: 150 25% 12%;
+    --card-foreground: 40 20% 92%;
+
+    --popover: 150 25% 12%;
+    --popover-foreground: 40 20% 92%;
+
+    --primary: 43 75% 52%;
+    --primary-foreground: 150 30% 8%;
+
+    --secondary: 150 25% 20%;
+    --secondary-foreground: 40 20% 92%;
+
+    --muted: 150 20% 16%;
+    --muted-foreground: 40 15% 60%;
+
+    --accent: 38 80% 55%;
+    --accent-foreground: 150 30% 8%;
+
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 20% 18%;
+    --input: 150 20% 18%;
+    --ring: 43 75% 52%;
+
+    --sidebar-background: 150 30% 10%;
+    --sidebar-foreground: 40 20% 92%;
+    --sidebar-primary: 43 75% 52%;
+    --sidebar-primary-foreground: 150 30% 8%;
+    --sidebar-accent: 150 25% 16%;
+    --sidebar-accent-foreground: 40 20% 92%;
+    --sidebar-border: 150 20% 18%;
+    --sidebar-ring: 43 75% 52%;
   }
 }
 
@@ -116,42 +120,55 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-family: 'Outfit', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer utilities {
   .font-serif-display {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
   }
 
   .font-sans-body {
-    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-family: 'Outfit', system-ui, sans-serif;
   }
 
-  /* Roland Garros section header style */
+  /* Prestigious section header style */
   .section-header {
-    @apply font-serif-display text-2xl font-bold uppercase tracking-wide;
+    @apply font-serif-display text-2xl font-semibold tracking-tight;
     @apply border-l-4 border-primary pl-4;
   }
 
-  .text-gradient-noble {
-    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--terra-cotta)) 100%);
+  .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-dark)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .shadow-noble {
-    box-shadow: var(--shadow-noble);
+  .text-gradient-noble {
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
   }
 
   .shadow-card {
     box-shadow: var(--shadow-card);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
   }
 
   /* News feed item style */
@@ -162,6 +179,25 @@
 
   .news-date {
     @apply text-primary font-semibold text-sm;
+  }
+
+  /* Elegant divider */
+  .divider-elegant {
+    @apply relative flex items-center justify-center;
+  }
+
+  .divider-elegant::before,
+  .divider-elegant::after {
+    content: '';
+    @apply flex-1 h-px bg-border;
+  }
+
+  .divider-elegant::before {
+    @apply mr-4;
+  }
+
+  .divider-elegant::after {
+    @apply ml-4;
   }
 }
 
@@ -175,7 +211,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: hsl(var(--sage));
   border-radius: 3px;
 }
 
@@ -204,10 +240,30 @@
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out forwards;
 }
 
 .animate-pulse-subtle {
   animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--gold) / 0) 0%,
+    hsl(var(--gold) / 0.3) 50%,
+    hsl(var(--gold) / 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
 }

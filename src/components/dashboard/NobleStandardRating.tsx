@@ -188,7 +188,7 @@ export function NobleStandardRating() {
           </div>
           <Button
             onClick={submitRating}
-            variant="royal"
+            variant="gold"
             size="lg"
             disabled={isSubmitting}
             className="w-full sm:w-auto"

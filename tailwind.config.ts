@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['"Playfair Display"', 'serif'],
-        sans: ['"Source Sans 3"', 'system-ui', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'serif'],
+        sans: ['"Outfit"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -61,28 +61,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Custom Tennis Club Colors
-        "terra-cotta": {
-          DEFAULT: "hsl(var(--terra-cotta))",
-          light: "hsl(var(--terra-cotta-light))",
+        // Prestigious Tennis Club Colors
+        forest: {
+          DEFAULT: "hsl(var(--forest))",
+          light: "hsl(var(--forest-light))",
+          dark: "hsl(var(--forest-dark))",
         },
-        "hunter-green": {
-          DEFAULT: "hsl(var(--hunter-green))",
-          light: "hsl(var(--hunter-green-light))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
         },
         cream: {
           DEFAULT: "hsl(var(--cream))",
           dark: "hsl(var(--cream-dark))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
+        ivory: "hsl(var(--ivory))",
+        sage: {
+          DEFAULT: "hsl(var(--sage))",
+          light: "hsl(var(--sage-light))",
         },
-        burlap: {
-          DEFAULT: "hsl(var(--burlap))",
-          light: "hsl(var(--burlap-light))",
-        },
-        parchment: "hsl(var(--parchment))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -142,9 +140,9 @@ export default {
         "number-pop": "number-pop 0.3s ease-out",
       },
       backgroundImage: {
-        'gradient-noble': 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--terra-cotta)) 100%)',
-        'gradient-peasant': 'linear-gradient(135deg, hsl(var(--burlap)) 0%, hsl(var(--burlap-light)) 100%)',
-        'gradient-clay': 'linear-gradient(180deg, hsl(var(--terra-cotta)) 0%, hsl(var(--terra-cotta-light)) 100%)',
+        'gradient-gold': 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-dark)) 100%)',
+        'gradient-forest': 'linear-gradient(180deg, hsl(var(--forest)) 0%, hsl(var(--forest-dark)) 100%)',
+        'gradient-elegant': 'linear-gradient(135deg, hsl(var(--forest)) 0%, hsl(var(--forest-dark)) 50%, hsl(var(--forest)) 100%)',
       },
     },
   },

@@ -2,17 +2,32 @@ import { useState } from 'react';
 import { usePlayers, LeaderboardMode } from '@/hooks/usePlayers';
 import { useTeams } from '@/hooks/useTeams';
 import { cn } from '@/lib/utils';
-import { Trophy, Medal, Award, Star, ChevronRight, Users, User } from 'lucide-react';
+import { Trophy, Medal, Award, Star, ChevronRight, Users, User, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface NewLeaderboardProps {
   onPlayerSelect?: (playerName: string) => void;
 }
 
 export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
-  const { players, loading: playersLoading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard } = usePlayers();
+  const { players, loading: playersLoading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard, recalculateStats } = usePlayers();
   const { teams, loading: teamsLoading, getAveragePoints: getTeamAvgPoints, getTeamLeaderboard, getTeamName } = useTeams();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
+  const [isRecalculating, setIsRecalculating] = useState(false);
+
+  const handleRecalculate = async () => {
+    setIsRecalculating(true);
+    try {
+      await recalculateStats();
+      toast.success('Stats recalculated from game history');
+    } catch (error) {
+      toast.error('Failed to recalculate stats');
+    } finally {
+      setIsRecalculating(false);
+    }
+  };
   
   const loading = playersLoading || teamsLoading;
 
@@ -53,32 +68,46 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </p>
         </div>
 
-        {/* Mode Toggle */}
-        <div className="flex items-center bg-muted rounded-lg p-1 ml-5 sm:ml-0">
-          <button
-            onClick={() => setMode('singles')}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-              mode === 'singles'
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
+        <div className="flex items-center gap-3 ml-5 sm:ml-0">
+          {/* Recalculate Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRecalculate}
+            disabled={isRecalculating}
+            className="gap-2"
           >
-            <User className="w-4 h-4" />
-            <span>Singles</span>
-          </button>
-          <button
-            onClick={() => setMode('doubles')}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-              mode === 'doubles'
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            <Users className="w-4 h-4" />
-            <span>Doubles</span>
-          </button>
+            <RefreshCw className={cn("w-4 h-4", isRecalculating && "animate-spin")} />
+            <span className="hidden sm:inline">Recalculate</span>
+          </Button>
+
+          {/* Mode Toggle */}
+          <div className="flex items-center bg-muted rounded-lg p-1">
+            <button
+              onClick={() => setMode('singles')}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+                mode === 'singles'
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <User className="w-4 h-4" />
+              <span>Singles</span>
+            </button>
+            <button
+              onClick={() => setMode('doubles')}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
+                mode === 'doubles'
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Users className="w-4 h-4" />
+              <span>Doubles</span>
+            </button>
+          </div>
         </div>
       </div>
 

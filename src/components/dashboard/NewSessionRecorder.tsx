@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { usePlayers, Player } from '@/hooks/usePlayers';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
   Users, 
   Trophy, 
-  ArrowRight,
   Check,
   AlertCircle,
   Send
@@ -38,19 +36,8 @@ function getRoundRobinTeams(players: string[]): { teamA: string[], teamB: string
   ];
 }
 
-// Calculate points for games 1 & 2
-function calculatePointsGame12(score: number, isWinner: boolean): number {
-  if (isWinner) return 10;
-  return (score / 9) * 10;
-}
-
-// Calculate points for game 3
-function calculatePointsGame3(isWinner: boolean): number {
-  return isWinner ? 10 : 5;
-}
-
 export function NewSessionRecorder() {
-  const { players, loading, updateSinglesStats, updateTeamStats } = usePlayers();
+  const { players, loading } = usePlayers();
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState<'select' | 'games' | 'confirm'>('select');
   const [gameScores, setGameScores] = useState<GameScore[]>([
@@ -92,31 +79,16 @@ export function NewSessionRecorder() {
     setIsSubmitting(true);
 
     try {
-      // Calculate and update points for each game
+      // Insert all 3 games into session_games
+      const gamesToInsert = [];
+      
       for (let gameIndex = 0; gameIndex < 3; gameIndex++) {
         const teams = roundRobinTeams[gameIndex];
         const score = gameScores[gameIndex];
 
         if (gameIndex < 2) {
           // Games 1 & 2: Score-based
-          const teamAWon = score.teamAScore > score.teamBScore;
-          const teamAPoints = calculatePointsGame12(score.teamAScore, teamAWon);
-          const teamBPoints = calculatePointsGame12(score.teamBScore, !teamAWon);
-
-          // Update singles stats for all players
-          for (const player of teams.teamA) {
-            await updateSinglesStats(player, teamAPoints);
-          }
-          for (const player of teams.teamB) {
-            await updateSinglesStats(player, teamBPoints);
-          }
-
-          // Update team stats for doubles
-          await updateTeamStats(teams.teamA[0], teams.teamA[1], teamAPoints);
-          await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
-
-          // Record game in database
-          const { error: insertError } = await supabase.from('session_games').insert({
+          gamesToInsert.push({
             game_number: gameIndex + 1,
             team_a_player1: teams.teamA[0],
             team_a_player2: teams.teamA[1],
@@ -126,29 +98,10 @@ export function NewSessionRecorder() {
             team_b_score: score.teamBScore,
             winner: score.teamAScore > score.teamBScore ? 'A' : 'B',
           });
-          if (insertError) {
-            console.error('Error inserting game:', insertError);
-          }
         } else {
           // Game 3: Win/Loss toggle
           const teamAWon = score.teamAWon === true;
-          const teamAPoints = calculatePointsGame3(teamAWon);
-          const teamBPoints = calculatePointsGame3(!teamAWon);
-
-          // Update singles stats for all players
-          for (const player of teams.teamA) {
-            await updateSinglesStats(player, teamAPoints);
-          }
-          for (const player of teams.teamB) {
-            await updateSinglesStats(player, teamBPoints);
-          }
-
-          // Update team stats for doubles
-          await updateTeamStats(teams.teamA[0], teams.teamA[1], teamAPoints);
-          await updateTeamStats(teams.teamB[0], teams.teamB[1], teamBPoints);
-
-          // Record game in database
-          const { error: insertError } = await supabase.from('session_games').insert({
+          gamesToInsert.push({
             game_number: 3,
             team_a_player1: teams.teamA[0],
             team_a_player2: teams.teamA[1],
@@ -158,10 +111,23 @@ export function NewSessionRecorder() {
             team_b_score: null,
             winner: teamAWon ? 'A' : 'B',
           });
-          if (insertError) {
-            console.error('Error inserting game 3:', insertError);
-          }
         }
+      }
+
+      // Insert all games at once
+      const { error: insertError } = await supabase.from('session_games').insert(gamesToInsert);
+      
+      if (insertError) {
+        console.error('Error inserting games:', insertError);
+        throw insertError;
+      }
+
+      // Recalculate all player stats from game history
+      const { error: recalcError } = await supabase.rpc('recalculate_player_stats');
+      
+      if (recalcError) {
+        console.error('Error recalculating stats:', recalcError);
+        throw recalcError;
       }
 
       toast({

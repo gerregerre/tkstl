@@ -8,7 +8,6 @@ interface SidebarProps {
 
 const navLinks = [
   { id: 'home', label: 'Home' },
-  { id: 'leaderboard', label: 'Leaderboard' },
   { id: 'headtohead', label: 'Head-to-Head' },
   { id: 'history', label: 'History' },
   { id: 'lore', label: 'The Lore' },

@@ -29,8 +29,6 @@ export default function Dashboard() {
     switch (activeTab) {
       case 'home':
         return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
-      case 'leaderboard':
-        return <NewLeaderboard onPlayerSelect={handlePlayerSelect} />;
       case 'headtohead':
         return <HeadToHead />;
       case 'history':

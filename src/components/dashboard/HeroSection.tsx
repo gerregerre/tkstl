@@ -47,19 +47,6 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
         </p>
 
-        {/* CTA Buttons - ATP Style */}
-        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <Button variant="atp" size="lg" className="min-w-[180px] px-8">
-            View Leaderboard
-          </Button>
-          <Button 
-            variant="outline" 
-            size="lg" 
-            className="min-w-[180px] px-8"
-          >
-            Explore the Club
-          </Button>
-        </div>
       </div>
 
       {/* Scroll Indicator - ATP Style */}

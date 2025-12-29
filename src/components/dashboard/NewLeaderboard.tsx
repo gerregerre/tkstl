@@ -160,9 +160,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-2">
                             <span className={cn(
-                              "font-serif font-bold text-lg w-6",
+                              "font-display font-bold text-lg w-6 text-foreground",
                               index === 0 && "text-gold",
-                              index === 1 && "text-muted-foreground",
+                              index === 1 && "text-foreground",
                               index === 2 && "text-primary"
                             )}>
                               {index + 1}
@@ -173,14 +173,14 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-3">
                             <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-sm",
+                              "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm text-foreground",
                               index === 0
                                 ? "bg-gold/20 text-gold"
                                 : index === 1
-                                ? "bg-muted text-muted-foreground"
+                                ? "bg-muted text-foreground"
                                 : index === 2
                                 ? "bg-primary/20 text-primary"
-                                : "bg-muted text-muted-foreground"
+                                : "bg-muted text-foreground"
                             )}>
                               {player.name[0]}
                             </div>
@@ -247,13 +247,13 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     index === 2 && "border-primary/50 bg-primary/5"
                   )}
                 >
-                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1">
                         <span className={cn(
-                          "font-serif font-bold text-2xl w-8",
+                          "font-display font-bold text-2xl w-8 text-foreground",
                           index === 0 && "text-gold",
-                          index === 1 && "text-muted-foreground",
+                          index === 1 && "text-foreground",
                           index === 2 && "text-primary"
                         )}>
                           {index + 1}
@@ -261,14 +261,14 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         {getRankIcon(index + 1)}
                       </div>
                       <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center font-serif font-bold text-lg",
+                        "w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg text-foreground",
                         index === 0
                           ? "bg-gold/20 text-gold"
                           : index === 1
-                          ? "bg-muted text-muted-foreground"
+                          ? "bg-muted text-foreground"
                           : index === 2
                           ? "bg-primary/20 text-primary"
-                          : "bg-muted text-muted-foreground"
+                          : "bg-muted text-foreground"
                       )}>
                         {player.name[0]}
                       </div>
@@ -369,9 +369,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-2">
                               <span className={cn(
-                                "font-serif font-bold text-lg w-6",
+                                "font-display font-bold text-lg w-6 text-foreground",
                                 index === 0 && "text-gold",
-                                index === 1 && "text-muted-foreground",
+                                index === 1 && "text-foreground",
                                 index === 2 && "text-primary"
                               )}>
                                 {index + 1}
@@ -382,14 +382,14 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-3">
                               <div className={cn(
-                                "w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold text-xs",
+                                "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-xs text-foreground",
                                 index === 0
                                   ? "bg-gold/20 text-gold"
                                   : index === 1
-                                  ? "bg-muted text-muted-foreground"
+                                  ? "bg-muted text-foreground"
                                   : index === 2
                                   ? "bg-primary/20 text-primary"
-                                  : "bg-muted text-muted-foreground"
+                                  : "bg-muted text-foreground"
                               )}>
                                 <Users className="w-5 h-5" />
                               </div>
@@ -462,9 +462,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
                           <span className={cn(
-                            "font-serif font-bold text-2xl w-8",
+                            "font-display font-bold text-2xl w-8 text-foreground",
                             index === 0 && "text-gold",
-                            index === 1 && "text-muted-foreground",
+                            index === 1 && "text-foreground",
                             index === 2 && "text-primary"
                           )}>
                             {index + 1}
@@ -472,14 +472,14 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           {getRankIcon(index + 1)}
                         </div>
                         <div className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center font-serif font-bold text-lg",
+                          "w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg text-foreground",
                           index === 0
                             ? "bg-gold/20 text-gold"
                             : index === 1
-                            ? "bg-muted text-muted-foreground"
+                            ? "bg-muted text-foreground"
                             : index === 2
                             ? "bg-primary/20 text-primary"
-                            : "bg-muted text-muted-foreground"
+                            : "bg-muted text-foreground"
                         )}>
                           <Users className="w-6 h-6" />
                         </div>

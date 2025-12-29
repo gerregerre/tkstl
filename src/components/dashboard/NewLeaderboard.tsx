@@ -190,10 +190,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           </div>
                         </td>
                         <td className="px-4 py-4 text-center">
-                          <span className={cn(
-                            "inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-primary/10 text-primary",
-                            avgPoints >= 8 && "bg-secondary/10 text-secondary"
-                          )}>
+                          <span className="inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
                             {avgPoints.toFixed(2)}
                           </span>
                         </td>
@@ -245,7 +242,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     index === 2 && "border-primary/50 bg-primary/5"
                   )}
                 >
-                    <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1">
                         <span className={cn(
@@ -283,12 +280,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className={cn(
-                          "px-3 py-1 rounded text-sm font-bold bg-primary/10 text-primary",
-                          avgPoints >= 8 && "bg-secondary/10 text-secondary"
-                        )}>
-                          {avgPoints.toFixed(2)}
-                        </span>
+                      <span className="px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
+                        {avgPoints.toFixed(2)}
+                      </span>
                       <ChevronRight className="w-4 h-4 text-muted-foreground" />
                     </div>
                   </div>
@@ -395,10 +389,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                             </div>
                           </td>
                           <td className="px-4 py-4 text-center">
-                            <span className={cn(
-                              "inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-primary/10 text-primary",
-                              avgPoints >= 8 && "bg-secondary/10 text-secondary"
-                            )}>
+                            <span className="inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
                               {avgPoints.toFixed(2)}
                             </span>
                           </td>
@@ -490,10 +481,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className={cn(
-                          "px-3 py-1 rounded text-sm font-bold bg-primary/10 text-primary",
-                          avgPoints >= 8 && "bg-secondary/10 text-secondary"
-                        )}>
+                        <span className="px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
                           {avgPoints.toFixed(2)}
                         </span>
                       </div>

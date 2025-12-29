@@ -29,22 +29,22 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-4 py-1.5 mb-8 animate-fade-in">
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span className="text-primary font-bold tracking-widest text-xs uppercase">
-            Est. 2017
+            The Legendary Order • Est. 2017
           </span>
         </div>
         
         {/* Main Heading - Bold Montserrat */}
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-foreground mb-2 animate-fade-in tracking-tight uppercase" style={{ animationDelay: '0.1s' }}>
-          Where Tradition
+          Where Legends
         </h1>
         
         <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gradient-cyan mb-8 animate-fade-in tracking-tight uppercase" style={{ animationDelay: '0.2s' }}>
-          Meets Excellence
+          Are Forged
         </h2>
         
         {/* Subheading */}
         <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed mb-12 animate-fade-in font-medium" style={{ animationDelay: '0.3s' }}>
-          Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
+          Witness the most prestigious doubles badminton institution known to mankind. Glory awaits those deemed worthy.
         </p>
 
       </div>

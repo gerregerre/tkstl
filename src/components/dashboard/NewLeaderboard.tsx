@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePlayers, LeaderboardMode } from '@/hooks/usePlayers';
 import { useTeams } from '@/hooks/useTeams';
 import { cn } from '@/lib/utils';
@@ -305,53 +306,68 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       
                       {/* Expand Icon */}
                       <div className="col-span-1 flex justify-end">
-                        <ChevronDown className={cn(
-                          "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                          isExpanded && "rotate-180"
-                        )} />
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                        </motion.div>
                       </div>
                     </button>
                     
                     {/* Expanded Details */}
-                    <div className={cn(
-                      "overflow-hidden transition-all duration-200 bg-muted/30",
-                      isExpanded ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
-                    )}>
-                      <div className="px-4 py-3 grid grid-cols-3 gap-3 text-xs">
-                        <div className="text-center">
-                          <div className="text-muted-foreground mb-1">Total Points</div>
-                          <div className="font-bold text-foreground text-sm">{totalPoints.toFixed(1)}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-muted-foreground mb-1">Games Played</div>
-                          <div className="font-bold text-foreground text-sm">{gamesPlayed}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-muted-foreground mb-1">Status</div>
-                          {qualifies ? (
-                            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
-                              <Star className="w-2.5 h-2.5 mr-0.5" />
-                              Qualified
-                            </Badge>
-                          ) : (
-                            <span className="text-muted-foreground text-[10px]">
-                              {qualificationGames - gamesPlayed} to qualify
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="px-4 pb-3">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onPlayerSelect?.(player.name);
-                          }}
-                          className="w-full py-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors border border-border rounded bg-background"
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: 'easeInOut' }}
+                          className="overflow-hidden bg-muted/30"
                         >
-                          View Full Profile
-                        </button>
-                      </div>
-                    </div>
+                          <motion.div
+                            initial={{ y: -10 }}
+                            animate={{ y: 0 }}
+                            exit={{ y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="px-4 py-3 grid grid-cols-3 gap-3 text-xs"
+                          >
+                            <div className="text-center">
+                              <div className="text-muted-foreground mb-1">Total Points</div>
+                              <div className="font-bold text-foreground text-sm">{totalPoints.toFixed(1)}</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-muted-foreground mb-1">Games Played</div>
+                              <div className="font-bold text-foreground text-sm">{gamesPlayed}</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-muted-foreground mb-1">Status</div>
+                              {qualifies ? (
+                                <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
+                                  <Star className="w-2.5 h-2.5 mr-0.5" />
+                                  Qualified
+                                </Badge>
+                              ) : (
+                                <span className="text-muted-foreground text-[10px]">
+                                  {qualificationGames - gamesPlayed} to qualify
+                                </span>
+                              )}
+                            </div>
+                          </motion.div>
+                          <div className="px-4 pb-3">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onPlayerSelect?.(player.name);
+                              }}
+                              className="w-full py-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors border border-border rounded bg-background"
+                            >
+                              View Full Profile
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}
@@ -552,42 +568,57 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         
                         {/* Expand Icon */}
                         <div className="col-span-1 flex justify-end">
-                          <ChevronDown className={cn(
-                            "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                            isExpanded && "rotate-180"
-                          )} />
+                          <motion.div
+                            animate={{ rotate: isExpanded ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                          </motion.div>
                         </div>
                       </button>
                       
                       {/* Expanded Details */}
-                      <div className={cn(
-                        "overflow-hidden transition-all duration-200 bg-muted/30",
-                        isExpanded ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
-                      )}>
-                        <div className="px-4 py-3 grid grid-cols-3 gap-3 text-xs">
-                          <div className="text-center">
-                            <div className="text-muted-foreground mb-1">Total Points</div>
-                            <div className="font-bold text-foreground text-sm">{team.total_points.toFixed(1)}</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-muted-foreground mb-1">Games Played</div>
-                            <div className="font-bold text-foreground text-sm">{team.games_played}</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-muted-foreground mb-1">Status</div>
-                            {qualifies ? (
-                              <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
-                                <Star className="w-2.5 h-2.5 mr-0.5" />
-                                Qualified
-                              </Badge>
-                            ) : (
-                              <span className="text-muted-foreground text-[10px]">
-                                {qualificationGames - team.games_played} to qualify
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: 'easeInOut' }}
+                            className="overflow-hidden bg-muted/30"
+                          >
+                            <motion.div
+                              initial={{ y: -10 }}
+                              animate={{ y: 0 }}
+                              exit={{ y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="px-4 py-3 grid grid-cols-3 gap-3 text-xs"
+                            >
+                              <div className="text-center">
+                                <div className="text-muted-foreground mb-1">Total Points</div>
+                                <div className="font-bold text-foreground text-sm">{team.total_points.toFixed(1)}</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-muted-foreground mb-1">Games Played</div>
+                                <div className="font-bold text-foreground text-sm">{team.games_played}</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-muted-foreground mb-1">Status</div>
+                                {qualifies ? (
+                                  <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
+                                    <Star className="w-2.5 h-2.5 mr-0.5" />
+                                    Qualified
+                                  </Badge>
+                                ) : (
+                                  <span className="text-muted-foreground text-[10px]">
+                                    {qualificationGames - team.games_played} to qualify
+                                  </span>
+                                )}
+                              </div>
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   );
                 })

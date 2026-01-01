@@ -225,40 +225,50 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             </div>
           </div>
 
-          {/* Singles Mobile Cards */}
-          <div className="md:hidden space-y-3">
-            {singlesLeaderboard.map((player, index) => {
-              const avgPoints = getAveragePoints(player, 'singles');
-              const gamesPlayed = getGamesPlayed(player, 'singles');
-              const totalPoints = getTotalPoints(player, 'singles');
-              const qualifies = gamesPlayed >= qualificationGames;
-              
-              return (
-                <button
-                  key={player.id}
-                  onClick={() => onPlayerSelect?.(player.name)}
-                  className={cn(
-                    "w-full bg-card rounded border border-border p-4 text-left transition-colors hover:bg-muted/50",
-                    index === 0 && "border-gold/50 bg-gold/5",
-                    index === 1 && "border-muted-foreground/30",
-                    index === 2 && "border-primary/50 bg-primary/5"
-                  )}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1">
-                        <span className={cn(
-                          "font-display font-bold text-2xl w-8 text-foreground",
-                          index === 0 && "text-gold",
-                          index === 1 && "text-foreground",
-                          index === 2 && "text-primary"
-                        )}>
-                          {index + 1}
-                        </span>
-                        {getRankIcon(index + 1)}
-                      </div>
+          {/* Singles Mobile List */}
+          <div className="md:hidden bg-card rounded border border-border overflow-hidden">
+            {/* Mobile Header */}
+            <div className="grid grid-cols-12 gap-1 px-3 py-2 bg-muted border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="col-span-1">#</div>
+              <div className="col-span-6">Player</div>
+              <div className="col-span-3 text-center text-primary">Avg</div>
+              <div className="col-span-2 text-center">GP</div>
+            </div>
+            
+            {/* Mobile Rows */}
+            <div className="divide-y divide-border">
+              {singlesLeaderboard.map((player, index) => {
+                const avgPoints = getAveragePoints(player, 'singles');
+                const gamesPlayed = getGamesPlayed(player, 'singles');
+                const qualifies = gamesPlayed >= qualificationGames;
+                
+                return (
+                  <button
+                    key={player.id}
+                    onClick={() => onPlayerSelect?.(player.name)}
+                    className={cn(
+                      "w-full grid grid-cols-12 gap-1 px-3 py-3 items-center text-left transition-colors hover:bg-muted/50",
+                      index === 0 && "bg-gold/5",
+                      index === 1 && "bg-muted/20",
+                      index === 2 && "bg-primary/5"
+                    )}
+                  >
+                    {/* Rank */}
+                    <div className="col-span-1 flex items-center">
+                      <span className={cn(
+                        "font-display font-bold text-base text-foreground",
+                        index === 0 && "text-gold",
+                        index === 1 && "text-foreground",
+                        index === 2 && "text-primary"
+                      )}>
+                        {index + 1}
+                      </span>
+                    </div>
+                    
+                    {/* Player Name */}
+                    <div className="col-span-6 flex items-center gap-2">
                       <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg text-foreground",
+                        "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0",
                         index === 0
                           ? "bg-gold/20 text-gold"
                           : index === 1
@@ -269,43 +279,33 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       )}>
                         {player.name[0]}
                       </div>
-                      <div>
-                        <span className="font-medium text-foreground">
+                      <div className="min-w-0">
+                        <span className="font-medium text-foreground text-sm truncate block">
                           {player.name}
                         </span>
                         {qualifies && (
-                          <div className="flex items-center gap-1 text-xs text-secondary">
-                            <Star className="w-3 h-3" />
-                            Qualified
-                          </div>
+                          <span className="text-[10px] text-secondary flex items-center gap-0.5">
+                            <Star className="w-2.5 h-2.5" /> Qualified
+                          </span>
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
+                    
+                    {/* Avg Points */}
+                    <div className="col-span-3 text-center">
+                      <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-accent text-accent-foreground">
                         {avgPoints.toFixed(2)}
                       </span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-center text-sm">
-                    <div className="bg-muted rounded p-2">
-                      <p className="text-xs text-muted-foreground">Games Played</p>
-                      <p className="font-semibold text-foreground">{gamesPlayed}</p>
+                    
+                    {/* Games Played */}
+                    <div className="col-span-2 text-center font-medium text-foreground text-sm">
+                      {gamesPlayed}
                     </div>
-                    <div className="bg-muted rounded p-2">
-                      <p className="text-xs text-muted-foreground">Total Points</p>
-                      <p className="font-semibold text-foreground">{totalPoints.toFixed(1)}</p>
-                    </div>
-                  </div>
-                  {!qualifies && (
-                    <div className="mt-2 text-center text-xs text-muted-foreground">
-                      {qualificationGames - gamesPlayed} more games to qualify for final leaderboard
-                    </div>
-                  )}
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </>
       ) : (
@@ -424,42 +424,53 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             </div>
           </div>
 
-          {/* Doubles Mobile Cards */}
-          <div className="md:hidden space-y-3">
-            {doublesLeaderboard.length === 0 ? (
-              <div className="bg-card rounded border border-border p-8 text-center text-muted-foreground">
-                No team data yet. Record a session to see team rankings.
-              </div>
-            ) : (
-              doublesLeaderboard.map((team, index) => {
-                const avgPoints = getTeamAvgPoints(team);
-                const qualifies = team.games_played >= qualificationGames;
-                
-                return (
-                  <div
-                    key={team.id}
-                    className={cn(
-                      "w-full bg-card rounded border border-border p-4 text-left",
-                      index === 0 && "border-gold/50 bg-gold/5",
-                      index === 1 && "border-muted-foreground/30",
-                      index === 2 && "border-primary/50 bg-primary/5"
-                    )}
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1">
-                          <span className={cn(
-                            "font-display font-bold text-2xl w-8 text-foreground",
-                            index === 0 && "text-gold",
-                            index === 1 && "text-foreground",
-                            index === 2 && "text-primary"
-                          )}>
-                            {index + 1}
-                          </span>
-                          {getRankIcon(index + 1)}
-                        </div>
+          {/* Doubles Mobile List */}
+          <div className="md:hidden bg-card rounded border border-border overflow-hidden">
+            {/* Mobile Header */}
+            <div className="grid grid-cols-12 gap-1 px-3 py-2 bg-muted border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="col-span-1">#</div>
+              <div className="col-span-6">Team</div>
+              <div className="col-span-3 text-center text-primary">Avg</div>
+              <div className="col-span-2 text-center">GP</div>
+            </div>
+            
+            {/* Mobile Rows */}
+            <div className="divide-y divide-border">
+              {doublesLeaderboard.length === 0 ? (
+                <div className="px-3 py-6 text-center text-muted-foreground text-sm">
+                  No team data yet. Record a session to see team rankings.
+                </div>
+              ) : (
+                doublesLeaderboard.map((team, index) => {
+                  const avgPoints = getTeamAvgPoints(team);
+                  const qualifies = team.games_played >= qualificationGames;
+                  
+                  return (
+                    <div
+                      key={team.id}
+                      className={cn(
+                        "w-full grid grid-cols-12 gap-1 px-3 py-3 items-center text-left",
+                        index === 0 && "bg-gold/5",
+                        index === 1 && "bg-muted/20",
+                        index === 2 && "bg-primary/5"
+                      )}
+                    >
+                      {/* Rank */}
+                      <div className="col-span-1 flex items-center">
+                        <span className={cn(
+                          "font-display font-bold text-base text-foreground",
+                          index === 0 && "text-gold",
+                          index === 1 && "text-foreground",
+                          index === 2 && "text-primary"
+                        )}>
+                          {index + 1}
+                        </span>
+                      </div>
+                      
+                      {/* Team Name */}
+                      <div className="col-span-6 flex items-center gap-2">
                         <div className={cn(
-                          "w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg text-foreground",
+                          "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
                           index === 0
                             ? "bg-gold/20 text-gold"
                             : index === 1
@@ -468,45 +479,36 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                             ? "bg-primary/20 text-primary"
                             : "bg-muted text-foreground"
                         )}>
-                          <Users className="w-6 h-6" />
+                          <Users className="w-4 h-4" />
                         </div>
-                        <div>
-                          <span className="font-medium text-foreground">
+                        <div className="min-w-0">
+                          <span className="font-medium text-foreground text-sm truncate block">
                             {getTeamName(team)}
                           </span>
                           {qualifies && (
-                            <div className="flex items-center gap-1 text-xs text-secondary">
-                              <Star className="w-3 h-3" />
-                              Qualified
-                            </div>
+                            <span className="text-[10px] text-secondary flex items-center gap-0.5">
+                              <Star className="w-2.5 h-2.5" /> Qualified
+                            </span>
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
+                      
+                      {/* Avg Points */}
+                      <div className="col-span-3 text-center">
+                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-accent text-accent-foreground">
                           {avgPoints.toFixed(2)}
                         </span>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-center text-sm">
-                      <div className="bg-muted rounded p-2">
-                        <p className="text-xs text-muted-foreground">Games Played</p>
-                        <p className="font-semibold text-foreground">{team.games_played}</p>
-                      </div>
-                      <div className="bg-muted rounded p-2">
-                        <p className="text-xs text-muted-foreground">Total Points</p>
-                        <p className="font-semibold text-foreground">{team.total_points.toFixed(1)}</p>
+                      
+                      {/* Games Played */}
+                      <div className="col-span-2 text-center font-medium text-foreground text-sm">
+                        {team.games_played}
                       </div>
                     </div>
-                    {!qualifies && (
-                      <div className="mt-2 text-center text-xs text-muted-foreground">
-                        {qualificationGames - team.games_played} more games to qualify for final leaderboard
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
+                  );
+                })
+              )}
+            </div>
           </div>
         </>
       )}

@@ -274,7 +274,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       </div>
                       
                       {/* Player Name */}
-                      <div className="col-span-5 flex items-center gap-2">
+                      <div className="col-span-6 flex items-center gap-2">
                         <div className={cn(
                           "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0",
                           index === 0
@@ -299,13 +299,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         </span>
                       </div>
                       
-                      {/* Games Played */}
-                      <div className="col-span-2 text-center font-medium text-foreground text-sm">
-                        {gamesPlayed}
-                      </div>
-                      
-                      {/* Expand Icon */}
-                      <div className="col-span-1 flex justify-end">
+                      {/* Games Played + Expand Icon */}
+                      <div className="col-span-2 flex items-center justify-end gap-1">
+                        <span className="font-medium text-foreground text-sm">{gamesPlayed}</span>
                         <motion.div
                           animate={{ rotate: isExpanded ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
@@ -536,7 +532,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         </div>
                         
                         {/* Team Name */}
-                        <div className="col-span-5 flex items-center gap-2">
+                        <div className="col-span-6 flex items-center gap-2 min-w-0">
                           <div className={cn(
                             "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
                             index === 0
@@ -549,7 +545,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           )}>
                             <Users className="w-4 h-4" />
                           </div>
-                          <span className="font-medium text-foreground text-sm truncate">
+                          <span className="font-medium text-foreground text-xs leading-tight line-clamp-2">
                             {getTeamName(team)}
                           </span>
                         </div>
@@ -561,13 +557,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           </span>
                         </div>
                         
-                        {/* Games Played */}
-                        <div className="col-span-2 text-center font-medium text-foreground text-sm">
-                          {team.games_played}
-                        </div>
-                        
-                        {/* Expand Icon */}
-                        <div className="col-span-1 flex justify-end">
+                        {/* Games Played + Expand Icon */}
+                        <div className="col-span-2 flex items-center justify-end gap-1">
+                          <span className="font-medium text-foreground text-sm">{team.games_played}</span>
                           <motion.div
                             animate={{ rotate: isExpanded ? 180 : 0 }}
                             transition={{ duration: 0.2 }}

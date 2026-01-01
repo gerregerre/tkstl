@@ -32,16 +32,16 @@ export function HeroSection({
         </div>
         
         {/* Main Heading - Bold Montserrat */}
-        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 animate-fade-in tracking-tight uppercase" style={{
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 animate-fade-in tracking-tight uppercase drop-shadow-lg" style={{
         animationDelay: '0.1s'
       }}>WHERE TRADITIONS</h1>
         
-        <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gradient-cyan mb-6 sm:mb-8 animate-fade-in tracking-tight uppercase" style={{
+        <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gradient-cyan mb-6 sm:mb-8 animate-fade-in tracking-tight uppercase drop-shadow-lg" style={{
         animationDelay: '0.2s'
-      }}>MEETS EXELLENCE</h2>
+      }}>MEETS EXCELLENCE</h2>
         
         {/* Subheading */}
-        <p className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 animate-fade-in font-medium px-4" style={{
+        <p className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 animate-fade-in font-medium px-4 drop-shadow-sm" style={{
         animationDelay: '0.3s'
       }}>
           Experience championship-level doubles tennis with precision, energy, and the spirit of competition.

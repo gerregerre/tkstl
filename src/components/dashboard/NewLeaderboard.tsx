@@ -53,9 +53,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       case 1:
         return <Trophy className="w-5 h-5 text-gold" />;
       case 2:
-        return <Medal className="w-5 h-5 text-muted-foreground" />;
+        return <Medal className="w-5 h-5 text-silver" />;
       case 3:
-        return <Award className="w-5 h-5 text-primary" />;
+        return <Award className="w-5 h-5 text-bronze" />;
       default:
         return null;
     }
@@ -122,27 +122,27 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       {mode === 'singles' ? (
         <>
           {/* Singles Desktop Table */}
-          <div className="hidden md:block bg-card rounded border border-border overflow-hidden">
+          <div className="hidden md:block bg-card rounded-md border border-border overflow-hidden shadow-card">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border bg-muted">
-                    <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <tr className="border-b border-border bg-secondary/40">
+                    <th className="px-5 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                       Rank
                     </th>
-                    <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                       Name
                     </th>
-                    <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-primary">
+                    <th className="px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-primary">
                       Avg Points
                     </th>
-                    <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                       Games Played
                     </th>
-                    <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                       Total Points
                     </th>
-                    <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                       Status
                     </th>
                   </tr>
@@ -159,53 +159,54 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         key={player.id}
                         onClick={() => onPlayerSelect?.(player.name)}
                         className={cn(
-                          "hover:bg-muted/50 transition-colors cursor-pointer",
-                          index === 0 && "bg-gold/5",
-                          index === 1 && "bg-muted/30",
-                          index === 2 && "bg-primary/5"
+                          "hover:bg-muted/40 transition-all duration-200 cursor-pointer group",
+                          index === 0 && "bg-gold/[0.04] hover:bg-gold/[0.08]",
+                          index === 1 && "bg-silver/[0.03] hover:bg-silver/[0.06]",
+                          index === 2 && "bg-bronze/[0.03] hover:bg-bronze/[0.06]"
                         )}
                       >
-                        <td className="px-4 py-4">
-                          <div className="flex items-center gap-2">
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-2.5">
                             <span className={cn(
-                              "font-display font-bold text-lg w-6 text-foreground",
+                              "font-display font-bold text-lg w-6",
                               index === 0 && "text-gold",
-                              index === 1 && "text-foreground",
-                              index === 2 && "text-primary"
+                              index === 1 && "text-silver",
+                              index === 2 && "text-bronze",
+                              index > 2 && "text-foreground"
                             )}>
                               {index + 1}
                             </span>
                             {getRankIcon(index + 1)}
                           </div>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
                             <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm text-foreground",
+                              "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105",
                               index === 0
-                                ? "bg-gold/20 text-gold"
+                                ? "bg-gold/20 text-gold ring-1 ring-gold/30"
                                 : index === 1
-                                ? "bg-muted text-foreground"
+                                ? "bg-silver/15 text-silver ring-1 ring-silver/20"
                                 : index === 2
-                                ? "bg-primary/20 text-primary"
+                                ? "bg-bronze/15 text-bronze ring-1 ring-bronze/20"
                                 : "bg-muted text-foreground"
                             )}>
                               {player.name[0]}
                             </div>
-                            <span className="font-medium text-foreground">
+                            <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200">
                               {player.name}
                             </span>
                           </div>
                         </td>
-                        <td className="px-4 py-4 text-center">
-                          <span className="inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
+                        <td className="px-5 py-4 text-center">
+                          <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
                             {avgPoints.toFixed(2)}
                           </span>
                         </td>
-                        <td className="px-4 py-4 text-center font-medium text-foreground">
+                        <td className="px-5 py-4 text-center font-semibold text-foreground tabular-nums">
                           {gamesPlayed}
                         </td>
-                        <td className="px-4 py-4 text-center font-medium text-muted-foreground">
+                        <td className="px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
                           {totalPoints.toFixed(1)}
                         </td>
                         <td className="px-4 py-4 text-center">
@@ -232,9 +233,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </div>
 
           {/* Singles Mobile List */}
-          <div className="md:hidden bg-card rounded border border-border overflow-hidden">
+          <div className="md:hidden bg-card rounded-md border border-border overflow-hidden shadow-card">
             {/* Mobile Header */}
-            <div className="grid grid-cols-12 gap-1 px-3 py-2 bg-muted border-b border-border text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="grid grid-cols-12 gap-1 px-3 py-2.5 bg-secondary/40 border-b border-border text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               <div className="col-span-1">#</div>
               <div className="col-span-6">Player</div>
               <div className="col-span-3 text-center text-primary">Avg</div>
@@ -242,7 +243,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             </div>
             
             {/* Mobile Rows */}
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-border/70">
               {singlesLeaderboard.map((player, index) => {
                 const avgPoints = getAveragePoints(player, 'singles');
                 const gamesPlayed = getGamesPlayed(player, 'singles');
@@ -255,19 +256,20 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     <button
                       onClick={() => toggleRowExpansion(player.id)}
                       className={cn(
-                        "w-full grid grid-cols-12 gap-1 px-3 py-3 items-center text-left transition-colors hover:bg-muted/50",
-                        index === 0 && "bg-gold/5",
-                        index === 1 && "bg-muted/20",
-                        index === 2 && "bg-primary/5"
+                        "w-full grid grid-cols-12 gap-1 px-3 py-3 items-center text-left transition-all duration-200 hover:bg-muted/40 active:bg-muted/50",
+                        index === 0 && "bg-gold/[0.04]",
+                        index === 1 && "bg-silver/[0.03]",
+                        index === 2 && "bg-bronze/[0.03]"
                       )}
                     >
                       {/* Rank */}
                       <div className="col-span-1 flex items-center">
                         <span className={cn(
-                          "font-display font-bold text-base text-foreground",
+                          "font-display font-bold text-base",
                           index === 0 && "text-gold",
-                          index === 1 && "text-foreground",
-                          index === 2 && "text-primary"
+                          index === 1 && "text-silver",
+                          index === 2 && "text-bronze",
+                          index > 2 && "text-foreground"
                         )}>
                           {index + 1}
                         </span>
@@ -278,11 +280,11 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         <div className={cn(
                           "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0",
                           index === 0
-                            ? "bg-gold/20 text-gold"
+                            ? "bg-gold/20 text-gold ring-1 ring-gold/30"
                             : index === 1
-                            ? "bg-muted text-foreground"
+                            ? "bg-silver/15 text-silver ring-1 ring-silver/20"
                             : index === 2
-                            ? "bg-primary/20 text-primary"
+                            ? "bg-bronze/15 text-bronze ring-1 ring-bronze/20"
                             : "bg-muted text-foreground"
                         )}>
                           {player.name[0]}
@@ -294,7 +296,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       
                       {/* Avg Points */}
                       <div className="col-span-3 text-center">
-                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-accent text-accent-foreground">
+                        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-primary/15 text-primary">
                           {avgPoints.toFixed(2)}
                         </span>
                       </div>

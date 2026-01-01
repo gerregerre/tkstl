@@ -10,13 +10,13 @@
     /* ATP Tour Inspired Theme - Cool Black & Vivid Cerulean */
     
     /* Cool Black base - #002865 */
-    --background: 216 100% 8%;
+    --background: 216 100% 7%;
     --foreground: 0 0% 98%;
 
-    --card: 216 80% 12%;
+    --card: 216 70% 11%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 216 70% 15%;
+    --popover: 216 65% 13%;
     --popover-foreground: 0 0% 98%;
 
     /* Vivid Cerulean Primary - #00AFF0 */
@@ -24,26 +24,26 @@
     --primary-foreground: 216 100% 8%;
 
     /* Cool Black Secondary */
-    --secondary: 216 60% 20%;
+    --secondary: 216 50% 18%;
     --secondary-foreground: 0 0% 98%;
 
-    /* Muted tones */
-    --muted: 216 30% 35%;
-    --muted-foreground: 210 20% 70%;
+    /* Muted tones - refined for better readability */
+    --muted: 216 25% 28%;
+    --muted-foreground: 210 15% 65%;
 
     /* Accent - Lighter Cerulean */
-    --accent: 197 80% 55%;
+    --accent: 197 85% 52%;
     --accent-foreground: 216 100% 8%;
 
     /* Destructive - Coral Red */
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 216 40% 25%;
-    --input: 216 40% 25%;
+    --border: 216 35% 22%;
+    --input: 216 35% 22%;
     --ring: 197 100% 47%;
 
-    --radius: 0.5rem;
+    --radius: 0.375rem;
 
     /* Custom ATP Colors */
     --atp-navy: 216 100% 20%;
@@ -55,29 +55,38 @@
     --atp-gray: 216 20% 50%;
     --atp-gray-light: 216 15% 70%;
 
+    /* Ranking Colors - Gold, Silver, Bronze */
+    --gold: 45 93% 58%;
+    --gold-foreground: 45 100% 12%;
+    --silver: 210 10% 70%;
+    --silver-foreground: 210 10% 20%;
+    --bronze: 30 60% 50%;
+    --bronze-foreground: 30 80% 12%;
+
     /* Speed Line Geometry */
-    --speed-line: 197 100% 47% / 0.15;
-    --diagonal-accent: 197 100% 47% / 0.08;
+    --speed-line: 197 100% 47% / 0.12;
+    --diagonal-accent: 197 100% 47% / 0.06;
 
-    /* Glass Effects for ATP */
-    --glass-bg: 216 80% 12% / 0.85;
-    --glass-border: 197 100% 47% / 0.15;
-    --glass-highlight: 197 100% 47% / 0.08;
+    /* Glass Effects for ATP - refined */
+    --glass-bg: 216 70% 11% / 0.92;
+    --glass-border: 197 100% 47% / 0.12;
+    --glass-highlight: 197 100% 47% / 0.06;
 
-    /* Shadows - ATP style */
-    --shadow-elegant: 0 8px 32px -8px hsl(216 100% 5% / 0.6);
-    --shadow-card: 0 4px 24px -4px hsl(216 100% 5% / 0.5);
-    --shadow-cyan: 0 0 30px -5px hsl(197 100% 47% / 0.3);
-    --shadow-glow: 0 0 60px -15px hsl(197 100% 47% / 0.4);
+    /* Shadows - ATP style, more refined */
+    --shadow-elegant: 0 4px 24px -4px hsl(216 100% 4% / 0.5);
+    --shadow-card: 0 2px 16px -2px hsl(216 100% 4% / 0.4);
+    --shadow-cyan: 0 0 24px -4px hsl(197 100% 47% / 0.25);
+    --shadow-glow: 0 0 40px -8px hsl(197 100% 47% / 0.35);
+    --shadow-header: 0 1px 0 0 hsl(var(--border)), 0 4px 20px -4px hsl(216 100% 4% / 0.4);
 
     /* Sidebar */
-    --sidebar-background: 216 100% 10%;
+    --sidebar-background: 216 100% 9%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 197 100% 47%;
     --sidebar-primary-foreground: 216 100% 8%;
-    --sidebar-accent: 216 60% 25%;
+    --sidebar-accent: 216 50% 22%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 216 40% 25%;
+    --sidebar-border: 216 35% 22%;
     --sidebar-ring: 197 100% 47%;
     
     /* Charts */
@@ -87,21 +96,21 @@
     --chart-4: 216 60% 50%;
     --chart-5: 0 0% 45%;
     
-    --sidebar: 216 80% 12%;
+    --sidebar: 216 70% 11%;
     
     /* Typography */
     --font-sans: 'Inter', 'Montserrat', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     --font-display: 'Montserrat', 'Inter', ui-sans-serif, system-ui, sans-serif;
     
     /* Shadow scales */
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xs: 0 1px 2px 0px hsl(0 0% 0% / 0.04);
+    --shadow-xs: 0 1px 2px 0px hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.08), 0 1px 2px -1px hsl(0 0% 0% / 0.08);
     --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --shadow-md: 0 2px 6px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 4px 12px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-xl: 0 8px 24px 0px hsl(0 0% 0% / 0.12), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 16px 48px 0px hsl(0 0% 0% / 0.2);
     --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
@@ -110,35 +119,35 @@
     /* Same as root - already dark mode optimized */
     --background: 216 100% 6%;
     --foreground: 0 0% 98%;
-    --card: 216 80% 10%;
+    --card: 216 70% 10%;
     --card-foreground: 0 0% 98%;
-    --popover: 216 70% 12%;
+    --popover: 216 65% 12%;
     --popover-foreground: 0 0% 98%;
     --primary: 197 100% 47%;
     --primary-foreground: 216 100% 8%;
-    --secondary: 216 60% 18%;
+    --secondary: 216 50% 16%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 216 30% 30%;
-    --muted-foreground: 210 20% 65%;
-    --accent: 197 80% 55%;
+    --muted: 216 25% 26%;
+    --muted-foreground: 210 15% 62%;
+    --accent: 197 85% 52%;
     --accent-foreground: 216 100% 8%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 216 40% 22%;
-    --input: 216 40% 22%;
+    --border: 216 35% 20%;
+    --input: 216 35% 20%;
     --ring: 197 100% 47%;
     --chart-1: 197 100% 50%;
     --chart-2: 197 80% 65%;
     --chart-3: 180 70% 50%;
     --chart-4: 216 60% 55%;
     --chart-5: 0 0% 50%;
-    --sidebar: 216 80% 10%;
+    --sidebar: 216 70% 10%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 197 100% 47%;
     --sidebar-primary-foreground: 216 100% 8%;
-    --sidebar-accent: 197 80% 55%;
+    --sidebar-accent: 197 85% 52%;
     --sidebar-accent-foreground: 216 100% 8%;
-    --sidebar-border: 216 40% 22%;
+    --sidebar-border: 216 35% 20%;
     --sidebar-ring: 197 100% 47%;
   }
 }

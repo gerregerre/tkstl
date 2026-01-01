@@ -22,7 +22,7 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
       
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 sm:px-6">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center sm:px-6 px-[16px] py-[40px]">
         {/* ATP-Style Badge */}
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-3 sm:px-4 py-1.5 mb-6 sm:mb-8 animate-fade-in">
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />

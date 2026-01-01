@@ -6,7 +6,7 @@ interface HeroSectionProps {
 export function HeroSection({
   onScrollDown
 }: HeroSectionProps) {
-  return <section className="relative w-screen h-screen -ml-[calc((100vw-100%)/2)] left-0 overflow-hidden">
+  return <section className="relative w-screen min-h-[80vh] sm:h-screen -ml-[calc((100vw-100%)/2)] left-0 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105" style={{
       backgroundImage: `url(${heroImage})`
@@ -22,26 +22,26 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
       
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 sm:px-6">
         {/* ATP-Style Badge */}
-        <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-4 py-1.5 mb-8 animate-fade-in">
+        <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-3 sm:px-4 py-1.5 mb-6 sm:mb-8 animate-fade-in">
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-primary font-bold tracking-widest text-xs uppercase">
+          <span className="text-primary font-bold tracking-widest text-[10px] sm:text-xs uppercase">
             Est. 2017
           </span>
         </div>
         
         {/* Main Heading - Bold Montserrat */}
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-foreground mb-2 animate-fade-in tracking-tight uppercase" style={{
+        <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 animate-fade-in tracking-tight uppercase" style={{
         animationDelay: '0.1s'
       }}>WHERE TRADITIONS</h1>
         
-        <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gradient-cyan mb-8 animate-fade-in tracking-tight uppercase" style={{
+        <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gradient-cyan mb-6 sm:mb-8 animate-fade-in tracking-tight uppercase" style={{
         animationDelay: '0.2s'
       }}>MEETS EXELLENCE</h2>
         
         {/* Subheading */}
-        <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed mb-12 animate-fade-in font-medium" style={{
+        <p className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 animate-fade-in font-medium px-4" style={{
         animationDelay: '0.3s'
       }}>
           Experience championship-level doubles tennis with precision, energy, and the spirit of competition.

@@ -128,25 +128,25 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
     : members.slice(0, 4);
 
   return (
-    <div className="animate-fade-in-up -mx-8 -mt-8">
+    <div className="animate-fade-in-up -mx-4 md:-mx-8 -mt-4 md:-mt-8">
       {/* Hero Section */}
       <HeroSection onScrollDown={handleScrollDown} />
 
       {/* Main Content */}
-      <div ref={contentRef} className="space-y-8 pt-16 px-8 max-w-7xl mx-auto">
+      <div ref={contentRef} className="space-y-6 md:space-y-8 pt-8 md:pt-16 px-4 md:px-8 max-w-7xl mx-auto">
         {/* News Carousel */}
         <NewsCarousel />
 
         {/* Compact Info Bar - Next Session & Duty Roster */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {/* Compact Countdown - ATP Style */}
-          <div className="bg-card border border-border rounded px-5 py-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-primary" />
+          <div className="bg-card border border-border rounded px-4 md:px-5 py-3 md:py-4 flex items-center gap-3 md:gap-4">
+            <div className="w-8 md:w-10 h-8 md:h-10 rounded bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+              <Calendar className="w-4 md:w-5 h-4 md:h-5 text-primary" />
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground font-bold uppercase tracking-wide">Next:</span>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+              <span className="text-xs md:text-sm text-muted-foreground font-bold uppercase tracking-wide">Next:</span>
+              <div className="flex items-center gap-1 md:gap-2">
                 {[
                   { value: formatNumber(countdown.days), label: 'D' },
                   { value: formatNumber(countdown.hours), label: 'H' },
@@ -154,9 +154,9 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
                   { value: formatNumber(countdown.secs), label: 'S' },
                 ].map((item, i) => (
                   <span key={item.label} className="flex items-center">
-                    <span className="font-mono font-black text-primary text-lg">{item.value}</span>
-                    <span className="text-xs text-muted-foreground font-bold ml-0.5">{item.label}</span>
-                    {i < 3 && <span className="text-border/50 mx-1.5 font-light">:</span>}
+                    <span className="font-mono font-black text-primary text-base md:text-lg">{item.value}</span>
+                    <span className="text-[10px] md:text-xs text-muted-foreground font-bold ml-0.5">{item.label}</span>
+                    {i < 3 && <span className="text-border/50 mx-1 md:mx-1.5 font-light">:</span>}
                   </span>
                 ))}
               </div>
@@ -164,19 +164,19 @@ export function DashboardHome({ onPlayerSelect }: DashboardHomeProps) {
           </div>
 
           {/* Compact Duty Roster - ATP Style */}
-          <div className="bg-card border border-border rounded px-5 py-4 flex items-center gap-4">
-            <div className="w-10 h-10 rounded bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <ScrollText className="w-5 h-5 text-primary" />
+          <div className="bg-card border border-border rounded px-4 md:px-5 py-3 md:py-4 flex items-center gap-3 md:gap-4">
+            <div className="w-8 md:w-10 h-8 md:h-10 rounded bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+              <ScrollText className="w-4 md:w-5 h-4 md:h-5 text-primary" />
             </div>
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <span className="text-sm text-muted-foreground font-bold uppercase tracking-wide shrink-0">Scribe:</span>
+            <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+              <span className="text-xs md:text-sm text-muted-foreground font-bold uppercase tracking-wide shrink-0">Scribe:</span>
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-8 h-8 rounded bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
-                  <User className="w-4 h-4 text-primary" />
+                <div className="w-6 md:w-8 h-6 md:h-8 rounded bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+                  <User className="w-3 md:w-4 h-3 md:h-4 text-primary" />
                 </div>
-                <span className="font-bold text-foreground truncate">{scribe.name}</span>
+                <span className="font-bold text-foreground text-sm md:text-base truncate">{scribe.name}</span>
               </div>
-              <span className="text-xs text-muted-foreground ml-auto shrink-0 font-medium">{getWeekRange()}</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground ml-auto shrink-0 font-medium hidden sm:block">{getWeekRange()}</span>
             </div>
           </div>
         </div>

@@ -58,55 +58,57 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   const qualificationGames = 18;
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-4 md:space-y-6 animate-fade-in-up">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="section-header">Leaderboard</h1>
-          <p className="text-muted-foreground mt-2 ml-5">
-            {mode === 'singles' ? 'Individual Rankings by Average Points' : 'Team Rankings by Combined Average'}
-          </p>
-        </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="section-header text-lg md:text-xl">Leaderboard</h1>
+            <p className="text-muted-foreground mt-2 ml-4 md:ml-5 text-sm md:text-base">
+              {mode === 'singles' ? 'Individual Rankings by Average Points' : 'Team Rankings by Combined Average'}
+            </p>
+          </div>
 
-        <div className="flex items-center gap-3 ml-5 sm:ml-0">
-          {/* Recalculate Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRecalculate}
-            disabled={isRecalculating}
-            className="gap-2"
-          >
-            <RefreshCw className={cn("w-4 h-4", isRecalculating && "animate-spin")} />
-            <span className="hidden sm:inline">Recalculate</span>
-          </Button>
+          <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-0">
+            {/* Recalculate Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRecalculate}
+              disabled={isRecalculating}
+              className="gap-1 md:gap-2 text-xs md:text-sm"
+            >
+              <RefreshCw className={cn("w-3 h-3 md:w-4 md:h-4", isRecalculating && "animate-spin")} />
+              <span className="hidden sm:inline">Recalculate</span>
+            </Button>
 
-          {/* Mode Toggle */}
-          <div className="flex items-center bg-muted rounded-lg p-1">
-            <button
-              onClick={() => setMode('singles')}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-                mode === 'singles'
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <User className="w-4 h-4" />
-              <span>Singles</span>
-            </button>
-            <button
-              onClick={() => setMode('doubles')}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all",
-                mode === 'doubles'
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Users className="w-4 h-4" />
-              <span>Doubles</span>
-            </button>
+            {/* Mode Toggle */}
+            <div className="flex items-center bg-muted rounded-lg p-0.5 md:p-1">
+              <button
+                onClick={() => setMode('singles')}
+                className={cn(
+                  "flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-medium transition-all",
+                  mode === 'singles'
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <User className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden xs:inline">Singles</span>
+              </button>
+              <button
+                onClick={() => setMode('doubles')}
+                className={cn(
+                  "flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-medium transition-all",
+                  mode === 'doubles'
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Users className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden xs:inline">Doubles</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

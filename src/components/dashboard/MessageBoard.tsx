@@ -216,40 +216,42 @@ export function MessageBoard() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-4 md:space-y-6 animate-fade-in-up">
       {/* Header */}
       <div>
-        <h1 className="section-header">Message Board</h1>
-        <p className="text-muted-foreground mt-2 ml-5">
+        <h1 className="section-header text-lg md:text-xl">Message Board</h1>
+        <p className="text-muted-foreground mt-2 ml-4 md:ml-5 text-sm md:text-base">
           Share updates and communicate with fellow members
         </p>
       </div>
 
       {/* Message Input */}
-      <div className="bg-card rounded-lg border border-border p-4 shadow-card">
-        <div className="flex gap-3">
-          <Avatar className="h-10 w-10">
+      <div className="bg-card rounded-lg border border-border p-3 md:p-4 shadow-card">
+        <div className="flex gap-2 md:gap-3">
+          <Avatar className="h-8 w-8 md:h-10 md:w-10 shrink-0">
             <AvatarImage src={user?.user_metadata?.avatar_url} />
-            <AvatarFallback className="bg-primary/20 text-primary font-serif font-bold">
+            <AvatarFallback className="bg-primary/20 text-primary font-serif font-bold text-sm md:text-base">
               {user?.user_metadata?.display_name?.[0] || user?.email?.[0]?.toUpperCase() || '?'}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1 space-y-3">
+          <div className="flex-1 space-y-2 md:space-y-3">
             <Textarea
               placeholder="Write a message to the club..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="min-h-[80px] resize-none"
+              className="min-h-[60px] md:min-h-[80px] resize-none text-sm md:text-base"
             />
             <div className="flex justify-end">
               <Button 
                 onClick={handleSendMessage} 
                 disabled={!newMessage.trim() || sending}
-                className="gap-2"
+                className="gap-2 text-sm"
+                size="sm"
               >
-                <Send className="w-4 h-4" />
-                Post Message
+                <Send className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Post Message</span>
+                <span className="sm:hidden">Post</span>
               </Button>
             </div>
           </div>
@@ -258,49 +260,49 @@ export function MessageBoard() {
 
       {/* Messages List */}
       <div className="bg-card rounded-lg border border-border shadow-card overflow-hidden">
-        <div className="p-4 border-b border-border flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-primary" />
-          <h3 className="font-serif text-lg font-semibold">Recent Messages</h3>
+        <div className="p-3 md:p-4 border-b border-border flex items-center gap-2">
+          <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+          <h3 className="font-serif text-base md:text-lg font-semibold">Recent Messages</h3>
         </div>
 
         {messages.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">
-            <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No messages yet. Be the first to post!</p>
+          <div className="p-6 md:p-8 text-center text-muted-foreground">
+            <MessageSquare className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4 opacity-50" />
+            <p className="text-sm md:text-base">No messages yet. Be the first to post!</p>
           </div>
         ) : (
-          <ScrollArea className="h-[400px]">
+          <ScrollArea className="h-[300px] md:h-[400px]">
             <div className="divide-y divide-border">
               {messages.map((message) => (
                 <div 
                   key={message.id} 
-                  className="p-4 hover:bg-muted/50 transition-colors group"
+                  className="p-3 md:p-4 hover:bg-muted/50 transition-colors group"
                 >
-                  <div className="flex gap-3">
-                    <Avatar className="h-10 w-10 flex-shrink-0">
+                  <div className="flex gap-2 md:gap-3">
+                    <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
                       <AvatarImage src={message.user_profile?.avatar_url || undefined} />
-                      <AvatarFallback className="bg-secondary/20 text-secondary font-serif font-bold">
+                      <AvatarFallback className="bg-secondary/20 text-secondary font-serif font-bold text-sm md:text-base">
                         {message.user_profile?.display_name?.[0] || '?'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-foreground">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span className="font-semibold text-foreground text-sm md:text-base">
                             {message.user_profile?.display_name || 'Unknown User'}
                           </span>
-                          <span className="text-xs text-muted-foreground">
-                            {format(parseISO(message.created_at), 'MMM d, yyyy • h:mm a')}
+                          <span className="text-[10px] md:text-xs text-muted-foreground">
+                            {format(parseISO(message.created_at), 'MMM d, h:mm a')}
                           </span>
                         </div>
                         {user?.id === message.user_id && (
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                            className="h-7 w-7 md:h-8 md:w-8 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive self-end sm:self-auto"
                             onClick={() => handleDeleteMessage(message.id)}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                           </Button>
                          )}
                       </div>

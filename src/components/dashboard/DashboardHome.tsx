@@ -137,12 +137,12 @@ export function DashboardHome({
         {/* Compact Info Bar - Next Session & Duty Roster */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {/* Compact Countdown - ATP Style */}
-          <div className="bg-card border border-border rounded px-4 md:px-5 py-3 md:py-4 flex items-center gap-3 md:gap-4">
-            <div className="w-8 md:w-10 h-8 md:h-10 rounded bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+          <div className="bg-card border border-border rounded-md px-4 md:px-5 py-3.5 md:py-4 flex items-center gap-3 md:gap-4 shadow-card">
+            <div className="w-9 md:w-10 h-9 md:h-10 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
               <Calendar className="w-4 md:w-5 h-4 md:h-5 text-primary" />
             </div>
             <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-              <span className="text-xs md:text-sm text-muted-foreground font-bold uppercase tracking-wide">Next:</span>
+              <span className="text-[10px] md:text-xs text-muted-foreground font-bold uppercase tracking-widest">Next:</span>
               <div className="flex items-center gap-1 md:gap-2">
                 {[{
                 value: formatNumber(countdown.days),
@@ -157,9 +157,9 @@ export function DashboardHome({
                 value: formatNumber(countdown.secs),
                 label: 'S'
               }].map((item, i) => <span key={item.label} className="flex items-center">
-                    <span className="font-mono font-black text-primary text-base md:text-lg">{item.value}</span>
-                    <span className="text-[10px] md:text-xs text-muted-foreground font-bold ml-0.5">{item.label}</span>
-                    {i < 3 && <span className="text-border/50 mx-1 md:mx-1.5 font-light">:</span>}
+                    <span className="font-mono font-black text-primary text-base md:text-lg tabular-nums">{item.value}</span>
+                    <span className="text-[9px] md:text-[10px] text-muted-foreground font-bold ml-0.5 uppercase">{item.label}</span>
+                    {i < 3 && <span className="text-border mx-1 md:mx-1.5 font-light opacity-50">:</span>}
                   </span>)}
               </div>
             </div>
@@ -179,11 +179,11 @@ export function DashboardHome({
           {/* Right Panel - Recent Results & Next Session */}
           <div className="space-y-6">
             {/* Next Scheduled Session - ATP Style */}
-            <div className="bg-card border border-border rounded overflow-hidden">
+            <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
               <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
-                <div className="w-1 h-6 bg-primary rounded-full" />
+                <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
                 <Clock className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wide">
+                <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
                   Next Session
                 </h3>
               </div>
@@ -201,16 +201,16 @@ export function DashboardHome({
                 
                 <div className="flex items-center gap-2 mb-3">
                   <Users className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Participants</span>
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Participants</span>
                 </div>
                 
                 <div className="space-y-2">
-                  {sessionParticipants.map(player => <div key={player?.id} className="flex items-center gap-3 px-3 py-2.5 bg-secondary/30 rounded border border-border/50">
-                      <div className={`w-7 h-7 rounded flex items-center justify-center text-xs font-bold ${player?.role === 'royalty' ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-muted/50 text-muted-foreground border border-border/30'}`}>
+                  {sessionParticipants.map(player => <div key={player?.id} className="flex items-center gap-3 px-3 py-2.5 bg-secondary/30 rounded-md border border-border/50 transition-colors hover:bg-secondary/40">
+                      <div className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold ${player?.role === 'royalty' ? 'bg-primary/15 text-primary border border-primary/25' : 'bg-muted/50 text-muted-foreground border border-border/30'}`}>
                         {player?.name?.[0]}
                       </div>
                       <span className="text-sm font-semibold text-foreground">{player?.name}</span>
-                      {player?.role === 'royalty' && <span className="text-[9px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold ml-auto uppercase">
+                      {player?.role === 'royalty' && <span className="text-[9px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold ml-auto uppercase tracking-wide">
                           RF
                         </span>}
                     </div>)}
@@ -219,11 +219,11 @@ export function DashboardHome({
             </div>
 
             {/* Recent Results - ATP Style */}
-            <div className="bg-card border border-border rounded overflow-hidden">
+            <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
               <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
-                <div className="w-1 h-6 bg-primary rounded-full" />
+                <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
                 <Trophy className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wide">
+                <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
                   Recent Results
                 </h3>
               </div>
@@ -238,12 +238,12 @@ export function DashboardHome({
                 const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
                 const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
                 const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null ? `${game.team_a_score} - ${game.team_b_score}` : game.winner ? teamAWon ? 'W - L' : 'L - W' : 'TBD';
-                return <div key={game.id} className="p-4">
+                return <div key={game.id} className="p-4 transition-colors hover:bg-muted/20">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+                          <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
                             Game {game.game_number}
                           </span>
-                          <span className="text-[10px] text-muted-foreground font-medium">
+                          <span className="text-[10px] text-muted-foreground font-medium tabular-nums">
                             {new Date(game.session_date).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric'
@@ -255,13 +255,13 @@ export function DashboardHome({
                             <span className={`text-xs font-semibold truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
                               {teamADisplay}
                             </span>
-                            {teamAWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/20 text-primary rounded font-bold shrink-0 uppercase">W</span>}
+                            {teamAWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
                           </div>
-                          <span className="font-mono text-sm font-black text-foreground mx-3 shrink-0">
+                          <span className="font-mono text-sm font-black text-foreground mx-3 shrink-0 tabular-nums">
                             {scoreDisplay}
                           </span>
                           <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
-                            {teamBWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/20 text-primary rounded font-bold shrink-0 uppercase">W</span>}
+                            {teamBWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
                             <span className={`text-xs font-semibold truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
                               {teamBDisplay}
                             </span>

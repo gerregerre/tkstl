@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import {
   Dialog,
   DialogContent,
@@ -28,6 +26,7 @@ import {
 import { ChevronDown, ChevronRight, Calendar, Trophy, Users, Pencil, Trash2, Loader2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SessionGame {
   id: string;
@@ -292,116 +291,124 @@ export function SessionHistory() {
 
       <div className="space-y-3">
         {sessions.map((session) => (
-          <Collapsible
-            key={session.date}
-            open={openSessions.has(session.date)}
-            onOpenChange={() => toggleSession(session.date)}
-          >
-            <Card className="overflow-hidden">
-              <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors p-3 md:p-6">
-                  <div className="flex items-start md:items-center justify-between gap-2">
-                    <div className="flex items-start md:items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="mt-0.5 md:mt-0 shrink-0">
-                        {openSessions.has(session.date) ? (
-                          <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <CardTitle className="text-sm md:text-lg leading-tight">
-                          <span className="md:hidden">{format(parseISO(session.date), 'EEE, MMM d')}</span>
-                          <span className="hidden md:inline">{format(parseISO(session.date), 'EEEE, MMMM d, yyyy')}</span>
-                        </CardTitle>
-                        <div className="flex items-center gap-1.5 mt-1 text-xs md:text-sm text-muted-foreground">
-                          <Users className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
-                          <span className="truncate">{session.players.join(', ')}</span>
-                        </div>
-                      </div>
+          <Card key={session.date} className="overflow-hidden">
+            <CardHeader 
+              className="cursor-pointer hover:bg-muted/50 transition-colors p-3 md:p-6"
+              onClick={() => toggleSession(session.date)}
+            >
+              <div className="flex items-start md:items-center justify-between gap-2">
+                <div className="flex items-start md:items-center gap-2 md:gap-3 min-w-0 flex-1">
+                  <motion.div 
+                    className="mt-0.5 md:mt-0 shrink-0"
+                    animate={{ rotate: openSessions.has(session.date) ? 90 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+                  </motion.div>
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="text-sm md:text-lg leading-tight">
+                      <span className="md:hidden">{format(parseISO(session.date), 'EEE, MMM d')}</span>
+                      <span className="hidden md:inline">{format(parseISO(session.date), 'EEEE, MMMM d, yyyy')}</span>
+                    </CardTitle>
+                    <div className="flex items-center gap-1.5 mt-1 text-xs md:text-sm text-muted-foreground">
+                      <Users className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                      <span className="truncate">{session.players.join(', ')}</span>
                     </div>
-                    <Badge className="text-[10px] md:text-xs shrink-0">{session.games.length} Games</Badge>
                   </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="pt-0 px-3 pb-3 md:px-6 md:pb-6">
-                  <div className="space-y-2 md:space-y-3">
-                    {session.games.map((game) => (
-                      <div
-                        key={game.id}
-                        className="p-3 md:p-4 rounded-lg bg-muted/30 border border-border/50"
-                      >
-                        {/* Game header */}
-                        <div className="flex items-center justify-between mb-2 md:mb-3">
-                          <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
-                            <span className="font-semibold text-xs md:text-sm">
-                              Game {game.game_number}
-                            </span>
-                            {getWinnerBadge(game)}
-                          </div>
-                          <div className="flex items-center gap-0.5 md:gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-7 w-7 md:h-8 md:w-8"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openEditDialog(game);
-                              }}
-                            >
-                              <Pencil className="w-3 h-3 md:w-4 md:h-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-7 w-7 md:h-8 md:w-8 text-destructive hover:text-destructive"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setDeletingGame(game);
-                              }}
-                            >
-                              <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        {/* Score display - optimized for mobile */}
-                        <div className="grid grid-cols-[1fr_auto_1fr] gap-2 md:gap-4 items-center">
-                          <div className="text-center">
-                            <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team A</div>
-                            <div className="font-medium text-xs md:text-sm leading-tight">
-                              {game.team_a_player1}
+                </div>
+                <Badge className="text-[10px] md:text-xs shrink-0">{session.games.length} Games</Badge>
+              </div>
+            </CardHeader>
+            
+            <AnimatePresence initial={false}>
+              {openSessions.has(session.date) && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <CardContent className="pt-0 px-3 pb-3 md:px-6 md:pb-6">
+                    <div className="space-y-2 md:space-y-3">
+                      {session.games.map((game, index) => (
+                        <motion.div
+                          key={game.id}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05, duration: 0.2 }}
+                          className="p-3 md:p-4 rounded-lg bg-muted/30 border border-border/50"
+                        >
+                          {/* Game header */}
+                          <div className="flex items-center justify-between mb-2 md:mb-3">
+                            <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+                              <span className="font-semibold text-xs md:text-sm">
+                                Game {game.game_number}
+                              </span>
+                              {getWinnerBadge(game)}
                             </div>
-                            <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
-                              {game.team_a_player2}
+                            <div className="flex items-center gap-0.5 md:gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 md:h-8 md:w-8"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openEditDialog(game);
+                                }}
+                              >
+                                <Pencil className="w-3 h-3 md:w-4 md:h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 md:h-8 md:w-8 text-destructive hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setDeletingGame(game);
+                                }}
+                              >
+                                <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
+                              </Button>
                             </div>
                           </div>
                           
-                          <div className="text-center px-2 md:px-4">
-                            <div className="text-lg md:text-2xl font-bold text-primary whitespace-nowrap">
-                              {getScoreDisplay(game)}
+                          {/* Score display - optimized for mobile */}
+                          <div className="grid grid-cols-[1fr_auto_1fr] gap-2 md:gap-4 items-center">
+                            <div className="text-center">
+                              <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team A</div>
+                              <div className="font-medium text-xs md:text-sm leading-tight">
+                                {game.team_a_player1}
+                              </div>
+                              <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
+                                {game.team_a_player2}
+                              </div>
+                            </div>
+                            
+                            <div className="text-center px-2 md:px-4">
+                              <div className="text-lg md:text-2xl font-bold text-primary whitespace-nowrap">
+                                {getScoreDisplay(game)}
+                              </div>
+                            </div>
+                            
+                            <div className="text-center">
+                              <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team B</div>
+                              <div className="font-medium text-xs md:text-sm leading-tight">
+                                {game.team_b_player1}
+                              </div>
+                              <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
+                                {game.team_b_player2}
+                              </div>
                             </div>
                           </div>
-                          
-                          <div className="text-center">
-                            <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team B</div>
-                            <div className="font-medium text-xs md:text-sm leading-tight">
-                              {game.team_b_player1}
-                            </div>
-                            <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
-                              {game.team_b_player2}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Card>
-          </Collapsible>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Card>
         ))}
       </div>
 

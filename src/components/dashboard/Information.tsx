@@ -12,43 +12,6 @@ export function Information() {
         </p>
       </div>
 
-      {/* The Legend of PwC - NEW HISTORICAL SECTION */}
-      <Card className="border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-transparent">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-amber-600">
-            <Scroll className="w-5 h-5" />
-            The Legend of the Naming
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="prose prose-sm max-w-none text-muted-foreground space-y-4">
-          <p>
-            In the autumn of 2023, a humble accountant named <strong>Hampus</strong> toiled away in the 
-            great marble halls of <strong>PricewaterhouseCoopers</strong>—one of the Four Horsemen of 
-            the accounting apocalypse. Day after day, he balanced ledgers and reconciled spreadsheets, 
-            his dreams of badminton glory seemingly crushed beneath mountains of quarterly reports.
-          </p>
-          <p>
-            But fate had other plans. When the Council of Nobles convened to establish the Sacred Formats, 
-            tradition demanded that only those of noble blood—or at minimum, management consultants—could 
-            bestow names upon the games. Hampus, a mere <em>Senior Associate</em>, was expected to remain silent.
-          </p>
-          <p>
-            Yet, in an act of unprecedented courage that historians would later compare to David facing Goliath 
-            (if Goliath had a Bloomberg terminal), Hampus rose during the naming ceremony. His voice trembled 
-            as he spoke: <em>"What if... we called it PwC Single?"</em>
-          </p>
-          <p>
-            Gasps echoed through the court. A peasant—an <em>accountant</em>—daring to name a noble sport 
-            after his corporate overlords? Some say the shuttle itself paused mid-flight in disbelief. 
-            The elders deliberated for approximately 0.3 seconds before realizing it was actually quite clever.
-          </p>
-          <p className="italic text-amber-600/80">
-            And thus, against all odds and several HR policies, the format was christened. 
-            Hampus returned to his spreadsheets a legend.
-          </p>
-        </CardContent>
-      </Card>
-
       {/* Session Overview */}
       <Card className="border-primary/20">
         <CardHeader>

@@ -74,7 +74,7 @@ export function MemberProfiles() {
           <DirtIcon className="w-6 h-6 text-burlap" />
           <h2 className="font-serif text-2xl font-bold text-foreground">The Common Folk</h2>
         </div>
-        <p className="text-muted-foreground font-serif-body mb-6 max-w-2xl">
+        <p className="text-muted-foreground font-serif-body mb-6 max-w-4xl">
           Admitted through the benevolence of the Founders, these individuals have been granted the supreme privilege of
           sharing oxygen with tennis royalty. Their journey from complete obscurity to slight obscurity is truly
           inspiring. Even though sharing the court with Royalty, the common folk shall always be seen as scum of the

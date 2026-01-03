@@ -1,14 +1,14 @@
 export const clubHistory = {
   title: "The Sacred Chronicles of TKSTL",
   subtitle: "Seven Years of Glorious Dominion",
-  
+
   chapters: [
     {
       year: "Year Zero - The Founding",
       title: "From Clay, a Kingdom Rose",
-      content: `In the autumn of 2017, when lesser mortals played tennis for mere "exercise" and "fun," three visionaries gathered at Court Seven of the municipal facility. Gerard, Kockum, and Viktor looked upon the nets and saw not barriers, but thrones.
+      content: `In the autumn of 2017, when lesser mortals played tennis for mere "exercise" and "fun," three visionaries gathered at Court Seven of the municipal facility. Kockum,Viktor and Gerard looked upon the nets and saw not barriers, but thrones.
 
-"We shall create something," Gerard declared, his voice carrying the weight of inevitability, "that transcends the game itself."
+"We shall create something," Viktor declared, his voice carrying the weight of inevitability, "that transcends the game itself."
 
 And so it was written. And so it was done.
 
@@ -67,7 +67,7 @@ The clay courts of TKSTL have borne witness to seven years of triumph, tradition
 Long may the Society reign.`,
     },
   ],
-  
+
   theRedacted: {
     title: "CLASSIFIED ADDENDUM",
     content: `The following information is classified at the highest level of Society clearance.

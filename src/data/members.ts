@@ -90,7 +90,7 @@ export const members: User[] = [
     accomplishments: [
       "Unworthy of the Sacred Clay",
       "Professional Court Warmer",
-      "Expert at Losing with Dignity (Debatable)",
+      "Allergic to buying tennis balls",
       "Shows Up Sometimes (Barely)",
       "Walking Cautionary Tale",
     ],

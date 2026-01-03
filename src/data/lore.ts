@@ -28,7 +28,7 @@ It should be noted that the Peasant Program was originally designed to accommoda
     {
       year: "Years Four and Five - The Golden Age",
       title: "When Legends Played as Gods",
-      content: `These years saw the Society reach unprecedented heights. The Monday Sessions became the stuff of legend—four hours of exquisite tennis followed by sauna discussions that shaped the very fabric of the club's philosophy.
+      content: `These years saw the Society reach unprecedented heights. The Monday Sessions became the stuff of legend— one hour of exquisite tennis followed by sauna discussions that shaped the very fabric of the club's philosophy.
 
 It was during this period that Gerard achieved his famous "Perfect Month," in which he won every single point played in November 2021. The Peasants spoke of this time in hushed tones, referring to it simply as "The Reckoning."
 

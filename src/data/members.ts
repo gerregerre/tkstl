@@ -81,7 +81,7 @@ export const members: User[] = [
     name: "Joel",
     role: "peasant",
     title: "Court Sweeper Third Class",
-    bio: "Joel was discovered wandering near the tennis courts looking confused and slightly damp. Out of profound pity, the Founders allowed him to hold a racket. He has since proven that miracles have limits. His presence is tolerated as a form of community service.",
+    bio: "Found emerging from a peat bog clutching a broken branch and a dream, Joel was mistaken for a particularly confused local vegetable. Out of a sense of extreme civic duty, the Founders handed him a racket to keep him from eating the clay. He remains the club's longest-running experiment in human domestication.",
     wins: 0,
     losses: 0,
     pointDifferential: 0,
@@ -90,7 +90,7 @@ export const members: User[] = [
     accomplishments: [
       "Unworthy of the Sacred Clay",
       "Professional Court Warmer",
-      "Allergic to buying tennis balls",
+      "Expert at Losing with Dignity (Debatable)",
       "Shows Up Sometimes (Barely)",
       "Walking Cautionary Tale",
     ],

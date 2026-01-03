@@ -270,15 +270,23 @@ export function SessionHistory() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Session History</h2>
+    <div className="space-y-4 md:space-y-6">
+      {/* Header - stacks on mobile */}
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <h2 className="text-xl md:text-2xl font-bold">Session History</h2>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRecalculateAll} disabled={isRecalculating}>
-            {isRecalculating && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            Recalculate All Stats
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRecalculateAll} 
+            disabled={isRecalculating}
+            className="text-xs md:text-sm flex-1 md:flex-none"
+          >
+            {isRecalculating && <Loader2 className="w-3 h-3 md:w-4 md:h-4 mr-1.5 animate-spin" />}
+            <span className="hidden sm:inline">Recalculate All Stats</span>
+            <span className="sm:hidden">Recalculate</span>
           </Button>
-          <Badge variant="secondary">{sessions.length} Sessions</Badge>
+          <Badge variant="secondary" className="text-xs shrink-0">{sessions.length} Sessions</Badge>
         </div>
       </div>
 
@@ -289,95 +297,100 @@ export function SessionHistory() {
             open={openSessions.has(session.date)}
             onOpenChange={() => toggleSession(session.date)}
           >
-            <Card>
+            <Card className="overflow-hidden">
               <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {openSessions.has(session.date) ? (
-                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                      )}
-                      <div>
-                        <CardTitle className="text-lg">
-                          {format(parseISO(session.date), 'EEEE, MMMM d, yyyy')}
+                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors p-3 md:p-6">
+                  <div className="flex items-start md:items-center justify-between gap-2">
+                    <div className="flex items-start md:items-center gap-2 md:gap-3 min-w-0 flex-1">
+                      <div className="mt-0.5 md:mt-0 shrink-0">
+                        {openSessions.has(session.date) ? (
+                          <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <CardTitle className="text-sm md:text-lg leading-tight">
+                          <span className="md:hidden">{format(parseISO(session.date), 'EEE, MMM d')}</span>
+                          <span className="hidden md:inline">{format(parseISO(session.date), 'EEEE, MMMM d, yyyy')}</span>
                         </CardTitle>
-                        <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
-                          <Users className="w-4 h-4" />
-                          <span>{session.players.join(', ')}</span>
+                        <div className="flex items-center gap-1.5 mt-1 text-xs md:text-sm text-muted-foreground">
+                          <Users className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                          <span className="truncate">{session.players.join(', ')}</span>
                         </div>
                       </div>
                     </div>
-                    <Badge>{session.games.length} Games</Badge>
+                    <Badge className="text-[10px] md:text-xs shrink-0">{session.games.length} Games</Badge>
                   </div>
                 </CardHeader>
               </CollapsibleTrigger>
               
               <CollapsibleContent>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
+                <CardContent className="pt-0 px-3 pb-3 md:px-6 md:pb-6">
+                  <div className="space-y-2 md:space-y-3">
                     {session.games.map((game) => (
                       <div
                         key={game.id}
-                        className="p-4 rounded-lg bg-muted/30 border border-border/50"
+                        className="p-3 md:p-4 rounded-lg bg-muted/30 border border-border/50"
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-sm">
+                        {/* Game header */}
+                        <div className="flex items-center justify-between mb-2 md:mb-3">
+                          <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+                            <span className="font-semibold text-xs md:text-sm">
                               Game {game.game_number}
                             </span>
                             {getWinnerBadge(game)}
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-0.5 md:gap-1">
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8"
+                              className="h-7 w-7 md:h-8 md:w-8"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 openEditDialog(game);
                               }}
                             >
-                              <Pencil className="w-4 h-4" />
+                              <Pencil className="w-3 h-3 md:w-4 md:h-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-destructive hover:text-destructive"
+                              className="h-7 w-7 md:h-8 md:w-8 text-destructive hover:text-destructive"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setDeletingGame(game);
                               }}
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
                             </Button>
                           </div>
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-4 items-center">
+                        {/* Score display - optimized for mobile */}
+                        <div className="grid grid-cols-[1fr_auto_1fr] gap-2 md:gap-4 items-center">
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1">Team A</div>
-                            <div className="font-medium text-sm">
+                            <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team A</div>
+                            <div className="font-medium text-xs md:text-sm leading-tight">
                               {game.team_a_player1}
                             </div>
-                            <div className="font-medium text-sm">
+                            <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
                               {game.team_a_player2}
                             </div>
                           </div>
                           
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-primary">
+                          <div className="text-center px-2 md:px-4">
+                            <div className="text-lg md:text-2xl font-bold text-primary whitespace-nowrap">
                               {getScoreDisplay(game)}
                             </div>
                           </div>
                           
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1">Team B</div>
-                            <div className="font-medium text-sm">
+                            <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1 uppercase tracking-wide">Team B</div>
+                            <div className="font-medium text-xs md:text-sm leading-tight">
                               {game.team_b_player1}
                             </div>
-                            <div className="font-medium text-sm">
+                            <div className="font-medium text-xs md:text-sm leading-tight text-muted-foreground">
                               {game.team_b_player2}
                             </div>
                           </div>

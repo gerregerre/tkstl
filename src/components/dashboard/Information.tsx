@@ -55,6 +55,61 @@ export function Information() {
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
+              {/* Court Diagram */}
+              <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+                <h4 className="font-medium text-foreground text-sm mb-3 text-center">Court Layout</h4>
+                <svg viewBox="0 0 200 120" className="w-full max-w-xs mx-auto">
+                  {/* Court background */}
+                  <rect x="10" y="10" width="180" height="100" fill="hsl(var(--primary) / 0.1)" stroke="hsl(var(--primary))" strokeWidth="2" rx="2" />
+                  
+                  {/* Center line (vertical split) */}
+                  <line x1="100" y1="10" x2="100" y2="110" stroke="hsl(var(--primary))" strokeWidth="2" />
+                  
+                  {/* Net line */}
+                  <line x1="10" y1="60" x2="190" y2="60" stroke="hsl(var(--foreground) / 0.5)" strokeWidth="1" strokeDasharray="4,2" />
+                  
+                  {/* Left court - Player A (Team 1) */}
+                  <circle cx="55" cy="85" r="8" fill="hsl(var(--primary))" />
+                  <text x="55" y="88" textAnchor="middle" fontSize="8" fill="hsl(var(--primary-foreground))" fontWeight="bold">A</text>
+                  
+                  {/* Left court - Player C (Team 2) */}
+                  <circle cx="55" cy="35" r="8" fill="hsl(220 70% 50%)" />
+                  <text x="55" y="38" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">C</text>
+                  
+                  {/* Right court - Player B (Team 1) */}
+                  <circle cx="145" cy="85" r="8" fill="hsl(var(--primary))" />
+                  <text x="145" y="88" textAnchor="middle" fontSize="8" fill="hsl(var(--primary-foreground))" fontWeight="bold">B</text>
+                  
+                  {/* Right court - Player D (Team 2) */}
+                  <circle cx="145" cy="35" r="8" fill="hsl(220 70% 50%)" />
+                  <text x="145" y="38" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">D</text>
+                  
+                  {/* Arrows showing parallel play */}
+                  <path d="M55 75 L55 45" stroke="hsl(var(--primary))" strokeWidth="2" markerEnd="url(#arrowhead)" fill="none" />
+                  <path d="M145 75 L145 45" stroke="hsl(var(--primary))" strokeWidth="2" markerEnd="url(#arrowhead)" fill="none" />
+                  
+                  {/* Arrow marker definition */}
+                  <defs>
+                    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <polygon points="0 0, 6 3, 0 6" fill="hsl(var(--primary))" />
+                    </marker>
+                  </defs>
+                </svg>
+                <div className="flex justify-center gap-6 mt-3 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-primary" />
+                    <span className="text-muted-foreground">Team 1 (A+B)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(220 70% 50%)' }} />
+                    <span className="text-muted-foreground">Team 2 (C+D)</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground text-center mt-2 italic">
+                  Parallel singles: A vs C, B vs D simultaneously
+                </p>
+              </div>
+
               <div className="space-y-3 text-muted-foreground">
                 <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>
@@ -105,6 +160,68 @@ export function Information() {
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
+              {/* Court Diagram */}
+              <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+                <h4 className="font-medium text-foreground text-sm mb-3 text-center">Court Layout</h4>
+                <svg viewBox="0 0 200 120" className="w-full max-w-xs mx-auto">
+                  {/* Court background */}
+                  <rect x="10" y="10" width="180" height="100" fill="hsl(346 77% 50% / 0.1)" stroke="hsl(346 77% 50%)" strokeWidth="2" rx="2" />
+                  
+                  {/* Center line (vertical split) */}
+                  <line x1="100" y1="10" x2="100" y2="110" stroke="hsl(346 77% 50%)" strokeWidth="2" />
+                  
+                  {/* Net line */}
+                  <line x1="10" y1="60" x2="190" y2="60" stroke="hsl(var(--foreground) / 0.5)" strokeWidth="1" strokeDasharray="4,2" />
+                  
+                  {/* Bottom-left - Player A (Team 1) */}
+                  <circle cx="35" cy="85" r="8" fill="hsl(346 77% 50%)" />
+                  <text x="35" y="88" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">A</text>
+                  
+                  {/* Top-right - Player D (Team 2) - A's opponent */}
+                  <circle cx="165" cy="35" r="8" fill="hsl(262 83% 58%)" />
+                  <text x="165" y="38" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">D</text>
+                  
+                  {/* Bottom-right - Player B (Team 1) */}
+                  <circle cx="165" cy="85" r="8" fill="hsl(346 77% 50%)" />
+                  <text x="165" y="88" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">B</text>
+                  
+                  {/* Top-left - Player C (Team 2) - B's opponent */}
+                  <circle cx="35" cy="35" r="8" fill="hsl(262 83% 58%)" />
+                  <text x="35" y="38" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">C</text>
+                  
+                  {/* Diagonal arrows showing cross-court play */}
+                  <path d="M42 78 L158 42" stroke="hsl(346 77% 50%)" strokeWidth="2" markerEnd="url(#arrowhead-shibuya)" fill="none" opacity="0.8" />
+                  <path d="M158 78 L42 42" stroke="hsl(262 83% 58%)" strokeWidth="2" markerEnd="url(#arrowhead-shibuya2)" fill="none" opacity="0.8" />
+                  
+                  {/* Crossing indicator */}
+                  <circle cx="100" cy="60" r="6" fill="hsl(var(--foreground) / 0.2)" stroke="hsl(var(--foreground) / 0.5)" strokeWidth="1" />
+                  <text x="100" y="63" textAnchor="middle" fontSize="6" fill="hsl(var(--foreground))">X</text>
+                  
+                  {/* Arrow marker definitions */}
+                  <defs>
+                    <marker id="arrowhead-shibuya" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <polygon points="0 0, 6 3, 0 6" fill="hsl(346 77% 50%)" />
+                    </marker>
+                    <marker id="arrowhead-shibuya2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <polygon points="0 0, 6 3, 0 6" fill="hsl(262 83% 58%)" />
+                    </marker>
+                  </defs>
+                </svg>
+                <div className="flex justify-center gap-6 mt-3 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(346 77% 50%)' }} />
+                    <span className="text-muted-foreground">Team 1 (A+B)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(262 83% 58%)' }} />
+                    <span className="text-muted-foreground">Team 2 (C+D)</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground text-center mt-2 italic">
+                  Diagonal singles: A vs D, B vs C — paths cross at center
+                </p>
+              </div>
+
               <div className="space-y-3 text-muted-foreground">
                 <h4 className="font-medium text-foreground">How It Works</h4>
                 <p>

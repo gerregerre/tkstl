@@ -6,7 +6,7 @@ export const clubHistory = {
     {
       year: "Year Zero - The Founding",
       title: "From Clay, a Kingdom Rose",
-      content: `In the autumn of 2017, when lesser mortals played tennis for mere "exercise" and "fun," three visionaries gathered at Court Seven of the municipal facility. Kockum,Viktor and Gerard looked upon the nets and saw not barriers, but thrones.
+      content: `In the autumn of 2017, when lesser mortals played tennis for mere "exercise" and "fun," three visionaries gathered at Court Seven of the municipal facility. Kockum, Viktor and Gerard looked upon the nets and saw not barriers, but thrones.
 
 "We shall create something," Viktor declared, his voice carrying the weight of inevitability, "that transcends the game itself."
 

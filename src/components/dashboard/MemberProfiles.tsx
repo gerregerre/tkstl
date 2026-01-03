@@ -27,8 +27,7 @@ export function MemberProfiles() {
           </h2>
         </div>
         <p className="text-muted-foreground font-serif-body mb-6 max-w-2xl">
-          The founding triumvirate, blessed with tennis divinity and seven years of unbroken reign. 
-          Their presence on court is a gift to all who witness it.
+          ​The founding triumvirate, blessed with tennis divinity and seven years of unbroken reign. Their presence on court is a gift to all who witness it. They sit upon a throne of countless victories, ruling the clay and grass with an absolute and terrifying majesty. To challenge them is to challenge fate itself, for they do not merely play the game—they dictate its very laws by royal decree
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

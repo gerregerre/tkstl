@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 export function MemberProfiles() {
   const royalty = getRoyalty();
   const peasants = getPeasants();
-  return (
-    <div className="space-y-10 animate-fade-in-up">
+  return <div className="space-y-10 animate-fade-in-up">
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
@@ -33,8 +32,7 @@ export function MemberProfiles() {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {royalty.map((member) => (
-            <div key={member.id} className="bg-card rounded-xl border border-gold/30 p-6 relative overflow-hidden">
+          {royalty.map(member => <div key={member.id} className="bg-card rounded-xl border border-gold/30 p-6 relative overflow-hidden">
               {/* Corner Accent */}
               <div className="absolute top-0 right-0 w-8 h-8">
                 <div className="absolute top-0 right-0 w-0 h-0 border-t-[32px] border-t-gold/40 border-l-[32px] border-l-transparent" />
@@ -55,16 +53,13 @@ export function MemberProfiles() {
                   Noble Accomplishments
                 </p>
                 <ul className="space-y-1.5">
-                  {member.accomplishments.map((acc, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  {member.accomplishments.map((acc, i) => <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold mt-1.5 shrink-0" />
                       <span>{acc}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -82,15 +77,14 @@ export function MemberProfiles() {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {peasants.map((member) => (
-            <div key={member.id} className="bg-card rounded-xl border border-burlap/30 p-6 relative overflow-hidden">
+          {peasants.map(member => <div key={member.id} className="bg-card rounded-xl border border-burlap/30 p-6 relative overflow-hidden">
               {/* Corner Accent */}
               <div className="absolute top-0 right-0 w-8 h-8">
                 <div className="absolute top-0 right-0 w-0 h-0 border-t-[32px] border-t-burlap/30 border-l-[32px] border-l-transparent" />
               </div>
 
               <div className="mb-4">
-                <h3 className="font-serif text-2xl font-bold text-foreground">{member.name}</h3>
+                <h3 className="font-serif text-2xl font-bold text-primary">{member.name}</h3>
                 <p className="text-burlap text-sm font-serif-body italic">{member.title}</p>
                 <Badge variant="outline" className="mt-2 border-burlap/50 text-burlap bg-burlap/5">
                   {member.yearsOfService} {member.yearsOfService === 1 ? "year" : "years"} of servitude
@@ -102,16 +96,13 @@ export function MemberProfiles() {
               <div>
                 <p className="text-xs font-semibold text-burlap uppercase tracking-wider mb-3">Noted Traits</p>
                 <ul className="space-y-1.5">
-                  {member.accomplishments.map((acc, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  {member.accomplishments.map((acc, i) => <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-burlap mt-1.5 shrink-0" />
                       <span>{acc}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -123,6 +114,5 @@ export function MemberProfiles() {
           ceremonially ignored.
         </p>
       </div>
-    </div>
-  );
+    </div>;
 }

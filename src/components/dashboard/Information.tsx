@@ -1,12 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Trophy, Target, Sword, Scale, BookOpen, Calculator, Zap, Scroll } from 'lucide-react';
-
 export function Information() {
-  return (
-    <div className="space-y-8">
+  return <div className="space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-foreground">The Sacred Compendium</h1>
+        <h1 className="text-3xl font-bold text-gold">The Sacred Compendium</h1>
         <p className="text-muted-foreground italic">
           A chronicle of noble traditions and their legendary origins
         </p>
@@ -101,7 +99,9 @@ export function Information() {
                     <span className="text-muted-foreground">Team 1 (A+B)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(220 70% 50%)' }} />
+                    <div className="w-3 h-3 rounded-full" style={{
+                    backgroundColor: 'hsl(220 70% 50%)'
+                  }} />
                     <span className="text-muted-foreground">Team 2 (C+D)</span>
                   </div>
                 </div>
@@ -209,11 +209,15 @@ export function Information() {
                 </svg>
                 <div className="flex justify-center gap-6 mt-3 text-xs">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(346 77% 50%)' }} />
+                    <div className="w-3 h-3 rounded-full" style={{
+                    backgroundColor: 'hsl(346 77% 50%)'
+                  }} />
                     <span className="text-muted-foreground">Team 1 (A+B)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(262 83% 58%)' }} />
+                    <div className="w-3 h-3 rounded-full" style={{
+                    backgroundColor: 'hsl(262 83% 58%)'
+                  }} />
                     <span className="text-muted-foreground">Team 2 (C+D)</span>
                   </div>
                 </div>
@@ -468,6 +472,5 @@ export function Information() {
           </p>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 }

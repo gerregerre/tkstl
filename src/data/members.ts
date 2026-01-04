@@ -62,7 +62,7 @@ export const members: User[] = [
     name: "Ludvig",
     role: "peasant",
     title: "Ball Boy Aspirant",
-    bio: "Graciously permitted to contaminate the same court as the Founders. Shows occasional promise, like a stray dog that learns a trick before immediately forgetting it. The Founders debate weekly whether his continued membership is charity or cruelty.",
+    bio: "Graciously permitted to contaminate the same court as the Founders. Shows occasional promise, like a stray dog that learns a trick before immediately forgetting it. The Founders debate weekly whether his continued membership is charity or cruelty but for now, he remains their favorite jester, a living monument to wasted potential.",
     wins: 0,
     losses: 0,
     pointDifferential: 0,

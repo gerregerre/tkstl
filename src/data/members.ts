@@ -100,7 +100,7 @@ export const members: User[] = [
     name: "Hampus",
     role: "peasant",
     title: "Equipment Mule",
-    bio: "The newest addition to our charity program. Hampus genuinely believes he plays tennis. We let him think that—it seems cruel to correct him now. His service motion has been compared to a malfunctioning windmill having a seizure. Doctors are baffled he can tie his own shoes yet the Founders keep the stray around for the sheer comedy.",
+    bio: "Our resident charity case, Hampus genuinely believes he plays tennis. We let him think that—it seems cruel to correct him now. His service motion resembles a malfunctioning windmill having a seizure. Doctors are baffled he can tie his shoes, yet the Founders keep the stray for comedy.",
     wins: 0,
     losses: 0,
     pointDifferential: 0,

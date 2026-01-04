@@ -255,14 +255,14 @@ export function NewSessionRecorder() {
             </p>
           </div>
 
-          {/* Game 1 */}
+          {/* PwC Single */}
           <div className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
                 1
               </div>
               <div>
-                <h4 className="font-serif text-lg font-bold text-foreground">Game 1</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">PwC Single</h4>
                 <p className="text-sm text-muted-foreground">Score 0-9 • Winners: 10pts • Losers: (Score/9)×10 pts</p>
               </div>
             </div>
@@ -310,14 +310,14 @@ export function NewSessionRecorder() {
             </div>
           </div>
 
-          {/* Game 2 */}
+          {/* Shibuya Crossing */}
           <div className="bg-card rounded-lg border-2 border-secondary/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center font-bold text-secondary">
                 2
               </div>
               <div>
-                <h4 className="font-serif text-lg font-bold text-foreground">Game 2</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">Shibuya Crossing</h4>
                 <p className="text-sm text-muted-foreground">Score 0-9 • Winners: 10pts • Losers: (Score/9)×10 pts</p>
               </div>
             </div>
@@ -365,14 +365,14 @@ export function NewSessionRecorder() {
             </div>
           </div>
 
-          {/* Game 3 */}
+          {/* Tug Of War */}
           <div className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-card">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center font-bold text-gold">
                 3
               </div>
               <div>
-                <h4 className="font-serif text-lg font-bold text-foreground">Game 3 (Ladder)</h4>
+                <h4 className="font-serif text-lg font-bold text-foreground">Tug Of War</h4>
                 <p className="text-sm text-muted-foreground">Win/Loss only • Winners: 10pts • Losers: 5pts</p>
               </div>
             </div>

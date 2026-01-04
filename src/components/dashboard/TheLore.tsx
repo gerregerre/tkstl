@@ -3,18 +3,15 @@ import { clubHistory } from '@/data/lore';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Lock, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
 export function TheLore() {
   const [showClassified, setShowClassified] = useState(false);
-
-  return (
-    <div className="space-y-8 animate-fade-in-up">
+  return <div className="space-y-8 animate-fade-in-up">
       {/* Header */}
       <div className="text-center">
         <div className="flex justify-center mb-4">
           <BookOpen className="w-12 h-12 text-terra-cotta" />
         </div>
-        <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground">
+        <h2 className="font-serif text-3xl md:text-4xl font-bold text-gold">
           {clubHistory.title}
         </h2>
         <p className="font-serif-body text-xl text-muted-foreground mt-2 italic">
@@ -29,12 +26,9 @@ export function TheLore() {
 
       {/* Chapters */}
       <div className="space-y-8">
-        {clubHistory.chapters.map((chapter, index) => (
-          <article 
-            key={index} 
-            className="bg-card rounded-lg border border-border p-6 md:p-8 shadow-card"
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
+        {clubHistory.chapters.map((chapter, index) => <article key={index} className="bg-card rounded-lg border border-border p-6 md:p-8 shadow-card" style={{
+        animationDelay: `${index * 100}ms`
+      }}>
             <div className="flex items-start gap-4 mb-4">
               <div className="bg-terra-cotta/10 rounded-lg p-3 hidden sm:block">
                 <span className="font-serif text-2xl font-bold text-terra-cotta">
@@ -51,43 +45,24 @@ export function TheLore() {
               </div>
             </div>
             <div className="prose prose-sm max-w-none">
-              {chapter.content.split('\n\n').map((paragraph, pIndex) => (
-                <p 
-                  key={pIndex} 
-                  className={cn(
-                    "text-foreground/80 leading-relaxed mb-4 last:mb-0",
-                    paragraph.includes('The Redacted') || paragraph.includes('He Who Stumbled')
-                      ? "bg-destructive/5 border-l-2 border-destructive/30 pl-4 py-2 italic"
-                      : ""
-                  )}
-                >
+              {chapter.content.split('\n\n').map((paragraph, pIndex) => <p key={pIndex} className={cn("text-foreground/80 leading-relaxed mb-4 last:mb-0", paragraph.includes('The Redacted') || paragraph.includes('He Who Stumbled') ? "bg-destructive/5 border-l-2 border-destructive/30 pl-4 py-2 italic" : "")}>
                   {paragraph}
-                </p>
-              ))}
+                </p>)}
             </div>
-          </article>
-        ))}
+          </article>)}
       </div>
 
       {/* Classified Section */}
       <div className="relative">
-        <div className={cn(
-          "bg-card rounded-lg border-2 p-6 md:p-8 shadow-card transition-all",
-          showClassified ? "border-destructive/50" : "border-border"
-        )}>
+        <div className={cn("bg-card rounded-lg border-2 p-6 md:p-8 shadow-card transition-all", showClassified ? "border-destructive/50" : "border-border")}>
           <div className="flex items-center gap-3 mb-4">
-            {showClassified ? (
-              <AlertTriangle className="w-6 h-6 text-destructive" />
-            ) : (
-              <Lock className="w-6 h-6 text-muted-foreground" />
-            )}
+            {showClassified ? <AlertTriangle className="w-6 h-6 text-destructive" /> : <Lock className="w-6 h-6 text-muted-foreground" />}
             <h3 className="font-serif text-xl font-bold text-foreground">
               {clubHistory.theRedacted.title}
             </h3>
           </div>
 
-          {showClassified ? (
-            <div className="space-y-4">
+          {showClassified ? <div className="space-y-4">
               <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4">
                 <p className="text-xs text-destructive font-mono mb-2">
                   ⚠ CLEARANCE LEVEL: READER
@@ -96,32 +71,21 @@ export function TheLore() {
               <div className="font-mono text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
                 {clubHistory.theRedacted.content}
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowClassified(false)}
-                className="mt-4"
-              >
+              <Button variant="outline" size="sm" onClick={() => setShowClassified(false)} className="mt-4">
                 Re-seal Document
               </Button>
-            </div>
-          ) : (
-            <div className="text-center py-8">
+            </div> : <div className="text-center py-8">
               <p className="text-muted-foreground mb-4 italic font-serif-body">
                 "Some knowledge carries a weight that the unprepared cannot bear."
               </p>
               <p className="text-xs text-muted-foreground mb-6">
                 This document contains classified information regarding The Fourth Founder.
               </p>
-              <Button
-                variant="destructive"
-                onClick={() => setShowClassified(true)}
-              >
+              <Button variant="destructive" onClick={() => setShowClassified(true)}>
                 <Lock className="w-4 h-4 mr-2" />
                 Access Classified Records
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Decorative corners */}
@@ -138,6 +102,5 @@ export function TheLore() {
         </blockquote>
         <p className="text-sm text-muted-foreground mt-2">— Gerard, Annual Assembly, Year Seven</p>
       </div>
-    </div>
-  );
+    </div>;
 }

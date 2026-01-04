@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePlayers, LeaderboardMode } from '@/hooks/usePlayers';
+import { usePlayers } from '@/hooks/usePlayers';
 import { useTeams } from '@/hooks/useTeams';
+import { useFilteredPlayerStats, GameTypeFilter } from '@/hooks/useFilteredPlayerStats';
 import { cn } from '@/lib/utils';
 import { Trophy, Medal, Award, Star, ChevronDown, ChevronRight, Users, User, RefreshCw, Filter } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -13,8 +14,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-type GameTypeFilter = 'all' | 'pwc' | 'shibuya' | 'tow';
 
 const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
   all: 'All Games',
@@ -35,6 +34,9 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   const [isRecalculating, setIsRecalculating] = useState(false);
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
 
+  // Filtered stats hook
+  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading, isFiltered } = useFilteredPlayerStats(gameTypeFilter);
+
   const toggleRowExpansion = (id: string) => {
     setExpandedRowId(prev => prev === id ? null : id);
   };
@@ -51,7 +53,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     }
   };
   
-  const loading = playersLoading || teamsLoading;
+  const loading = playersLoading || teamsLoading || (isFiltered && filteredLoading);
 
   if (loading) {
     return (
@@ -61,8 +63,38 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     );
   }
 
-  const singlesLeaderboard = getLeaderboard('singles');
-  const doublesLeaderboard = getTeamLeaderboard();
+  // Use filtered data when a game type filter is active
+  const singlesLeaderboard = isFiltered 
+    ? filteredPlayerStats.map((p, i) => ({ 
+        id: `filtered-${i}`, 
+        name: p.name, 
+        avgPoints: p.avgPoints, 
+        gamesPlayed: p.gamesPlayed, 
+        totalPoints: p.totalPoints 
+      }))
+    : getLeaderboard('singles').map(p => ({
+        id: p.id,
+        name: p.name,
+        avgPoints: getAveragePoints(p, 'singles'),
+        gamesPlayed: getGamesPlayed(p, 'singles'),
+        totalPoints: getTotalPoints(p, 'singles'),
+      }));
+
+  const doublesLeaderboard = isFiltered
+    ? filteredTeamStats.map((t, i) => ({
+        id: `filtered-team-${i}`,
+        teamName: t.teamName,
+        avgPoints: t.avgPoints,
+        gamesPlayed: t.gamesPlayed,
+        totalPoints: t.totalPoints,
+      }))
+    : getTeamLeaderboard().map(t => ({
+        id: t.id,
+        teamName: getTeamName(t),
+        avgPoints: getTeamAvgPoints(t),
+        gamesPlayed: t.games_played,
+        totalPoints: t.total_points,
+      }));
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -204,10 +236,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {singlesLeaderboard.map((player, index) => {
-                    const avgPoints = getAveragePoints(player, 'singles');
-                    const gamesPlayed = getGamesPlayed(player, 'singles');
-                    const totalPoints = getTotalPoints(player, 'singles');
-                    const qualifies = gamesPlayed >= qualificationGames;
+                    const qualifies = player.gamesPlayed >= qualificationGames;
                     
                     return (
                       <tr
@@ -255,14 +284,14 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         </td>
                         <td className="px-5 py-4 text-center">
                           <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
-                            {avgPoints.toFixed(2)}
+                            {player.avgPoints.toFixed(2)}
                           </span>
                         </td>
                         <td className="px-5 py-4 text-center font-semibold text-foreground tabular-nums">
-                          {gamesPlayed}
+                          {player.gamesPlayed}
                         </td>
                         <td className="px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
-                          {totalPoints.toFixed(1)}
+                          {player.totalPoints.toFixed(1)}
                         </td>
                         <td className="px-4 py-4 text-center">
                           <div className="flex items-center justify-center gap-2">
@@ -273,7 +302,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                               </Badge>
                             ) : (
                               <Badge variant="outline" className="text-muted-foreground">
-                                {qualificationGames - gamesPlayed} games to qualify
+                                {qualificationGames - player.gamesPlayed} games to qualify
                               </Badge>
                             )}
                             <ChevronRight className="w-4 h-4 text-muted-foreground" />
@@ -300,10 +329,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             {/* Mobile Rows */}
             <div className="divide-y divide-border/70">
               {singlesLeaderboard.map((player, index) => {
-                const avgPoints = getAveragePoints(player, 'singles');
-                const gamesPlayed = getGamesPlayed(player, 'singles');
-                const totalPoints = getTotalPoints(player, 'singles');
-                const qualifies = gamesPlayed >= qualificationGames;
+                const qualifies = player.gamesPlayed >= qualificationGames;
                 const isExpanded = expandedRowId === player.id;
                 
                 return (
@@ -352,13 +378,13 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       {/* Avg Points */}
                       <div className="col-span-3 text-center">
                         <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-primary/15 text-primary">
-                          {avgPoints.toFixed(2)}
+                          {player.avgPoints.toFixed(2)}
                         </span>
                       </div>
                       
                       {/* Games Played + Expand Icon */}
                       <div className="col-span-2 flex items-center justify-end gap-1">
-                        <span className="font-medium text-foreground text-sm">{gamesPlayed}</span>
+                        <span className="font-medium text-foreground text-sm">{player.gamesPlayed}</span>
                         <motion.div
                           animate={{ rotate: isExpanded ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
@@ -387,11 +413,11 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           >
                             <div className="text-center">
                               <div className="text-muted-foreground mb-1">Total Points</div>
-                              <div className="font-bold text-foreground text-sm">{totalPoints.toFixed(1)}</div>
+                              <div className="font-bold text-foreground text-sm">{player.totalPoints.toFixed(1)}</div>
                             </div>
                             <div className="text-center">
                               <div className="text-muted-foreground mb-1">Games Played</div>
-                              <div className="font-bold text-foreground text-sm">{gamesPlayed}</div>
+                              <div className="font-bold text-foreground text-sm">{player.gamesPlayed}</div>
                             </div>
                             <div className="text-center">
                               <div className="text-muted-foreground mb-1">Status</div>
@@ -402,7 +428,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                                 </Badge>
                               ) : (
                                 <span className="text-muted-foreground text-[10px]">
-                                  {qualificationGames - gamesPlayed} to qualify
+                                  {qualificationGames - player.gamesPlayed} to qualify
                                 </span>
                               )}
                             </div>
@@ -464,8 +490,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     </tr>
                   ) : (
                     doublesLeaderboard.map((team, index) => {
-                      const avgPoints = getTeamAvgPoints(team);
-                      const qualifies = team.games_played >= qualificationGames;
+                      const qualifies = team.gamesPlayed >= qualificationGames;
                       
                       return (
                         <tr
@@ -505,20 +530,20 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                                 <Users className="w-5 h-5" />
                               </div>
                               <span className="font-medium text-foreground">
-                                {getTeamName(team)}
+                                {team.teamName}
                               </span>
                             </div>
                           </td>
                           <td className="px-4 py-4 text-center">
                             <span className="inline-flex items-center justify-center px-3 py-1 rounded text-sm font-bold bg-accent text-accent-foreground">
-                              {avgPoints.toFixed(2)}
+                              {team.avgPoints.toFixed(2)}
                             </span>
                           </td>
                           <td className="px-4 py-4 text-center font-medium text-foreground">
-                            {team.games_played}
+                            {team.gamesPlayed}
                           </td>
                           <td className="px-4 py-4 text-center font-medium text-muted-foreground">
-                            {team.total_points.toFixed(1)}
+                            {team.totalPoints.toFixed(1)}
                           </td>
                           <td className="px-4 py-4 text-center">
                             <div className="flex items-center justify-center gap-2">
@@ -529,7 +554,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                                 </Badge>
                               ) : (
                                 <Badge variant="outline" className="text-muted-foreground">
-                                  {qualificationGames - team.games_played} games to qualify
+                                  {qualificationGames - team.gamesPlayed} games to qualify
                                 </Badge>
                               )}
                             </div>
@@ -561,8 +586,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 </div>
               ) : (
                 doublesLeaderboard.map((team, index) => {
-                  const avgPoints = getTeamAvgPoints(team);
-                  const qualifies = team.games_played >= qualificationGames;
+                  const qualifies = team.gamesPlayed >= qualificationGames;
                   const isExpanded = expandedRowId === team.id;
                   
                   return (
@@ -603,20 +627,20 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                             <Users className="w-4 h-4" />
                           </div>
                           <span className="font-medium text-foreground text-xs leading-tight line-clamp-2">
-                            {getTeamName(team)}
+                            {team.teamName}
                           </span>
                         </div>
                         
                         {/* Avg Points */}
                         <div className="col-span-3 text-center">
                           <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-accent text-accent-foreground">
-                            {avgPoints.toFixed(2)}
+                            {team.avgPoints.toFixed(2)}
                           </span>
                         </div>
                         
                         {/* Games Played + Expand Icon */}
                         <div className="col-span-2 flex items-center justify-end gap-1">
-                          <span className="font-medium text-foreground text-sm">{team.games_played}</span>
+                          <span className="font-medium text-foreground text-sm">{team.gamesPlayed}</span>
                           <motion.div
                             animate={{ rotate: isExpanded ? 180 : 0 }}
                             transition={{ duration: 0.2 }}
@@ -645,11 +669,11 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                             >
                               <div className="text-center">
                                 <div className="text-muted-foreground mb-1">Total Points</div>
-                                <div className="font-bold text-foreground text-sm">{team.total_points.toFixed(1)}</div>
+                                <div className="font-bold text-foreground text-sm">{team.totalPoints.toFixed(1)}</div>
                               </div>
                               <div className="text-center">
                                 <div className="text-muted-foreground mb-1">Games Played</div>
-                                <div className="font-bold text-foreground text-sm">{team.games_played}</div>
+                                <div className="font-bold text-foreground text-sm">{team.gamesPlayed}</div>
                               </div>
                               <div className="text-center">
                                 <div className="text-muted-foreground mb-1">Status</div>
@@ -660,7 +684,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                                   </Badge>
                                 ) : (
                                   <span className="text-muted-foreground text-[10px]">
-                                    {qualificationGames - team.games_played} to qualify
+                                    {qualificationGames - team.gamesPlayed} to qualify
                                   </span>
                                 )}
                               </div>

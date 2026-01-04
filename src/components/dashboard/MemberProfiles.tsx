@@ -94,7 +94,7 @@ export function MemberProfiles() {
               <p className="text-sm text-muted-foreground leading-relaxed font-serif-body mb-6">{member.bio}</p>
 
               <div>
-                <p className="text-xs font-semibold text-burlap uppercase tracking-wider mb-3">Noted Traits</p>
+                <p className="text-xs font-semibold text-burlap uppercase tracking-wider mb-3 text-primary">Noted Traits</p>
                 <ul className="space-y-1.5">
                   {member.accomplishments.map((acc, i) => <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-burlap mt-1.5 shrink-0" />

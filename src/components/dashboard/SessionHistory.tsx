@@ -343,7 +343,7 @@ export function SessionHistory() {
                           <div className="flex items-center justify-between mb-2 md:mb-3">
                             <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
                               <span className="font-semibold text-xs md:text-sm">
-                                Game {game.game_number}
+                                {game.game_number === 1 ? 'PwC Single' : game.game_number === 2 ? 'Shibuya Crossing' : 'Tug Of War'}
                               </span>
                               {getWinnerBadge(game)}
                             </div>
@@ -416,7 +416,7 @@ export function SessionHistory() {
       <Dialog open={!!editingGame} onOpenChange={() => setEditingGame(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Game {editingGame?.game_number}</DialogTitle>
+            <DialogTitle>Edit {editingGame?.game_number === 1 ? 'PwC Single' : editingGame?.game_number === 2 ? 'Shibuya Crossing' : 'Tug Of War'}</DialogTitle>
             <DialogDescription>
               Update the score for this game. Player stats will be recalculated.
             </DialogDescription>

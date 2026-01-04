@@ -3,10 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePlayers, LeaderboardMode } from '@/hooks/usePlayers';
 import { useTeams } from '@/hooks/useTeams';
 import { cn } from '@/lib/utils';
-import { Trophy, Medal, Award, Star, ChevronDown, ChevronRight, Users, User, RefreshCw } from 'lucide-react';
+import { Trophy, Medal, Award, Star, ChevronDown, ChevronRight, Users, User, RefreshCw, Filter } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+type GameTypeFilter = 'all' | 'pwc' | 'shibuya' | 'tow';
+
+const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
+  all: 'All Games',
+  pwc: 'PwC Single',
+  shibuya: 'Shibuya Crossing',
+  tow: 'Tug Of War',
+};
 
 interface NewLeaderboardProps {
   onPlayerSelect?: (playerName: string) => void;
@@ -16,6 +31,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   const { players, loading: playersLoading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard, recalculateStats } = usePlayers();
   const { teams, loading: teamsLoading, getAveragePoints: getTeamAvgPoints, getTeamLeaderboard, getTeamName } = useTeams();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
+  const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
   const [isRecalculating, setIsRecalculating] = useState(false);
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
 
@@ -88,6 +104,28 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
               <span className="hidden sm:inline">Recalculate</span>
             </Button>
 
+            {/* Game Type Filter */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-1 md:gap-2 text-xs md:text-sm">
+                  <Filter className="w-3 h-3 md:w-4 md:h-4" />
+                  <span className="hidden sm:inline">{GAME_TYPE_LABELS[gameTypeFilter]}</span>
+                  <span className="sm:hidden">Filter</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {(Object.keys(GAME_TYPE_LABELS) as GameTypeFilter[]).map((type) => (
+                  <DropdownMenuCheckboxItem
+                    key={type}
+                    checked={gameTypeFilter === type}
+                    onCheckedChange={() => setGameTypeFilter(type)}
+                  >
+                    {GAME_TYPE_LABELS[type]}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Mode Toggle */}
             <div className="flex items-center bg-muted rounded-lg p-0.5 md:p-1">
               <button
@@ -117,6 +155,23 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             </div>
           </div>
         </div>
+        
+        {/* Active Filter Badge */}
+        {gameTypeFilter !== 'all' && (
+          <div className="flex items-center gap-2 ml-4 md:ml-5">
+            <Badge variant="secondary" className="text-xs">
+              Filtered: {GAME_TYPE_LABELS[gameTypeFilter]}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setGameTypeFilter('all')}
+              className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
+            >
+              Clear
+            </Button>
+          </div>
+        )}
       </div>
 
       {mode === 'singles' ? (

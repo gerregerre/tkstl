@@ -241,7 +241,7 @@ export function DashboardHome({
                 return <div key={game.id} className="p-4 transition-colors hover:bg-muted/20">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                            Game {game.game_number}
+                            {game.game_number === 1 ? 'PwC Single' : game.game_number === 2 ? 'Shibuya Crossing' : 'Tug Of War'}
                           </span>
                           <span className="text-[10px] text-muted-foreground font-medium tabular-nums">
                             {new Date(game.session_date).toLocaleDateString('en-US', {

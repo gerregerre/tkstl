@@ -462,7 +462,13 @@ export function SessionHistory() {
                       min="0"
                       max="9"
                       value={editScoreA}
-                      onChange={(e) => setEditScoreA(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '' || (parseInt(val) >= 0 && parseInt(val) <= 9)) {
+                          setEditScoreA(val);
+                        }
+                      }}
+                      placeholder="0"
                     />
                   </div>
                   <div className="space-y-2">
@@ -472,7 +478,13 @@ export function SessionHistory() {
                       min="0"
                       max="9"
                       value={editScoreB}
-                      onChange={(e) => setEditScoreB(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '' || (parseInt(val) >= 0 && parseInt(val) <= 9)) {
+                          setEditScoreB(val);
+                        }
+                      }}
+                      placeholder="0"
                     />
                   </div>
                 </div>

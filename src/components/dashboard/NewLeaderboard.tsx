@@ -14,6 +14,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { PlayerPointsBreakdown, PlayerPointsBreakdownInline } from './PlayerPointsBreakdown';
 
 const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
   all: 'All Games',
@@ -264,23 +265,25 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                           </div>
                         </td>
                         <td className="px-5 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className={cn(
-                              "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105",
-                              index === 0
-                                ? "bg-gold/20 text-gold ring-1 ring-gold/30"
-                                : index === 1
-                                ? "bg-silver/15 text-silver ring-1 ring-silver/20"
-                                : index === 2
-                                ? "bg-bronze/15 text-bronze ring-1 ring-bronze/20"
-                                : "bg-muted text-foreground"
-                            )}>
-                              {player.name[0]}
+                          <PlayerPointsBreakdown playerName={player.name}>
+                            <div className="flex items-center gap-3 cursor-help">
+                              <div className={cn(
+                                "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105",
+                                index === 0
+                                  ? "bg-gold/20 text-gold ring-1 ring-gold/30"
+                                  : index === 1
+                                  ? "bg-silver/15 text-silver ring-1 ring-silver/20"
+                                  : index === 2
+                                  ? "bg-bronze/15 text-bronze ring-1 ring-bronze/20"
+                                  : "bg-muted text-foreground"
+                              )}>
+                                {player.name[0]}
+                              </div>
+                              <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 underline decoration-dotted decoration-muted-foreground/50 underline-offset-2">
+                                {player.name}
+                              </span>
                             </div>
-                            <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200">
-                              {player.name}
-                            </span>
-                          </div>
+                          </PlayerPointsBreakdown>
                         </td>
                         <td className="px-5 py-4 text-center">
                           <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
@@ -433,7 +436,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                               )}
                             </div>
                           </motion.div>
-                          <div className="px-4 pb-3">
+                          {/* Points Breakdown */}
+                          <PlayerPointsBreakdownInline playerName={player.name} />
+                          
+                          <div className="px-4 pb-3 pt-2">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();

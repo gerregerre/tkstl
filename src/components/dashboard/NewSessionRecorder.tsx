@@ -281,8 +281,15 @@ export function NewSessionRecorder() {
                     type="number"
                     min="0"
                     max="9"
-                    value={gameScores[0].teamAScore}
-                    onChange={(e) => updateGameScore(0, 'teamAScore', Math.min(9, Math.max(0, parseInt(e.target.value) || 0)))}
+                    value={gameScores[0].teamAScore === 0 ? '' : gameScores[0].teamAScore}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? 0 : Math.min(9, Math.max(0, parseInt(e.target.value) || 0));
+                      updateGameScore(0, 'teamAScore', val);
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === '') updateGameScore(0, 'teamAScore', 0);
+                    }}
+                    placeholder="0"
                     className="mt-1"
                   />
                 </div>
@@ -301,8 +308,15 @@ export function NewSessionRecorder() {
                     type="number"
                     min="0"
                     max="9"
-                    value={gameScores[0].teamBScore}
-                    onChange={(e) => updateGameScore(0, 'teamBScore', Math.min(9, Math.max(0, parseInt(e.target.value) || 0)))}
+                    value={gameScores[0].teamBScore === 0 ? '' : gameScores[0].teamBScore}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? 0 : Math.min(9, Math.max(0, parseInt(e.target.value) || 0));
+                      updateGameScore(0, 'teamBScore', val);
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === '') updateGameScore(0, 'teamBScore', 0);
+                    }}
+                    placeholder="0"
                     className="mt-1"
                   />
                 </div>
@@ -336,8 +350,15 @@ export function NewSessionRecorder() {
                     type="number"
                     min="0"
                     max="9"
-                    value={gameScores[1].teamAScore}
-                    onChange={(e) => updateGameScore(1, 'teamAScore', Math.min(9, Math.max(0, parseInt(e.target.value) || 0)))}
+                    value={gameScores[1].teamAScore === 0 ? '' : gameScores[1].teamAScore}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? 0 : Math.min(9, Math.max(0, parseInt(e.target.value) || 0));
+                      updateGameScore(1, 'teamAScore', val);
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === '') updateGameScore(1, 'teamAScore', 0);
+                    }}
+                    placeholder="0"
                     className="mt-1"
                   />
                 </div>
@@ -356,8 +377,15 @@ export function NewSessionRecorder() {
                     type="number"
                     min="0"
                     max="9"
-                    value={gameScores[1].teamBScore}
-                    onChange={(e) => updateGameScore(1, 'teamBScore', Math.min(9, Math.max(0, parseInt(e.target.value) || 0)))}
+                    value={gameScores[1].teamBScore === 0 ? '' : gameScores[1].teamBScore}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? 0 : Math.min(9, Math.max(0, parseInt(e.target.value) || 0));
+                      updateGameScore(1, 'teamBScore', val);
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === '') updateGameScore(1, 'teamBScore', 0);
+                    }}
+                    placeholder="0"
                     className="mt-1"
                   />
                 </div>

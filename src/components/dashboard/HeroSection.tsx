@@ -31,9 +31,14 @@ export function HeroSection({
           </span>
         </div>
         
+        {/* Club Name - Italic */}
+        <p className="font-display text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground/90 mb-2 sm:mb-4 animate-fade-in tracking-wide uppercase italic drop-shadow-lg" style={{
+        animationDelay: '0.1s'
+      }}>TENNISKLUBBEN STORA TENNISLIGAN</p>
+        
         {/* Main Heading - Bold Montserrat */}
         <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 animate-fade-in tracking-tight uppercase drop-shadow-lg" style={{
-        animationDelay: '0.1s'
+        animationDelay: '0.15s'
       }}>WHERE TRADITIONS</h1>
         
         <h2 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gradient-cyan mb-6 sm:mb-8 animate-fade-in tracking-tight uppercase drop-shadow-lg" style={{

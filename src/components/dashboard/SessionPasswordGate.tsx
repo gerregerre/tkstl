@@ -11,7 +11,7 @@ interface SessionPasswordGateProps {
 }
 
 // Simple password for session recording access
-const SESSION_PASSWORD = 'tennis2024';
+const SESSION_PASSWORD = 'gerre';
 
 export function SessionPasswordGate({ onAuthenticated }: SessionPasswordGateProps) {
   const [password, setPassword] = useState('');

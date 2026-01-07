@@ -152,21 +152,24 @@ export function SessionHistory() {
   const handleEditSave = async () => {
     if (!editingGame) return;
 
-    let updateData: Partial<SessionGame>;
+    let updateData: Record<string, number | string | null>;
     
     if (isGame3) {
+      // Database expects 'A' or 'B', not 'Team A' or 'Team B'
+      const dbWinner = editWinner === 'Team A' ? 'A' : 'B';
       updateData = {
-        winner: editWinner,
+        winner: dbWinner,
         team_a_score: null,
         team_b_score: null,
       };
     } else {
       const scoreA = parseInt(editScoreA) || 0;
       const scoreB = parseInt(editScoreB) || 0;
+      // Database expects 'A' or 'B', not 'Team A' or 'Team B'
       updateData = {
         team_a_score: scoreA,
         team_b_score: scoreB,
-        winner: scoreA > scoreB ? 'Team A' : scoreB > scoreA ? 'Team B' : null,
+        winner: scoreA > scoreB ? 'A' : scoreB > scoreA ? 'B' : null,
       };
     }
 
@@ -177,12 +180,17 @@ export function SessionHistory() {
 
     if (error) {
       console.error('Error updating game:', error);
-      toast.error('Failed to update game');
+      toast.error(`Failed to update game: ${error.message || error.code || 'Unknown error'}`);
       return;
     }
 
     // Recalculate player stats
-    await recalculatePlayerStats();
+    try {
+      await recalculatePlayerStats();
+    } catch (statsError) {
+      console.error('Error recalculating stats:', statsError);
+      toast.error('Game updated but stats recalculation failed');
+    }
     
     toast.success('Game updated successfully');
     setEditingGame(null);

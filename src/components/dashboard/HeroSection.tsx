@@ -6,7 +6,7 @@ interface HeroSectionProps {
 export function HeroSection({
   onScrollDown
 }: HeroSectionProps) {
-  return <section className="relative w-screen min-h-[80vh] sm:h-screen -ml-[calc((100vw-100%)/2)] left-0 overflow-hidden">
+  return <section className="relative w-full min-h-[80vh] sm:h-screen overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105" style={{
       backgroundImage: `url(${heroImage})`

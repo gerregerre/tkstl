@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Loader2, Mail, Lock, User, ArrowLeft, CheckCircle } from 'lucide-react';
@@ -27,6 +28,16 @@ export default function Auth() {
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Load remembered email on mount
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('tkstl_remembered_email');
+    if (rememberedEmail) {
+      setLoginEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
   
   // Signup form
   const [signupEmail, setSignupEmail] = useState('');
@@ -66,6 +77,12 @@ export default function Auth() {
         toast.error(error.message);
       }
     } else {
+      // Handle remember me
+      if (rememberMe) {
+        localStorage.setItem('tkstl_remembered_email', loginEmail);
+      } else {
+        localStorage.removeItem('tkstl_remembered_email');
+      }
       toast.success('Welcome back!');
       navigate('/dashboard');
     }
@@ -345,6 +362,19 @@ export default function Auth() {
                               required
                             />
                           </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="remember-me" 
+                            checked={rememberMe}
+                            onCheckedChange={(checked) => setRememberMe(checked === true)}
+                          />
+                          <Label 
+                            htmlFor="remember-me" 
+                            className="text-sm text-muted-foreground cursor-pointer"
+                          >
+                            Remember me
+                          </Label>
                         </div>
                         <Button type="submit" className="w-full" disabled={isSubmitting}>
                           {isSubmitting ? (

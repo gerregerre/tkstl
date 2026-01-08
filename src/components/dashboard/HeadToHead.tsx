@@ -212,42 +212,70 @@ export function HeadToHead() {
             </Button>}
         </div>
 
-        {/* Selected Players Display */}
-        {(player1 || player2) && <div className="flex items-center justify-center gap-4 mb-6 p-4 bg-muted/50 rounded-lg">
-            <div className={cn("flex flex-col items-center gap-2 p-4 rounded-lg border-2", player1 ? "border-primary bg-primary/10" : "border-dashed border-muted-foreground")}>
+        {/* Selected Players Display - Symmetrical Design */}
+        {(player1 || player2) && <div className="flex items-center justify-center gap-6 mb-6 p-6 bg-muted/30 rounded-xl border border-border">
+            {/* Player 1 Card */}
+            <div className={cn(
+              "flex flex-col items-center gap-3 p-5 rounded-xl border-2 min-w-[140px] transition-all",
+              player1 ? "border-border bg-card shadow-sm" : "border-dashed border-muted-foreground/40"
+            )}>
               {player1 ? <>
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-serif font-bold text-lg text-primary">
+                  <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center font-display font-bold text-xl text-foreground">
                     {player1[0]}
                   </div>
-                  <span className="font-semibold text-foreground">{player1}</span>
-                </> : <span className="text-muted-foreground text-sm">Select Player 1</span>}
+                  <span className="font-display font-semibold text-foreground text-base">{player1}</span>
+                </> : <span className="text-muted-foreground text-sm py-6">Select Player 1</span>}
             </div>
 
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Swords className="w-6 h-6" />
-              <span className="font-serif font-semibold">VS</span>
+            {/* VS Divider - Centered */}
+            <div className="flex flex-col items-center gap-1 px-2">
+              <div className="w-px h-6 bg-border" />
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-muted border border-border">
+                <span className="font-display font-bold text-sm text-muted-foreground">VS</span>
+              </div>
+              <div className="w-px h-6 bg-border" />
             </div>
 
-            <div className={cn("flex flex-col items-center gap-2 p-4 rounded-lg border-2", player2 ? "border-secondary bg-secondary/10" : "border-dashed border-muted-foreground")}>
+            {/* Player 2 Card - Identical styling */}
+            <div className={cn(
+              "flex flex-col items-center gap-3 p-5 rounded-xl border-2 min-w-[140px] transition-all",
+              player2 ? "border-border bg-card shadow-sm" : "border-dashed border-muted-foreground/40"
+            )}>
               {player2 ? <>
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-serif font-bold text-lg bg-primary text-primary-foreground">
+                  <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center font-display font-bold text-xl text-foreground">
                     {player2[0]}
                   </div>
-                  <span className="font-semibold text-foreground">{player2}</span>
-                </> : <span className="text-muted-foreground text-sm">Select Player 2</span>}
+                  <span className="font-display font-semibold text-foreground text-base">{player2}</span>
+                </> : <span className="text-muted-foreground text-sm py-6">Select Player 2</span>}
             </div>
           </div>}
 
-        {/* Player Grid */}
+        {/* Player Grid - Unified styling */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {players.map(player => {
           const isSelected = player.name === player1 || player.name === player2;
           const isDisabled = player1 && player2 && !isSelected;
-          return <button key={player.id} onClick={() => !isDisabled && selectPlayer(player.name)} disabled={isDisabled} className={cn("flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left", isSelected && player.name === player1 && "border-primary bg-primary/10", isSelected && player.name === player2 && "border-secondary bg-secondary/10", !isSelected && !isDisabled && "border-border hover:border-muted-foreground/50", isDisabled && "opacity-50 cursor-not-allowed border-border")}>
-                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-serif font-bold", isSelected && player.name === player1 && "bg-primary text-primary-foreground", isSelected && player.name === player2 && "bg-secondary text-secondary-foreground", !isSelected && "bg-muted text-muted-foreground")}>
+          return <button 
+            key={player.id} 
+            onClick={() => !isDisabled && selectPlayer(player.name)} 
+            disabled={isDisabled} 
+            className={cn(
+              "flex items-center gap-3 p-3 rounded-lg border transition-all text-left",
+              isSelected && "border-primary bg-primary/10 ring-1 ring-primary/20",
+              !isSelected && !isDisabled && "border-border hover:border-primary/50 hover:bg-muted/50",
+              isDisabled && "opacity-40 cursor-not-allowed border-border"
+            )}>
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm",
+                  isSelected && "bg-primary text-primary-foreground",
+                  !isSelected && "bg-muted text-muted-foreground"
+                )}>
                   {player.name[0]}
                 </div>
-                <span className="font-medium text-foreground">{player.name}</span>
+                <span className={cn(
+                  "font-medium",
+                  isSelected ? "text-foreground" : "text-muted-foreground"
+                )}>{player.name}</span>
               </button>;
         })}
         </div>
@@ -264,18 +292,18 @@ export function HeadToHead() {
             {/* As Teammates */}
             <div className="bg-card rounded-lg border border-border p-6 shadow-card">
               <div className="flex items-center gap-2 mb-4">
-                <Handshake className="w-5 h-5 text-secondary" />
-                <h3 className="font-serif text-lg font-semibold">As Teammates</h3>
+                <Handshake className="w-5 h-5 text-muted-foreground" />
+                <h3 className="font-display text-lg font-semibold text-foreground">As Teammates</h3>
               </div>
 
               {stats.gamesAsTeammates === 0 ? <p className="text-muted-foreground text-center py-4">No games as teammates yet</p> : <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="bg-muted/50 rounded-lg p-3">
-                      <p className="text-2xl font-bold font-serif text-foreground">{stats.gamesAsTeammates}</p>
+                      <p className="text-2xl font-bold font-display text-foreground">{stats.gamesAsTeammates}</p>
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">Games Together</p>
                     </div>
                     <div className="bg-muted/50 rounded-lg p-3">
-                      <p className="text-2xl font-bold font-serif text-secondary">{stats.winsAsTeammates}</p>
+                      <p className="text-2xl font-bold font-display text-foreground">{stats.winsAsTeammates}</p>
                       <p className="text-xs text-muted-foreground uppercase tracking-wide">Wins</p>
                     </div>
                   </div>
@@ -284,11 +312,11 @@ export function HeadToHead() {
                     <p className="text-sm text-muted-foreground mb-2">Win Rate Together</p>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 bg-muted rounded-full h-2">
-                        <div className="bg-secondary rounded-full h-2 transition-all" style={{
+                        <div className="bg-primary rounded-full h-2 transition-all" style={{
                     width: `${stats.winsAsTeammates / stats.gamesAsTeammates * 100}%`
                   }} />
                       </div>
-                      <span className="font-semibold text-secondary">
+                      <span className="font-semibold text-foreground">
                         {(stats.winsAsTeammates / stats.gamesAsTeammates * 100).toFixed(0)}%
                       </span>
                     </div>
@@ -297,11 +325,11 @@ export function HeadToHead() {
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div className="flex justify-between p-2 bg-muted/30 rounded">
                       <span className="text-muted-foreground">{player1} Pts:</span>
-                      <span className="font-semibold">{stats.totalPointsAsTeammates.player1.toFixed(1)}</span>
+                      <span className="font-semibold text-foreground">{stats.totalPointsAsTeammates.player1.toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between p-2 bg-muted/30 rounded">
                       <span className="text-muted-foreground">{player2} Pts:</span>
-                      <span className="font-semibold">{stats.totalPointsAsTeammates.player2.toFixed(1)}</span>
+                      <span className="font-semibold text-foreground">{stats.totalPointsAsTeammates.player2.toFixed(1)}</span>
                     </div>
                   </div>
                 </div>}
@@ -310,37 +338,44 @@ export function HeadToHead() {
             {/* As Opponents */}
             <div className="bg-card rounded-lg border border-border p-6 shadow-card">
               <div className="flex items-center gap-2 mb-4">
-                <Swords className="w-5 h-5 text-destructive" />
-                <h3 className="font-serif text-lg font-semibold">As Opponents</h3>
+                <Swords className="w-5 h-5 text-muted-foreground" />
+                <h3 className="font-display text-lg font-semibold text-foreground">As Opponents</h3>
               </div>
 
               {stats.gamesAsOpponents === 0 ? <p className="text-muted-foreground text-center py-4">No games as opponents yet</p> : <div className="space-y-4">
                   <div className="text-center bg-muted/50 rounded-lg p-3">
-                    <p className="text-2xl font-bold font-serif text-foreground">{stats.gamesAsOpponents}</p>
+                    <p className="text-2xl font-bold font-display text-foreground">{stats.gamesAsOpponents}</p>
                     <p className="text-xs text-muted-foreground uppercase tracking-wide">Games Against Each Other</p>
                   </div>
                   
+                  {/* Symmetrical player comparison */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className={cn("rounded-lg p-3 text-center border-2", stats.winsAsOpponents.player1 > stats.winsAsOpponents.player2 ? "border-primary bg-primary/10" : "border-border")}>
-                      <p className="font-semibold text-sm text-muted-foreground">{player1}</p>
-                      <p className="text-2xl font-bold font-serif text-primary">{stats.winsAsOpponents.player1}</p>
-                      <p className="text-xs text-muted-foreground">Wins</p>
+                    <div className={cn(
+                      "rounded-lg p-4 text-center border bg-muted/30",
+                      stats.winsAsOpponents.player1 > stats.winsAsOpponents.player2 && "ring-2 ring-primary/30 bg-primary/5"
+                    )}>
+                      <p className="font-display font-medium text-sm text-foreground mb-1">{player1}</p>
+                      <p className="text-3xl font-bold font-display text-foreground">{stats.winsAsOpponents.player1}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Wins</p>
                     </div>
-                    <div className={cn("rounded-lg p-3 text-center border-2", stats.winsAsOpponents.player2 > stats.winsAsOpponents.player1 ? "border-secondary bg-secondary/10" : "border-border")}>
-                      <p className="font-semibold text-sm text-muted-foreground">{player2}</p>
-                      <p className="text-2xl font-bold font-serif text-secondary">{stats.winsAsOpponents.player2}</p>
-                      <p className="text-xs text-muted-foreground">Wins</p>
+                    <div className={cn(
+                      "rounded-lg p-4 text-center border bg-muted/30",
+                      stats.winsAsOpponents.player2 > stats.winsAsOpponents.player1 && "ring-2 ring-primary/30 bg-primary/5"
+                    )}>
+                      <p className="font-display font-medium text-sm text-foreground mb-1">{player2}</p>
+                      <p className="text-3xl font-bold font-display text-foreground">{stats.winsAsOpponents.player2}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Wins</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div className="flex justify-between p-2 bg-muted/30 rounded">
                       <span className="text-muted-foreground">{player1} Pts:</span>
-                      <span className="font-semibold">{stats.totalPointsAsOpponents.player1.toFixed(1)}</span>
+                      <span className="font-semibold text-foreground">{stats.totalPointsAsOpponents.player1.toFixed(1)}</span>
                     </div>
                     <div className="flex justify-between p-2 bg-muted/30 rounded">
                       <span className="text-muted-foreground">{player2} Pts:</span>
-                      <span className="font-semibold">{stats.totalPointsAsOpponents.player2.toFixed(1)}</span>
+                      <span className="font-semibold text-foreground">{stats.totalPointsAsOpponents.player2.toFixed(1)}</span>
                     </div>
                   </div>
                 </div>}
@@ -350,7 +385,7 @@ export function HeadToHead() {
           {/* Recent Games */}
           {stats.recentGames.length > 0 && <div className="bg-card rounded-lg border border-border shadow-card overflow-hidden">
               <div className="p-4 border-b border-border">
-                <h3 className="font-serif text-lg font-semibold">Recent Matchups</h3>
+                <h3 className="font-display text-lg font-semibold text-foreground">Recent Matchups</h3>
               </div>
               <div className="divide-y divide-border">
                 {stats.recentGames.map(game => {
@@ -363,17 +398,17 @@ export function HeadToHead() {
             return <div key={game.id} className="p-4 hover:bg-muted/50 transition-colors">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <Badge variant={sameTeam ? "default" : "destructive"} className={cn(sameTeam ? "bg-secondary/20 text-secondary border-secondary" : "bg-destructive/20 text-destructive border-destructive", "border")}>
+                          <Badge variant="outline" className="bg-muted/50 text-muted-foreground border-border font-medium">
                             {sameTeam ? <Handshake className="w-3 h-3 mr-1" /> : <Swords className="w-3 h-3 mr-1" />}
                             {sameTeam ? 'Teammates' : 'Opponents'}
                           </Badge>
                           <div>
                             <div className="flex items-center gap-2 text-sm">
-                              <span className={cn("font-medium", p1InTeamA ? "text-primary" : "text-secondary")}>
+                              <span className="font-medium text-foreground">
                                 {teamA.join(' & ')}
                               </span>
-                              <span className="text-muted-foreground">vs</span>
-                              <span className={cn("font-medium", !p1InTeamA ? "text-primary" : "text-secondary")}>
+                              <span className="text-muted-foreground font-medium">vs</span>
+                              <span className="font-medium text-foreground">
                                 {teamB.join(' & ')}
                               </span>
                             </div>
@@ -393,16 +428,18 @@ export function HeadToHead() {
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="flex items-center gap-2">
-                            <span className={cn("text-sm font-medium", p1Won ? "text-secondary" : "text-muted-foreground")}>
-                              {player1}: +{calculateGamePoints(game, player1).toFixed(1)}
-                            </span>
+                        <div className="text-right space-y-1">
+                          <div className={cn(
+                            "text-sm font-medium px-2 py-0.5 rounded",
+                            p1Won ? "bg-primary/10 text-foreground" : "text-muted-foreground"
+                          )}>
+                            {player1}: +{calculateGamePoints(game, player1).toFixed(1)}
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className={cn("text-sm font-medium", !p1Won ? "text-secondary" : "text-muted-foreground")}>
-                              {player2}: +{calculateGamePoints(game, player2).toFixed(1)}
-                            </span>
+                          <div className={cn(
+                            "text-sm font-medium px-2 py-0.5 rounded",
+                            !p1Won ? "bg-primary/10 text-foreground" : "text-muted-foreground"
+                          )}>
+                            {player2}: +{calculateGamePoints(game, player2).toFixed(1)}
                           </div>
                         </div>
                       </div>

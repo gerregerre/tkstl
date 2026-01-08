@@ -34,7 +34,7 @@ export function HeroSection({
         {/* Club Name - Italic */}
         <p style={{
         animationDelay: '0.1s'
-      }} className="font-display text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 animate-fade-in tracking-wide uppercase italic drop-shadow-lg text-muted-foreground lg:text-5xl">TENNISKLUBBEN STORA TENNISLIGAN</p>
+      }} className="font-display text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 animate-fade-in tracking-wide uppercase not-italic drop-shadow-lg text-muted-foreground lg:text-5xl">TENNISKLUBBEN STORA TENNISLIGAN</p>
         
         {/* Main Heading - Bold Montserrat */}
         <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 animate-fade-in tracking-tight uppercase drop-shadow-lg" style={{

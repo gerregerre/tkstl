@@ -375,6 +375,7 @@
 /* Custom scrollbar - ATP Dark theme */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -388,6 +389,26 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary) / 0.6);
+}
+
+/* Visible scrollbar for horizontal scroll containers */
+.scrollbar-visible::-webkit-scrollbar {
+  height: 10px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: hsl(216 100% 8%);
+  border-radius: 5px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 5px;
+  border: 2px solid hsl(216 100% 8%);
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
 }
 
 /* Animations */

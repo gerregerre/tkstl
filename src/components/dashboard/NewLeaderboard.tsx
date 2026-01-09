@@ -320,12 +320,12 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </div>
 
           {/* Singles Mobile Table - Horizontally Scrollable with Sticky Name Column */}
-          <div className="md:hidden bg-card rounded-md border border-border overflow-hidden shadow-card">
-            <div className="overflow-x-auto">
+          <div className="md:hidden bg-background rounded-md border border-border overflow-hidden shadow-card">
+            <div className="overflow-x-auto scrollbar-visible bg-background">
               <table className="w-full min-w-[500px]">
                 <thead>
-                  <tr className="border-b border-border bg-secondary/40">
-                    <th className="sticky left-0 z-10 bg-secondary/40 px-3 py-2.5 text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground min-w-[140px]">
+                  <tr className="border-b border-border bg-secondary/80">
+                    <th className="sticky left-0 z-10 bg-secondary/80 px-3 py-2.5 text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground min-w-[140px]">
                       Player
                     </th>
                     <th className="px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-primary whitespace-nowrap">
@@ -359,11 +359,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                       >
                         {/* Sticky Player Column */}
                         <td className={cn(
-                          "sticky left-0 z-10 px-3 py-3",
-                          index === 0 && "bg-gold/[0.04]",
-                          index === 1 && "bg-silver/[0.03]",
-                          index === 2 && "bg-bronze/[0.03]",
-                          index > 2 && "bg-card"
+                          "sticky left-0 z-10 px-3 py-3 bg-background",
+                          index === 0 && "bg-[hsl(216_100%_7%)]",
+                          index === 1 && "bg-[hsl(216_100%_7%)]",
+                          index === 2 && "bg-[hsl(216_100%_7%)]"
                         )}>
                           <div className="flex items-center gap-2">
                             <span className={cn(
@@ -544,12 +543,12 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
           </div>
 
           {/* Doubles Mobile Table - Horizontally Scrollable with Sticky Team Column */}
-          <div className="md:hidden bg-card rounded border border-border overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="md:hidden bg-background rounded-md border border-border overflow-hidden shadow-card">
+            <div className="overflow-x-auto scrollbar-visible bg-background">
               <table className="w-full min-w-[500px]">
                 <thead>
-                  <tr className="border-b border-border bg-muted">
-                    <th className="sticky left-0 z-10 bg-muted px-3 py-2.5 text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground min-w-[160px]">
+                  <tr className="border-b border-border bg-secondary/80">
+                    <th className="sticky left-0 z-10 bg-secondary/80 px-3 py-2.5 text-left text-[10px] font-bold uppercase tracking-widest text-muted-foreground min-w-[160px]">
                       Team
                     </th>
                     <th className="px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-primary whitespace-nowrap">
@@ -589,11 +588,10 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                         >
                           {/* Sticky Team Column */}
                           <td className={cn(
-                            "sticky left-0 z-10 px-3 py-3",
-                            index === 0 && "bg-gold/5",
-                            index === 1 && "bg-muted/20",
-                            index === 2 && "bg-primary/5",
-                            index > 2 && "bg-card"
+                            "sticky left-0 z-10 px-3 py-3 bg-background",
+                            index === 0 && "bg-[hsl(216_100%_7%)]",
+                            index === 1 && "bg-[hsl(216_100%_7%)]",
+                            index === 2 && "bg-[hsl(216_100%_7%)]"
                           )}>
                             <div className="flex items-center gap-2">
                               <span className={cn(

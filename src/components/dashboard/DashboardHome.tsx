@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Calendar, ScrollText, User, Trophy, Clock, Users } from 'lucide-react';
+import { Calendar, Trophy } from 'lucide-react';
 import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
 import { HeroSection } from './HeroSection';
-import { useMembers } from '@/contexts/MembersContext';
-import { members } from '@/data/members';
+import { SessionSignup } from './SessionSignup';
 import { supabase } from '@/integrations/supabase/client';
 import NewsCarousel from '@/components/home/NewsCarousel';
+
 interface DashboardHomeProps {
   onPlayerSelect?: (playerName: string) => void;
 }
@@ -73,11 +73,6 @@ export function DashboardHome({
   const [recentResults, setRecentResults] = useState<SessionGame[]>([]);
   const [loadingResults, setLoadingResults] = useState(true);
   const nextSession = getNextMonday();
-  const {
-    getCurrentScribe,
-    checkedInPlayers
-  } = useMembers();
-  const scribe = getCurrentScribe();
   const contentRef = useRef<HTMLDivElement>(null);
   const handleScrollDown = () => {
     contentRef.current?.scrollIntoView({
@@ -123,8 +118,6 @@ export function DashboardHome({
   }, []);
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
-  // Get checked-in players or default to first 4 members
-  const sessionParticipants = checkedInPlayers.length > 0 ? checkedInPlayers.map(id => members.find(m => m.id === id)).filter(Boolean) : members.slice(0, 4);
   return <div className="animate-fade-in-up -mx-4 md:-mx-8 -mt-4 md:-mt-8">
       {/* Hero Section */}
       <HeroSection onScrollDown={handleScrollDown} />
@@ -178,45 +171,8 @@ export function DashboardHome({
 
           {/* Right Panel - Recent Results & Next Session */}
           <div className="space-y-6">
-            {/* Next Scheduled Session - ATP Style */}
-            <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
-              <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
-                <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
-                <Clock className="w-4 h-4 text-primary" />
-                <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
-                  Next Session
-                </h3>
-              </div>
-              <div className="p-5">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                  <Calendar className="w-4 h-4" />
-                  <span className="font-medium">
-                    {nextSession.toLocaleDateString('en-US', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric'
-                  })} at 19:00
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2 mb-3">
-                  <Users className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Participants</span>
-                </div>
-                
-                <div className="space-y-2">
-                  {sessionParticipants.map(player => <div key={player?.id} className="flex items-center gap-3 px-3 py-2.5 bg-secondary/30 rounded-md border border-border/50 transition-colors hover:bg-secondary/40">
-                      <div className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold ${player?.role === 'royalty' ? 'bg-primary/15 text-primary border border-primary/25' : 'bg-muted/50 text-muted-foreground border border-border/30'}`}>
-                        {player?.name?.[0]}
-                      </div>
-                      <span className="text-sm font-semibold text-foreground">{player?.name}</span>
-                      {player?.role === 'royalty' && <span className="text-[9px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold ml-auto uppercase tracking-wide">
-                          RF
-                        </span>}
-                    </div>)}
-                </div>
-              </div>
-            </div>
+            {/* Interactive Session Signup */}
+            <SessionSignup sessionDate={nextSession} />
 
             {/* Recent Results - ATP Style */}
             <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">

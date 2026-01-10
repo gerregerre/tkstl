@@ -116,12 +116,6 @@ export function LeaderboardRowDesktop({
   };
 
   const renderName = () => {
-    const nameElement = (
-      <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 truncate max-w-[200px]">
-        {name}
-      </span>
-    );
-
     if (mode === 'singles') {
       return (
         <PlayerPointsBreakdown playerName={name}>
@@ -135,10 +129,30 @@ export function LeaderboardRowDesktop({
       );
     }
 
+    // Doubles: Stacked vertical layout for team names
+    if (players) {
+      return (
+        <div className="flex items-center gap-3">
+          {renderAvatar()}
+          <div className="flex flex-col justify-center leading-tight">
+            <span className="font-medium text-foreground text-sm group-hover:text-primary transition-colors duration-200">
+              {players[0]}
+            </span>
+            <span className="font-medium text-foreground/80 text-sm group-hover:text-primary/80 transition-colors duration-200">
+              {players[1]}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // Fallback for unparseable team names
     return (
       <div className="flex items-center gap-3">
         {renderAvatar()}
-        {nameElement}
+        <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 truncate max-w-[200px]">
+          {name}
+        </span>
       </div>
     );
   };
@@ -274,9 +288,20 @@ export function LeaderboardRowMobile({
             {rank}
           </span>
           {renderAvatar()}
-          <span className="font-medium text-foreground text-sm truncate max-w-[90px]">
-            {name}
-          </span>
+          {mode === 'doubles' && players ? (
+            <div className="flex flex-col justify-center leading-tight">
+              <span className="font-medium text-foreground text-xs">
+                {players[0]}
+              </span>
+              <span className="font-medium text-foreground/80 text-xs">
+                {players[1]}
+              </span>
+            </div>
+          ) : (
+            <span className="font-medium text-foreground text-sm truncate max-w-[90px]">
+              {name}
+            </span>
+          )}
         </div>
       </td>
 

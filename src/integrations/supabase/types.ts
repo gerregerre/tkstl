@@ -247,6 +247,44 @@ export type Database = {
         }
         Relationships: []
       }
+      session_signups: {
+        Row: {
+          created_at: string
+          id: string
+          player_id: string | null
+          player_name: string
+          session_date: string
+          signed_up_by: string | null
+          slot_number: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          player_id?: string | null
+          player_name: string
+          session_date: string
+          signed_up_by?: string | null
+          slot_number: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          player_id?: string | null
+          player_name?: string
+          session_date?: string
+          signed_up_by?: string | null
+          slot_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_signups_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_stats: {
         Row: {
           created_at: string
@@ -306,6 +344,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_old_session_signups: { Args: never; Returns: undefined }
       get_user_role: { Args: { user_id: string }; Returns: string }
       increment_player_stats: {
         Args: {

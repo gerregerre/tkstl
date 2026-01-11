@@ -13,20 +13,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { ChevronDown, ChevronRight, Calendar, Trophy, Users, Pencil, Trash2, Loader2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PasswordModal } from './PasswordModal';
 
 interface SessionGame {
   id: string;
@@ -52,6 +43,10 @@ export function SessionHistory() {
   const [loading, setLoading] = useState(true);
   const [openSessions, setOpenSessions] = useState<Set<string>>(new Set());
   
+  // Password modal state
+  const [pendingAction, setPendingAction] = useState<{ type: 'edit' | 'delete'; game: SessionGame } | null>(null);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  
   // Edit state
   const [editingGame, setEditingGame] = useState<SessionGame | null>(null);
   const [editScoreA, setEditScoreA] = useState('');
@@ -61,6 +56,7 @@ export function SessionHistory() {
   
   // Delete state
   const [deletingGame, setDeletingGame] = useState<SessionGame | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
   // Recalculate loading state
   const [isRecalculating, setIsRecalculating] = useState(false);
@@ -134,6 +130,32 @@ export function SessionHistory() {
       }
       return newSet;
     });
+  };
+
+  // Trigger password modal for edit action
+  const handleEditClick = (game: SessionGame) => {
+    setPendingAction({ type: 'edit', game });
+    setIsPasswordModalOpen(true);
+  };
+
+  // Trigger password modal for delete action
+  const handleDeleteClick = (game: SessionGame) => {
+    setPendingAction({ type: 'delete', game });
+    setIsPasswordModalOpen(true);
+  };
+
+  // Called after password is verified
+  const handlePasswordVerified = () => {
+    setIsPasswordModalOpen(false);
+    
+    if (pendingAction?.type === 'edit') {
+      openEditDialog(pendingAction.game);
+    } else if (pendingAction?.type === 'delete') {
+      setDeletingGame(pendingAction.game);
+      setShowDeleteConfirm(true);
+    }
+    
+    setPendingAction(null);
   };
 
   const openEditDialog = (game: SessionGame) => {
@@ -216,6 +238,7 @@ export function SessionHistory() {
     
     toast.success('Game deleted successfully');
     setDeletingGame(null);
+    setShowDeleteConfirm(false);
     fetchSessions();
   };
 
@@ -362,7 +385,7 @@ export function SessionHistory() {
                                 className="h-7 w-7 md:h-8 md:w-8"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  openEditDialog(game);
+                                  handleEditClick(game);
                                 }}
                               >
                                 <Pencil className="w-3 h-3 md:w-4 md:h-4" />
@@ -373,7 +396,7 @@ export function SessionHistory() {
                                 className="h-7 w-7 md:h-8 md:w-8 text-destructive hover:text-destructive"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setDeletingGame(game);
+                                  handleDeleteClick(game);
                                 }}
                               >
                                 <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
@@ -511,23 +534,53 @@ export function SessionHistory() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation */}
-      <AlertDialog open={!!deletingGame} onOpenChange={() => setDeletingGame(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Game?</AlertDialogTitle>
-            <AlertDialogDescription>
+      {/* Password Modal */}
+      <PasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => {
+          setIsPasswordModalOpen(false);
+          setPendingAction(null);
+        }}
+        onAuthenticated={handlePasswordVerified}
+        title={
+          pendingAction?.type === 'edit'
+            ? 'Password Required to Edit Score'
+            : 'Password Required to Delete Score'
+        }
+        description={
+          pendingAction?.type === 'edit'
+            ? 'Enter the manager password to edit this game record'
+            : 'Enter the manager password to delete this game record'
+        }
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={showDeleteConfirm} onOpenChange={(open) => {
+        if (!open) {
+          setShowDeleteConfirm(false);
+          setDeletingGame(null);
+        }
+      }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Game?</DialogTitle>
+            <DialogDescription>
               This will permanently delete Game {deletingGame?.game_number} and recalculate all player statistics. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => {
+              setShowDeleteConfirm(false);
+              setDeletingGame(null);
+            }}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
               Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

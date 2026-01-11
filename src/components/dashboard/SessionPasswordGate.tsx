@@ -5,13 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Eye, EyeOff, AlertCircle, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SESSION_PASSWORD } from "./PasswordModal";
 
 interface SessionPasswordGateProps {
   onAuthenticated: () => void;
 }
-
-// Simple password for session recording access
-const SESSION_PASSWORD = "gerre";
 
 export function SessionPasswordGate({ onAuthenticated }: SessionPasswordGateProps) {
   const [password, setPassword] = useState("");

@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Trophy, Medal, Award, Star, ChevronRight } from 'lucide-react';
+import { Trophy, Medal, Award, Star, ChevronDown, CheckCircle2, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { PlayerPointsBreakdown } from './PlayerPointsBreakdown';
+import { PlayerPointsBreakdown, PlayerPointsBreakdownInline } from './PlayerPointsBreakdown';
+import { usePlayerGameBreakdown } from '@/hooks/usePlayerGameBreakdown';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Progress } from '@/components/ui/progress';
 
 interface LeaderboardRowProps {
   rank: number;
@@ -58,6 +62,138 @@ const parseTeamName = (teamName: string): [string, string] | null => {
   return null;
 };
 
+// Expanded Details Component for Singles
+function ExpandedPlayerDetails({ 
+  playerName, 
+  gamesPlayed, 
+  qualificationGames 
+}: { 
+  playerName: string; 
+  gamesPlayed: number; 
+  qualificationGames: number;
+}) {
+  const { breakdown, loading } = usePlayerGameBreakdown(playerName);
+  const qualifies = gamesPlayed >= qualificationGames;
+  const qualificationProgress = Math.min((gamesPlayed / qualificationGames) * 100, 100);
+  
+  // Get last 5 games for recent form
+  const recentGames = breakdown.slice(0, 5);
+  
+  // Calculate stats
+  const totalPoints = breakdown.reduce((sum, g) => sum + g.pointsEarned, 0);
+  const wins = breakdown.filter(g => g.won).length;
+  const losses = breakdown.filter(g => !g.won).length;
+
+  if (loading) {
+    return (
+      <div className="px-4 py-4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.2, ease: 'easeInOut' }}
+      className="overflow-hidden"
+    >
+      <div className="px-4 py-4 bg-muted/30 border-t border-border/50 space-y-4">
+        {/* Qualification Progress */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-muted-foreground font-medium">Qualification Progress</span>
+            <span className={cn(
+              "font-bold",
+              qualifies ? "text-secondary" : "text-muted-foreground"
+            )}>
+              {gamesPlayed}/{qualificationGames} games
+            </span>
+          </div>
+          <Progress 
+            value={qualificationProgress} 
+            className="h-2 bg-muted"
+          />
+          {qualifies && (
+            <div className="flex items-center gap-1 text-xs text-secondary">
+              <Star className="w-3 h-3" />
+              <span>Qualified for rankings</span>
+            </div>
+          )}
+        </div>
+
+        {/* Recent Form - Last 5 Games */}
+        {recentGames.length > 0 && (
+          <div className="space-y-2">
+            <span className="text-xs text-muted-foreground font-medium">Recent Form (Last 5)</span>
+            <div className="flex items-center gap-1.5">
+              {recentGames.map((game, idx) => (
+                <div
+                  key={game.id}
+                  className={cn(
+                    "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform hover:scale-110",
+                    game.won
+                      ? "bg-secondary/20 text-secondary ring-1 ring-secondary/30"
+                      : "bg-destructive/20 text-destructive ring-1 ring-destructive/30"
+                  )}
+                  title={`${game.gameType}: ${game.won ? 'Won' : 'Lost'} (${game.pointsEarned.toFixed(1)} pts)`}
+                >
+                  {game.won ? 'W' : 'L'}
+                </div>
+              ))}
+              {recentGames.length < 5 && (
+                <span className="text-xs text-muted-foreground ml-1">
+                  ({5 - recentGames.length} more to show)
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Stats Summary */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-foreground">{totalPoints.toFixed(1)}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Pts</div>
+          </div>
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-secondary">{wins}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Wins</div>
+          </div>
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-destructive">{losses}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Losses</div>
+          </div>
+        </div>
+
+        {/* Points Breakdown (Inline for expanded view) */}
+        {breakdown.length > 0 && (
+          <div className="space-y-2">
+            <span className="text-xs text-muted-foreground font-medium">Points Breakdown</span>
+            <div className="max-h-32 overflow-y-auto space-y-1 pr-1">
+              {breakdown.slice(0, 6).map((game) => (
+                <div key={game.id} className="flex items-center justify-between text-xs bg-background/40 rounded px-2 py-1.5">
+                  <div className="flex items-center gap-2">
+                    {game.won ? (
+                      <CheckCircle2 className="w-3 h-3 text-secondary" />
+                    ) : (
+                      <XCircle className="w-3 h-3 text-destructive" />
+                    )}
+                    <span className="text-muted-foreground">{game.gameType}</span>
+                  </div>
+                  <span className="font-medium text-foreground">+{game.pointsEarned.toFixed(1)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 // Desktop Row Component
 export function LeaderboardRowDesktop({
   rank,
@@ -69,8 +205,16 @@ export function LeaderboardRowDesktop({
   qualificationGames,
   onClick,
 }: LeaderboardRowProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
+
+  const handleRowClick = () => {
+    if (mode === 'singles') {
+      setIsExpanded(!isExpanded);
+    }
+    onClick?.();
+  };
 
   const renderAvatar = () => {
     if (mode === 'singles') {
@@ -118,14 +262,16 @@ export function LeaderboardRowDesktop({
   const renderName = () => {
     if (mode === 'singles') {
       return (
-        <PlayerPointsBreakdown playerName={name}>
-          <div className="flex items-center gap-3 cursor-help">
-            {renderAvatar()}
-            <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 underline decoration-dotted decoration-muted-foreground/50 underline-offset-2 truncate max-w-[200px]">
-              {name}
-            </span>
-          </div>
-        </PlayerPointsBreakdown>
+        <div className="flex items-center gap-3">
+          {renderAvatar()}
+          <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 truncate max-w-[200px]">
+            {name}
+          </span>
+          <ChevronDown className={cn(
+            "w-4 h-4 text-muted-foreground transition-transform duration-200",
+            isExpanded && "rotate-180"
+          )} />
+        </div>
       );
     }
 
@@ -158,62 +304,80 @@ export function LeaderboardRowDesktop({
   };
 
   return (
-    <tr
-      onClick={onClick}
-      className={cn(
-        "transition-all duration-200 cursor-pointer group",
-        getRowBackground(rank)
-      )}
-    >
-      {/* Rank - Fixed width */}
-      <td className="w-[80px] px-5 py-4">
-        <div className="flex items-center gap-2.5">
-          <span className={cn("font-display font-bold text-lg w-6", getRankColor(rank))}>
-            {rank}
+    <>
+      <tr
+        onClick={handleRowClick}
+        className={cn(
+          "transition-all duration-200 cursor-pointer group",
+          getRowBackground(rank)
+        )}
+      >
+        {/* Rank - Fixed width */}
+        <td className="w-[80px] px-5 py-4">
+          <div className="flex items-center gap-2.5">
+            <span className={cn("font-display font-bold text-lg w-6", getRankColor(rank))}>
+              {rank}
+            </span>
+            {getRankIcon(rank)}
+          </div>
+        </td>
+
+        {/* Name - Flexible, takes remaining space */}
+        <td className="px-5 py-4">
+          {renderName()}
+        </td>
+
+        {/* Avg Points - Fixed width */}
+        <td className="w-[120px] px-5 py-4 text-center">
+          <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
+            {avgPoints.toFixed(2)}
           </span>
-          {getRankIcon(rank)}
-        </div>
-      </td>
+        </td>
 
-      {/* Name - Flexible, takes remaining space */}
-      <td className="px-5 py-4">
-        {renderName()}
-      </td>
+        {/* Games Played - Fixed width */}
+        <td className="w-[100px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
+          {gamesPlayed}
+        </td>
 
-      {/* Avg Points - Fixed width */}
-      <td className="w-[120px] px-5 py-4 text-center">
-        <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
-          {avgPoints.toFixed(2)}
-        </span>
-      </td>
+        {/* Total Points - Fixed width */}
+        <td className="w-[100px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
+          {totalPoints.toFixed(1)}
+        </td>
 
-      {/* Games Played - Fixed width */}
-      <td className="w-[100px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
-        {gamesPlayed}
-      </td>
-
-      {/* Total Points - Fixed width */}
-      <td className="w-[100px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
-        {totalPoints.toFixed(1)}
-      </td>
-
-      {/* Status - Fixed width */}
-      <td className="w-[180px] px-4 py-4 text-center">
-        <div className="flex items-center justify-center gap-2">
-          {qualifies ? (
-            <Badge variant="default" className="bg-secondary text-secondary-foreground">
-              <Star className="w-3 h-3 mr-1" />
-              Qualified
-            </Badge>
-          ) : (
-            <Badge variant="outline" className="text-muted-foreground">
-              {qualificationGames - gamesPlayed} left
-            </Badge>
+        {/* Status - Fixed width */}
+        <td className="w-[180px] px-4 py-4 text-center">
+          <div className="flex items-center justify-center gap-2">
+            {qualifies ? (
+              <Badge variant="default" className="bg-secondary text-secondary-foreground">
+                <Star className="w-3 h-3 mr-1" />
+                Qualified
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                {qualificationGames - gamesPlayed} left
+              </Badge>
+            )}
+          </div>
+        </td>
+      </tr>
+      
+      {/* Expanded Details Row */}
+      {mode === 'singles' && (
+        <AnimatePresence>
+          {isExpanded && (
+            <tr>
+              <td colSpan={6} className="p-0">
+                <ExpandedPlayerDetails 
+                  playerName={name} 
+                  gamesPlayed={gamesPlayed}
+                  qualificationGames={qualificationGames}
+                />
+              </td>
+            </tr>
           )}
-          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-        </div>
-      </td>
-    </tr>
+        </AnimatePresence>
+      )}
+    </>
   );
 }
 
@@ -228,8 +392,16 @@ export function LeaderboardRowMobile({
   qualificationGames,
   onClick,
 }: LeaderboardRowProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
+
+  const handleRowClick = () => {
+    if (mode === 'singles') {
+      setIsExpanded(!isExpanded);
+    }
+    onClick?.();
+  };
 
   const renderAvatar = () => {
     if (mode === 'singles') {
@@ -274,67 +446,94 @@ export function LeaderboardRowMobile({
   };
 
   return (
-    <tr
-      onClick={onClick}
-      className={cn(
-        "transition-all duration-200 cursor-pointer",
-        getRowBackground(rank)
-      )}
-    >
-      {/* Sticky Player/Team Column */}
-      <td className="sticky left-0 z-10 px-3 py-3 bg-background min-w-[160px]">
-        <div className="flex items-center gap-2">
-          <span className={cn("font-display font-bold text-sm w-5 shrink-0", getRankColor(rank))}>
-            {rank}
+    <>
+      <tr
+        onClick={handleRowClick}
+        className={cn(
+          "transition-all duration-200 cursor-pointer",
+          getRowBackground(rank)
+        )}
+      >
+        {/* Sticky Player/Team Column */}
+        <td className="sticky left-0 z-10 px-3 py-3 bg-background min-w-[160px]">
+          <div className="flex items-center gap-2">
+            <span className={cn("font-display font-bold text-sm w-5 shrink-0", getRankColor(rank))}>
+              {rank}
+            </span>
+            {renderAvatar()}
+            {mode === 'doubles' && players ? (
+              <div className="flex flex-col justify-center leading-tight">
+                <span className="font-medium text-foreground text-xs">
+                  {players[0]}
+                </span>
+                <span className="font-medium text-foreground/80 text-xs">
+                  {players[1]}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <span className="font-medium text-foreground text-sm truncate max-w-[70px]">
+                  {name}
+                </span>
+                {mode === 'singles' && (
+                  <ChevronDown className={cn(
+                    "w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0",
+                    isExpanded && "rotate-180"
+                  )} />
+                )}
+              </div>
+            )}
+          </div>
+        </td>
+
+        {/* Avg Points */}
+        <td className="px-3 py-3 text-center">
+          <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-primary/15 text-primary">
+            {avgPoints.toFixed(2)}
           </span>
-          {renderAvatar()}
-          {mode === 'doubles' && players ? (
-            <div className="flex flex-col justify-center leading-tight">
-              <span className="font-medium text-foreground text-xs">
-                {players[0]}
-              </span>
-              <span className="font-medium text-foreground/80 text-xs">
-                {players[1]}
-              </span>
-            </div>
+        </td>
+
+        {/* Games Played */}
+        <td className="px-3 py-3 text-center font-medium text-foreground text-sm tabular-nums">
+          {gamesPlayed}
+        </td>
+
+        {/* Total Points */}
+        <td className="px-3 py-3 text-center font-medium text-muted-foreground text-sm tabular-nums">
+          {totalPoints.toFixed(1)}
+        </td>
+
+        {/* Status */}
+        <td className="px-3 py-3 text-center">
+          {qualifies ? (
+            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
+              <Star className="w-2.5 h-2.5 mr-0.5" />
+              OK
+            </Badge>
           ) : (
-            <span className="font-medium text-foreground text-sm truncate max-w-[90px]">
-              {name}
+            <span className="text-muted-foreground text-[10px] whitespace-nowrap tabular-nums">
+              {qualificationGames - gamesPlayed} left
             </span>
           )}
-        </div>
-      </td>
+        </td>
+      </tr>
 
-      {/* Avg Points */}
-      <td className="px-3 py-3 text-center">
-        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-primary/15 text-primary">
-          {avgPoints.toFixed(2)}
-        </span>
-      </td>
-
-      {/* Games Played */}
-      <td className="px-3 py-3 text-center font-medium text-foreground text-sm tabular-nums">
-        {gamesPlayed}
-      </td>
-
-      {/* Total Points */}
-      <td className="px-3 py-3 text-center font-medium text-muted-foreground text-sm tabular-nums">
-        {totalPoints.toFixed(1)}
-      </td>
-
-      {/* Status */}
-      <td className="px-3 py-3 text-center">
-        {qualifies ? (
-          <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
-            <Star className="w-2.5 h-2.5 mr-0.5" />
-            OK
-          </Badge>
-        ) : (
-          <span className="text-muted-foreground text-[10px] whitespace-nowrap tabular-nums">
-            {qualificationGames - gamesPlayed} left
-          </span>
-        )}
-      </td>
-    </tr>
+      {/* Expanded Details Row for Mobile */}
+      {mode === 'singles' && (
+        <AnimatePresence>
+          {isExpanded && (
+            <tr>
+              <td colSpan={5} className="p-0 bg-background">
+                <ExpandedPlayerDetails 
+                  playerName={name} 
+                  gamesPlayed={gamesPlayed}
+                  qualificationGames={qualificationGames}
+                />
+              </td>
+            </tr>
+          )}
+        </AnimatePresence>
+      )}
+    </>
   );
 }

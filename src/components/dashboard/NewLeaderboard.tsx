@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { usePlayers } from '@/hooks/usePlayers';
-import { useTeams } from '@/hooks/useTeams';
 import { useFilteredPlayerStats, GameTypeFilter } from '@/hooks/useFilteredPlayerStats';
 import { cn } from '@/lib/utils';
 import { User, Users, RefreshCw, Filter } from 'lucide-react';
@@ -30,19 +29,19 @@ interface LeaderboardEntry {
   id: string;
   name: string;
   avgPoints: number;
+  winPercentage: number;
   gamesPlayed: number;
   totalPoints: number;
 }
 
 export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
-  const { players, loading: playersLoading, getAveragePoints, getGamesPlayed, getTotalPoints, getLeaderboard, recalculateStats } = usePlayers();
-  const { teams, loading: teamsLoading, getAveragePoints: getTeamAvgPoints, getTeamLeaderboard, getTeamName } = useTeams();
+  const { recalculateStats } = usePlayers();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
   const [isRecalculating, setIsRecalculating] = useState(false);
 
-  // Filtered stats hook
-  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading, isFiltered } = useFilteredPlayerStats(gameTypeFilter);
+  // Filtered stats hook - always used for accurate win percentage calculation
+  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading } = useFilteredPlayerStats(gameTypeFilter);
 
   const handleRecalculate = async () => {
     setIsRecalculating(true);
@@ -56,7 +55,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
     }
   };
   
-  const loading = playersLoading || teamsLoading || (isFiltered && filteredLoading);
+  const loading = filteredLoading;
 
   if (loading) {
     return (
@@ -67,37 +66,25 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
   }
 
   // Unified leaderboard data structure for both modes
+  // Always use filteredPlayerStats/filteredTeamStats since they calculate win percentage
+  // When filter is 'all', the hook still fetches all games and computes stats correctly
   const leaderboardData: LeaderboardEntry[] = mode === 'singles'
-    ? (isFiltered 
-        ? filteredPlayerStats.map((p, i) => ({ 
-            id: `filtered-${i}`, 
-            name: p.name, 
-            avgPoints: p.avgPoints, 
-            gamesPlayed: p.gamesPlayed, 
-            totalPoints: p.totalPoints 
-          }))
-        : getLeaderboard('singles').map(p => ({
-            id: p.id,
-            name: p.name,
-            avgPoints: getAveragePoints(p, 'singles'),
-            gamesPlayed: getGamesPlayed(p, 'singles'),
-            totalPoints: getTotalPoints(p, 'singles'),
-          })))
-    : (isFiltered
-        ? filteredTeamStats.map((t, i) => ({
-            id: `filtered-team-${i}`,
-            name: t.teamName,
-            avgPoints: t.avgPoints,
-            gamesPlayed: t.gamesPlayed,
-            totalPoints: t.totalPoints,
-          }))
-        : getTeamLeaderboard().map(t => ({
-            id: t.id,
-            name: getTeamName(t),
-            avgPoints: getTeamAvgPoints(t),
-            gamesPlayed: t.games_played,
-            totalPoints: t.total_points,
-          })));
+    ? filteredPlayerStats.map((p, i) => ({ 
+        id: `filtered-${i}`, 
+        name: p.name, 
+        avgPoints: p.avgPoints, 
+        winPercentage: p.winPercentage,
+        gamesPlayed: p.gamesPlayed, 
+        totalPoints: p.totalPoints 
+      }))
+    : filteredTeamStats.map((t, i) => ({
+        id: `filtered-team-${i}`,
+        name: t.teamName,
+        avgPoints: t.avgPoints,
+        winPercentage: t.winPercentage,
+        gamesPlayed: t.gamesPlayed,
+        totalPoints: t.totalPoints,
+      }));
 
   const qualificationGames = 18;
 
@@ -208,16 +195,19 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 <th className="px-5 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   {mode === 'singles' ? 'Player' : 'Team'}
                 </th>
-                <th className="w-[120px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-primary">
+                <th className="w-[100px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-primary">
                   Avg Pts
                 </th>
-                <th className="w-[100px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Win %
+                </th>
+                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   GP
                 </th>
-                <th className="w-[100px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   Total
                 </th>
-                <th className="w-[180px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="w-[160px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   Status
                 </th>
               </tr>
@@ -225,7 +215,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             <tbody className="divide-y divide-border">
               {leaderboardData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">
+                  <td colSpan={7} className="px-5 py-8 text-center text-muted-foreground">
                     {mode === 'singles' 
                       ? 'No player data yet. Record a session to see rankings.'
                       : 'No team data yet. Record a session to see team rankings.'}
@@ -239,6 +229,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     mode={mode}
                     name={entry.name}
                     avgPoints={entry.avgPoints}
+                    winPercentage={entry.winPercentage}
                     gamesPlayed={entry.gamesPlayed}
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
@@ -263,13 +254,16 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 <th className="w-[70px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-primary whitespace-nowrap">
                   Avg Pts
                 </th>
-                <th className="w-[50px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                <th className="w-[55px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                  Win %
+                </th>
+                <th className="w-[45px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   GP
                 </th>
-                <th className="w-[60px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                <th className="w-[55px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Total
                 </th>
-                <th className="w-[60px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                <th className="w-[55px] px-3 py-2.5 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Status
                 </th>
               </tr>
@@ -277,7 +271,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
             <tbody className="divide-y divide-border/70">
               {leaderboardData.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-3 py-6 text-center text-muted-foreground text-sm">
+                  <td colSpan={6} className="px-3 py-6 text-center text-muted-foreground text-sm">
                     {mode === 'singles' 
                       ? 'No player data yet. Record a session.'
                       : 'No team data yet. Record a session.'}
@@ -291,6 +285,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     mode={mode}
                     name={entry.name}
                     avgPoints={entry.avgPoints}
+                    winPercentage={entry.winPercentage}
                     gamesPlayed={entry.gamesPlayed}
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}

@@ -12,6 +12,7 @@ interface LeaderboardRowProps {
   mode: 'singles' | 'doubles';
   name: string; // For singles: player name, for doubles: "Player1 & Player2"
   avgPoints: number;
+  winPercentage: number;
   gamesPlayed: number;
   totalPoints: number;
   qualificationGames: number;
@@ -200,6 +201,7 @@ export function LeaderboardRowDesktop({
   mode,
   name,
   avgPoints,
+  winPercentage,
   gamesPlayed,
   totalPoints,
   qualificationGames,
@@ -328,19 +330,24 @@ export function LeaderboardRowDesktop({
         </td>
 
         {/* Avg Points - Fixed width */}
-        <td className="w-[120px] px-5 py-4 text-center">
+        <td className="w-[100px] px-5 py-4 text-center">
           <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
             {avgPoints.toFixed(2)}
           </span>
         </td>
 
+        {/* Win Percentage - Fixed width */}
+        <td className="w-[80px] px-5 py-4 text-center font-medium text-foreground tabular-nums">
+          {winPercentage.toFixed(0)}%
+        </td>
+
         {/* Games Played - Fixed width */}
-        <td className="w-[100px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
+        <td className="w-[80px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
           {gamesPlayed}
         </td>
 
         {/* Total Points - Fixed width */}
-        <td className="w-[100px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
+        <td className="w-[80px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
           {totalPoints.toFixed(1)}
         </td>
 
@@ -366,7 +373,7 @@ export function LeaderboardRowDesktop({
         <AnimatePresence>
           {isExpanded && (
             <tr>
-              <td colSpan={6} className="p-0">
+              <td colSpan={7} className="p-0">
                 <ExpandedPlayerDetails 
                   playerName={name} 
                   gamesPlayed={gamesPlayed}
@@ -387,6 +394,7 @@ export function LeaderboardRowMobile({
   mode,
   name,
   avgPoints,
+  winPercentage,
   gamesPlayed,
   totalPoints,
   qualificationGames,
@@ -523,7 +531,7 @@ export function LeaderboardRowMobile({
         <AnimatePresence>
           {isExpanded && (
             <tr>
-              <td colSpan={5} className="p-0 bg-background">
+              <td colSpan={6} className="p-0 bg-background">
                 <ExpandedPlayerDetails 
                   playerName={name} 
                   gamesPlayed={gamesPlayed}

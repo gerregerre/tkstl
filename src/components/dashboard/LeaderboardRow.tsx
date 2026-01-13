@@ -463,24 +463,24 @@ export function LeaderboardRowMobile({
         )}
       >
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 px-3 py-3 bg-background min-w-[160px]">
-          <div className="flex items-center gap-2">
-            <span className={cn("font-display font-bold text-sm w-5 shrink-0", getRankColor(rank))}>
+        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[130px]">
+          <div className="flex items-center gap-1.5">
+            <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>
               {rank}
             </span>
             {renderAvatar()}
             {mode === 'doubles' && players ? (
               <div className="flex flex-col justify-center leading-tight">
-                <span className="font-medium text-foreground text-xs">
+                <span className="font-medium text-foreground text-[11px]">
                   {players[0]}
                 </span>
-                <span className="font-medium text-foreground/80 text-xs">
+                <span className="font-medium text-foreground/80 text-[11px]">
                   {players[1]}
                 </span>
               </div>
             ) : (
-              <div className="flex items-center gap-1">
-                <span className="font-medium text-foreground text-sm truncate max-w-[70px]">
+              <div className="flex items-center gap-0.5">
+                <span className="font-medium text-foreground text-xs truncate max-w-[65px]">
                   {name}
                 </span>
                 {mode === 'singles' && (
@@ -495,32 +495,37 @@ export function LeaderboardRowMobile({
         </td>
 
         {/* Avg Points */}
-        <td className="px-3 py-3 text-center">
-          <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold bg-primary/15 text-primary">
+        <td className="px-2 py-2.5 text-center">
+          <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-primary/15 text-primary">
             {avgPoints.toFixed(2)}
           </span>
         </td>
 
+        {/* Win Percentage */}
+        <td className="px-2 py-2.5 text-center font-medium text-foreground text-xs tabular-nums">
+          {winPercentage.toFixed(0)}%
+        </td>
+
         {/* Games Played */}
-        <td className="px-3 py-3 text-center font-medium text-foreground text-sm tabular-nums">
+        <td className="px-2 py-2.5 text-center font-medium text-foreground text-xs tabular-nums">
           {gamesPlayed}
         </td>
 
         {/* Total Points */}
-        <td className="px-3 py-3 text-center font-medium text-muted-foreground text-sm tabular-nums">
-          {totalPoints.toFixed(1)}
+        <td className="px-2 py-2.5 text-center font-medium text-muted-foreground text-xs tabular-nums">
+          {totalPoints.toFixed(0)}
         </td>
 
         {/* Status */}
-        <td className="px-3 py-3 text-center">
+        <td className="px-2 py-2.5 text-center">
           {qualifies ? (
-            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[10px] px-1.5 py-0.5">
-              <Star className="w-2.5 h-2.5 mr-0.5" />
+            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[9px] px-1 py-0.5">
+              <Star className="w-2 h-2 mr-0.5" />
               OK
             </Badge>
           ) : (
-            <span className="text-muted-foreground text-[10px] whitespace-nowrap tabular-nums">
-              {qualificationGames - gamesPlayed} left
+            <span className="text-muted-foreground text-[9px] whitespace-nowrap tabular-nums">
+              {qualificationGames - gamesPlayed}
             </span>
           )}
         </td>

@@ -6,7 +6,6 @@ import { PlayerPointsBreakdown, PlayerPointsBreakdownInline } from './PlayerPoin
 import { usePlayerGameBreakdown } from '@/hooks/usePlayerGameBreakdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Progress } from '@/components/ui/progress';
-
 interface LeaderboardRowProps {
   rank: number;
   mode: 'singles' | 'doubles';
@@ -19,7 +18,6 @@ interface LeaderboardRowProps {
   onClick?: () => void;
   variant?: 'desktop' | 'mobile';
 }
-
 const getRankIcon = (rank: number) => {
   switch (rank) {
     case 1:
@@ -32,21 +30,18 @@ const getRankIcon = (rank: number) => {
       return null;
   }
 };
-
 const getRankColor = (rank: number) => {
   if (rank === 1) return 'text-gold';
   if (rank === 2) return 'text-silver';
   if (rank === 3) return 'text-bronze';
   return 'text-foreground';
 };
-
 const getAvatarStyle = (rank: number) => {
   if (rank === 1) return 'bg-gold/20 text-gold ring-1 ring-gold/30';
   if (rank === 2) return 'bg-silver/15 text-silver ring-1 ring-silver/20';
   if (rank === 3) return 'bg-bronze/15 text-bronze ring-1 ring-bronze/20';
   return 'bg-muted text-foreground';
 };
-
 const getRowBackground = (rank: number) => {
   if (rank === 1) return 'bg-gold/[0.04] hover:bg-gold/[0.08]';
   if (rank === 2) return 'bg-silver/[0.03] hover:bg-silver/[0.06]';
@@ -64,94 +59,75 @@ const parseTeamName = (teamName: string): [string, string] | null => {
 };
 
 // Expanded Details Component for Singles
-function ExpandedPlayerDetails({ 
-  playerName, 
-  gamesPlayed, 
-  qualificationGames 
-}: { 
-  playerName: string; 
-  gamesPlayed: number; 
+function ExpandedPlayerDetails({
+  playerName,
+  gamesPlayed,
+  qualificationGames
+}: {
+  playerName: string;
+  gamesPlayed: number;
   qualificationGames: number;
 }) {
-  const { breakdown, loading } = usePlayerGameBreakdown(playerName);
+  const {
+    breakdown,
+    loading
+  } = usePlayerGameBreakdown(playerName);
   const qualifies = gamesPlayed >= qualificationGames;
-  const qualificationProgress = Math.min((gamesPlayed / qualificationGames) * 100, 100);
-  
+  const qualificationProgress = Math.min(gamesPlayed / qualificationGames * 100, 100);
+
   // Get last 5 games for recent form
   const recentGames = breakdown.slice(0, 5);
-  
+
   // Calculate stats
   const totalPoints = breakdown.reduce((sum, g) => sum + g.pointsEarned, 0);
   const wins = breakdown.filter(g => g.won).length;
   const losses = breakdown.filter(g => !g.won).length;
-
   if (loading) {
-    return (
-      <div className="px-4 py-4 flex items-center justify-center">
+    return <div className="px-4 py-4 flex items-center justify-center">
         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      exit={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.2, ease: 'easeInOut' }}
-      className="overflow-hidden"
-    >
+  return <motion.div initial={{
+    opacity: 0,
+    height: 0
+  }} animate={{
+    opacity: 1,
+    height: 'auto'
+  }} exit={{
+    opacity: 0,
+    height: 0
+  }} transition={{
+    duration: 0.2,
+    ease: 'easeInOut'
+  }} className="overflow-hidden">
       <div className="px-4 py-4 bg-muted/30 border-t border-border/50 space-y-4">
         {/* Qualification Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground font-medium">Qualification Progress</span>
-            <span className={cn(
-              "font-bold",
-              qualifies ? "text-secondary" : "text-muted-foreground"
-            )}>
+            <span className={cn("font-bold", qualifies ? "text-secondary" : "text-muted-foreground")}>
               {gamesPlayed}/{qualificationGames} games
             </span>
           </div>
-          <Progress 
-            value={qualificationProgress} 
-            className="h-2 bg-muted"
-          />
-          {qualifies && (
-            <div className="flex items-center gap-1 text-xs text-secondary">
+          <Progress value={qualificationProgress} className="h-2 bg-muted" />
+          {qualifies && <div className="flex items-center gap-1 text-xs text-secondary">
               <Star className="w-3 h-3" />
               <span>Qualified for rankings</span>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Recent Form - Last 5 Games */}
-        {recentGames.length > 0 && (
-          <div className="space-y-2">
+        {recentGames.length > 0 && <div className="space-y-2">
             <span className="text-xs text-muted-foreground font-medium">Recent Form (Last 5)</span>
             <div className="flex items-center gap-1.5">
-              {recentGames.map((game, idx) => (
-                <div
-                  key={game.id}
-                  className={cn(
-                    "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform hover:scale-110",
-                    game.won
-                      ? "bg-secondary/20 text-secondary ring-1 ring-secondary/30"
-                      : "bg-destructive/20 text-destructive ring-1 ring-destructive/30"
-                  )}
-                  title={`${game.gameType}: ${game.won ? 'Won' : 'Lost'} (${game.pointsEarned.toFixed(1)} pts)`}
-                >
+              {recentGames.map((game, idx) => <div key={game.id} className={cn("w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform hover:scale-110", game.won ? "bg-secondary/20 text-secondary ring-1 ring-secondary/30" : "bg-destructive/20 text-destructive ring-1 ring-destructive/30")} title={`${game.gameType}: ${game.won ? 'Won' : 'Lost'} (${game.pointsEarned.toFixed(1)} pts)`}>
                   {game.won ? 'W' : 'L'}
-                </div>
-              ))}
-              {recentGames.length < 5 && (
-                <span className="text-xs text-muted-foreground ml-1">
+                </div>)}
+              {recentGames.length < 5 && <span className="text-xs text-muted-foreground ml-1">
                   ({5 - recentGames.length} more to show)
-                </span>
-              )}
+                </span>}
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* Stats Summary */}
         <div className="grid grid-cols-3 gap-3">
@@ -170,29 +146,20 @@ function ExpandedPlayerDetails({
         </div>
 
         {/* Points Breakdown (Inline for expanded view) */}
-        {breakdown.length > 0 && (
-          <div className="space-y-2">
+        {breakdown.length > 0 && <div className="space-y-2">
             <span className="text-xs text-muted-foreground font-medium">Points Breakdown</span>
             <div className="max-h-32 overflow-y-auto space-y-1 pr-1">
-              {breakdown.slice(0, 6).map((game) => (
-                <div key={game.id} className="flex items-center justify-between text-xs bg-background/40 rounded px-2 py-1.5">
+              {breakdown.slice(0, 6).map(game => <div key={game.id} className="flex items-center justify-between text-xs bg-background/40 rounded px-2 py-1.5">
                   <div className="flex items-center gap-2">
-                    {game.won ? (
-                      <CheckCircle2 className="w-3 h-3 text-secondary" />
-                    ) : (
-                      <XCircle className="w-3 h-3 text-destructive" />
-                    )}
+                    {game.won ? <CheckCircle2 className="w-3 h-3 text-secondary" /> : <XCircle className="w-3 h-3 text-destructive" />}
                     <span className="text-muted-foreground">{game.gameType}</span>
                   </div>
                   <span className="font-medium text-foreground">+{game.pointsEarned.toFixed(1)}</span>
-                </div>
-              ))}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
       </div>
-    </motion.div>
-  );
+    </motion.div>;
 }
 
 // Desktop Row Component
@@ -205,82 +172,55 @@ export function LeaderboardRowDesktop({
   gamesPlayed,
   totalPoints,
   qualificationGames,
-  onClick,
+  onClick
 }: LeaderboardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
-
   const handleRowClick = () => {
     if (mode === 'singles') {
       setIsExpanded(!isExpanded);
     }
     onClick?.();
   };
-
   const renderAvatar = () => {
     if (mode === 'singles') {
-      return (
-        <div className={cn(
-          "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0",
-          getAvatarStyle(rank)
-        )}>
+      return <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0", getAvatarStyle(rank))}>
           {name[0]}
-        </div>
-      );
+        </div>;
     }
 
     // Doubles: Two overlapping avatars
     if (players) {
-      return (
-        <div className="flex items-center -space-x-2 shrink-0">
-          <div className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background z-10 transition-transform duration-200 group-hover:scale-105",
-            getAvatarStyle(rank)
-          )}>
+      return <div className="flex items-center -space-x-2 shrink-0">
+          <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background z-10 transition-transform duration-200 group-hover:scale-105", getAvatarStyle(rank))}>
             {players[0][0]}
           </div>
-          <div className={cn(
-            "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background transition-transform duration-200 group-hover:scale-105",
-            getAvatarStyle(rank)
-          )}>
+          <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background transition-transform duration-200 group-hover:scale-105", getAvatarStyle(rank))}>
             {players[1][0]}
           </div>
-        </div>
-      );
+        </div>;
     }
 
     // Fallback for unparseable team names
-    return (
-      <div className={cn(
-        "w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0",
-        getAvatarStyle(rank)
-      )}>
+    return <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0", getAvatarStyle(rank))}>
         {name[0]}
-      </div>
-    );
+      </div>;
   };
-
   const renderName = () => {
     if (mode === 'singles') {
-      return (
-        <div className="flex items-center gap-3">
+      return <div className="flex items-center gap-3">
           {renderAvatar()}
           <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 truncate max-w-[200px]">
             {name}
           </span>
-          <ChevronDown className={cn(
-            "w-4 h-4 text-muted-foreground transition-transform duration-200",
-            isExpanded && "rotate-180"
-          )} />
-        </div>
-      );
+          <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200", isExpanded && "rotate-180")} />
+        </div>;
     }
 
     // Doubles: Stacked vertical layout for team names
     if (players) {
-      return (
-        <div className="flex items-center gap-3">
+      return <div className="flex items-center gap-3">
           {renderAvatar()}
           <div className="flex flex-col justify-center leading-tight">
             <span className="font-medium text-foreground text-sm group-hover:text-primary transition-colors duration-200">
@@ -290,30 +230,19 @@ export function LeaderboardRowDesktop({
               {players[1]}
             </span>
           </div>
-        </div>
-      );
+        </div>;
     }
 
     // Fallback for unparseable team names
-    return (
-      <div className="flex items-center gap-3">
+    return <div className="flex items-center gap-3">
         {renderAvatar()}
         <span className="font-medium text-foreground group-hover:text-primary transition-colors duration-200 truncate max-w-[200px]">
           {name}
         </span>
-      </div>
-    );
+      </div>;
   };
-
-  return (
-    <>
-      <tr
-        onClick={handleRowClick}
-        className={cn(
-          "transition-all duration-200 cursor-pointer group",
-          getRowBackground(rank)
-        )}
-      >
+  return <>
+      <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer group", getRowBackground(rank))}>
         {/* Rank - Fixed width */}
         <td className="w-[80px] px-5 py-4">
           <div className="flex items-center gap-2.5">
@@ -354,38 +283,25 @@ export function LeaderboardRowDesktop({
         {/* Status - Fixed width */}
         <td className="w-[180px] px-4 py-4 text-center">
           <div className="flex items-center justify-center gap-2">
-            {qualifies ? (
-              <Badge variant="default" className="bg-secondary text-secondary-foreground">
+            {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground">
                 <Star className="w-3 h-3 mr-1" />
                 Qualified
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="text-muted-foreground">
+              </Badge> : <Badge variant="outline" className="text-muted-foreground">
                 {qualificationGames - gamesPlayed} left
-              </Badge>
-            )}
+              </Badge>}
           </div>
         </td>
       </tr>
       
       {/* Expanded Details Row */}
-      {mode === 'singles' && (
-        <AnimatePresence>
-          {isExpanded && (
-            <tr>
+      {mode === 'singles' && <AnimatePresence>
+          {isExpanded && <tr>
               <td colSpan={7} className="p-0">
-                <ExpandedPlayerDetails 
-                  playerName={name} 
-                  gamesPlayed={gamesPlayed}
-                  qualificationGames={qualificationGames}
-                />
+                <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
               </td>
-            </tr>
-          )}
-        </AnimatePresence>
-      )}
-    </>
-  );
+            </tr>}
+        </AnimatePresence>}
+    </>;
 }
 
 // Mobile Row Component
@@ -398,99 +314,61 @@ export function LeaderboardRowMobile({
   gamesPlayed,
   totalPoints,
   qualificationGames,
-  onClick,
+  onClick
 }: LeaderboardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
-
   const handleRowClick = () => {
     if (mode === 'singles') {
       setIsExpanded(!isExpanded);
     }
     onClick?.();
   };
-
   const renderAvatar = () => {
     if (mode === 'singles') {
-      return (
-        <div className={cn(
-          "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0",
-          getAvatarStyle(rank)
-        )}>
+      return <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0", getAvatarStyle(rank))}>
           {name[0]}
-        </div>
-      );
+        </div>;
     }
 
     // Doubles: Two overlapping smaller avatars
     if (players) {
-      return (
-        <div className="flex items-center -space-x-1.5 shrink-0">
-          <div className={cn(
-            "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background z-10",
-            getAvatarStyle(rank)
-          )}>
+      return <div className="flex items-center -space-x-1.5 shrink-0">
+          <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background z-10", getAvatarStyle(rank))}>
             {players[0][0]}
           </div>
-          <div className={cn(
-            "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background",
-            getAvatarStyle(rank)
-          )}>
+          <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background", getAvatarStyle(rank))}>
             {players[1][0]}
           </div>
-        </div>
-      );
+        </div>;
     }
-
-    return (
-      <div className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0",
-        getAvatarStyle(rank)
-      )}>
+    return <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0", getAvatarStyle(rank))}>
         {name[0]}
-      </div>
-    );
+      </div>;
   };
-
-  return (
-    <>
-      <tr
-        onClick={handleRowClick}
-        className={cn(
-          "transition-all duration-200 cursor-pointer",
-          getRowBackground(rank)
-        )}
-      >
+  return <>
+      <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer", getRowBackground(rank))}>
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[130px]">
+        <td className="sticky left-0 z-10 py-2.5 bg-background min-w-[130px] px-[10px]">
           <div className="flex items-center gap-1.5">
             <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>
               {rank}
             </span>
             {renderAvatar()}
-            {mode === 'doubles' && players ? (
-              <div className="flex flex-col justify-center leading-tight">
+            {mode === 'doubles' && players ? <div className="flex flex-col justify-center leading-tight">
                 <span className="font-medium text-foreground text-[11px]">
                   {players[0]}
                 </span>
                 <span className="font-medium text-foreground/80 text-[11px]">
                   {players[1]}
                 </span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-0.5">
+              </div> : <div className="flex items-center gap-0.5">
                 <span className="font-medium text-foreground text-xs truncate max-w-[65px]">
                   {name}
                 </span>
-                {mode === 'singles' && (
-                  <ChevronDown className={cn(
-                    "w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0",
-                    isExpanded && "rotate-180"
-                  )} />
-                )}
-              </div>
-            )}
+                {mode === 'singles' && <ChevronDown className={cn("w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0", isExpanded && "rotate-180")} />}
+              </div>}
           </div>
         </td>
 
@@ -518,35 +396,22 @@ export function LeaderboardRowMobile({
 
         {/* Status */}
         <td className="px-2 py-2.5 text-center">
-          {qualifies ? (
-            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[9px] px-1 py-0.5">
+          {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground text-[9px] px-1 py-0.5">
               <Star className="w-2 h-2 mr-0.5" />
               OK
-            </Badge>
-          ) : (
-            <span className="text-muted-foreground text-[9px] whitespace-nowrap tabular-nums">
+            </Badge> : <span className="text-muted-foreground text-[9px] whitespace-nowrap tabular-nums">
               {qualificationGames - gamesPlayed}
-            </span>
-          )}
+            </span>}
         </td>
       </tr>
 
       {/* Expanded Details Row for Mobile */}
-      {mode === 'singles' && (
-        <AnimatePresence>
-          {isExpanded && (
-            <tr>
+      {mode === 'singles' && <AnimatePresence>
+          {isExpanded && <tr>
               <td colSpan={6} className="p-0 bg-background">
-                <ExpandedPlayerDetails 
-                  playerName={name} 
-                  gamesPlayed={gamesPlayed}
-                  qualificationGames={qualificationGames}
-                />
+                <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
               </td>
-            </tr>
-          )}
-        </AnimatePresence>
-      )}
-    </>
-  );
+            </tr>}
+        </AnimatePresence>}
+    </>;
 }

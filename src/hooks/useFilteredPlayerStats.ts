@@ -43,7 +43,35 @@ const GAME_TYPE_TO_NUMBER: Record<Exclude<GameTypeFilter, 'all'>, number> = {
 
 export function useFilteredPlayerStats(filter: GameTypeFilter) {
   const [sessionGames, setSessionGames] = useState<SessionGame[]>([]);
+  const [allPlayers, setAllPlayers] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Fetch all registered players
+  useEffect(() => {
+    const fetchAllPlayers = async () => {
+      const { data, error } = await supabase
+        .from('players')
+        .select('name');
+      if (!error && data) {
+        setAllPlayers(data.map(p => p.name));
+      }
+    };
+    fetchAllPlayers();
+
+    // Subscribe to player changes
+    const playersChannel = supabase
+      .channel('players-list-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'players' },
+        () => fetchAllPlayers()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(playersChannel);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchSessionGames = async () => {
@@ -131,6 +159,13 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
       });
     });
 
+    // Add all registered players (including those with no games)
+    allPlayers.forEach((playerName) => {
+      if (!statsMap.has(playerName)) {
+        statsMap.set(playerName, { totalPoints: 0, gamesPlayed: 0, wins: 0 });
+      }
+    });
+
     return Array.from(statsMap.entries())
       .map(([name, stats]) => ({
         name,
@@ -140,8 +175,16 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
         wins: stats.wins,
         winPercentage: stats.gamesPlayed > 0 ? (stats.wins / stats.gamesPlayed) * 100 : 0,
       }))
-      .sort((a, b) => b.avgPoints - a.avgPoints);
-  }, [sessionGames]);
+      .sort((a, b) => {
+        // Players with 0 games go to bottom
+        if (a.gamesPlayed === 0 && b.gamesPlayed > 0) return 1;
+        if (b.gamesPlayed === 0 && a.gamesPlayed > 0) return -1;
+        // Both have 0 games: sort alphabetically
+        if (a.gamesPlayed === 0 && b.gamesPlayed === 0) return a.name.localeCompare(b.name);
+        // Both have games: sort by avgPoints descending
+        return b.avgPoints - a.avgPoints;
+      });
+  }, [sessionGames, allPlayers]);
 
   const teamStats = useMemo((): FilteredTeamStats[] => {
     const statsMap = new Map<string, { player1: string; player2: string; totalPoints: number; gamesPlayed: number; wins: number }>();

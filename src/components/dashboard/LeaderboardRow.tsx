@@ -461,7 +461,7 @@ export function LeaderboardRowMobile({
     <>
       <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer", getRowBackground(rank))}>
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[230px]">
+        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[300px]">
           <div className="flex items-center gap-1.5">
             <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>{rank}</span>
             {renderAvatar()}

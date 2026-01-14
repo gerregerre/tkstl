@@ -34,24 +34,24 @@ const getRankIcon = (rank: number) => {
 };
 
 const getRankColor = (rank: number) => {
-  if (rank === 1) return 'text-gold font-bold';
-  if (rank === 2) return 'text-silver font-bold';
-  if (rank === 3) return 'text-bronze font-bold';
-  return 'text-muted-foreground font-medium';
+  if (rank === 1) return 'text-gold';
+  if (rank === 2) return 'text-silver';
+  if (rank === 3) return 'text-bronze';
+  return 'text-foreground';
 };
 
 const getAvatarStyle = (rank: number) => {
-  if (rank === 1) return 'bg-gold/20 text-gold ring-1 ring-gold/40';
-  if (rank === 2) return 'bg-silver/20 text-silver ring-1 ring-silver/30';
-  if (rank === 3) return 'bg-bronze/20 text-bronze ring-1 ring-bronze/30';
-  return 'bg-muted/60 text-foreground';
+  if (rank === 1) return 'bg-gold/20 text-gold ring-1 ring-gold/30';
+  if (rank === 2) return 'bg-silver/15 text-silver ring-1 ring-silver/20';
+  if (rank === 3) return 'bg-bronze/15 text-bronze ring-1 ring-bronze/20';
+  return 'bg-muted text-foreground';
 };
 
 const getRowBackground = (rank: number) => {
-  if (rank === 1) return 'bg-gold/[0.03] hover:bg-gold/[0.07] border-l-2 border-l-gold/50';
-  if (rank === 2) return 'bg-silver/[0.02] hover:bg-silver/[0.05] border-l-2 border-l-silver/40';
-  if (rank === 3) return 'bg-bronze/[0.02] hover:bg-bronze/[0.05] border-l-2 border-l-bronze/40';
-  return 'hover:bg-muted/30 border-l-2 border-l-transparent';
+  if (rank === 1) return 'bg-gold/[0.04] hover:bg-gold/[0.08]';
+  if (rank === 2) return 'bg-silver/[0.03] hover:bg-silver/[0.06]';
+  if (rank === 3) return 'bg-bronze/[0.03] hover:bg-bronze/[0.06]';
+  return 'hover:bg-muted/40';
 };
 
 // Parse team name into individual players for doubles display
@@ -310,14 +310,14 @@ export function LeaderboardRowDesktop({
       <tr
         onClick={handleRowClick}
         className={cn(
-          "transition-all duration-150 cursor-pointer group border-b border-border/20",
+          "transition-all duration-200 cursor-pointer group",
           getRowBackground(rank)
         )}
       >
-        {/* Rank */}
-        <td className="w-[60px] px-4 py-3.5">
-          <div className="flex items-center gap-2">
-            <span className={cn("font-mono text-sm w-5", getRankColor(rank))}>
+        {/* Rank - Fixed width */}
+        <td className="w-[80px] px-5 py-4">
+          <div className="flex items-center gap-2.5">
+            <span className={cn("font-display font-bold text-lg w-6", getRankColor(rank))}>
               {rank}
             </span>
             {getRankIcon(rank)}
@@ -325,44 +325,46 @@ export function LeaderboardRowDesktop({
         </td>
 
         {/* Name - Flexible, takes remaining space */}
-        <td className="px-6 py-3.5">
+        <td className="px-5 py-4">
           {renderName()}
         </td>
 
-        {/* Avg Points */}
-        <td className="w-[72px] px-3 py-3.5 text-center">
-          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary">
+        {/* Avg Points - Fixed width */}
+        <td className="w-[100px] px-5 py-4 text-center">
+          <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
             {avgPoints.toFixed(2)}
           </span>
         </td>
 
-        {/* Win Percentage */}
-        <td className="w-[56px] px-2 py-3.5 text-center font-mono text-sm text-foreground/80 tabular-nums">
+        {/* Win Percentage - Fixed width */}
+        <td className="w-[80px] px-5 py-4 text-center font-medium text-foreground tabular-nums">
           {winPercentage.toFixed(0)}%
         </td>
 
-        {/* Games Played */}
-        <td className="w-[48px] px-2 py-3.5 text-center font-mono text-sm text-foreground/80 tabular-nums">
+        {/* Games Played - Fixed width */}
+        <td className="w-[80px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
           {gamesPlayed}
         </td>
 
-        {/* Total Points */}
-        <td className="w-[56px] px-2 py-3.5 text-center font-mono text-sm text-muted-foreground tabular-nums">
-          {totalPoints.toFixed(0)}
+        {/* Total Points - Fixed width */}
+        <td className="w-[80px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
+          {totalPoints.toFixed(1)}
         </td>
 
-        {/* Status */}
-        <td className="w-[100px] px-3 py-3.5 text-center">
-          {qualifies ? (
-            <Badge variant="default" className="bg-secondary/80 text-secondary-foreground text-[10px] px-2 py-0.5">
-              <Star className="w-2.5 h-2.5 mr-1" />
-              Qualified
-            </Badge>
-          ) : (
-            <span className="text-[11px] text-muted-foreground font-mono tabular-nums">
-              {qualificationGames - gamesPlayed} left
-            </span>
-          )}
+        {/* Status - Fixed width */}
+        <td className="w-[180px] px-4 py-4 text-center">
+          <div className="flex items-center justify-center gap-2">
+            {qualifies ? (
+              <Badge variant="default" className="bg-secondary text-secondary-foreground">
+                <Star className="w-3 h-3 mr-1" />
+                Qualified
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-muted-foreground">
+                {qualificationGames - gamesPlayed} left
+              </Badge>
+            )}
+          </div>
         </td>
       </tr>
       
@@ -456,14 +458,14 @@ export function LeaderboardRowMobile({
       <tr
         onClick={handleRowClick}
         className={cn(
-          "transition-all duration-150 cursor-pointer border-b border-border/20",
+          "transition-all duration-200 cursor-pointer",
           getRowBackground(rank)
         )}
       >
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 px-3 py-2.5 bg-card min-w-[140px]">
-          <div className="flex items-center gap-2">
-            <span className={cn("font-mono text-[11px] w-4 shrink-0", getRankColor(rank))}>
+        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[130px]">
+          <div className="flex items-center gap-1.5">
+            <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>
               {rank}
             </span>
             {renderAvatar()}
@@ -472,18 +474,18 @@ export function LeaderboardRowMobile({
                 <span className="font-medium text-foreground text-[11px]">
                   {players[0]}
                 </span>
-                <span className="font-medium text-foreground/70 text-[11px]">
+                <span className="font-medium text-foreground/80 text-[11px]">
                   {players[1]}
                 </span>
               </div>
             ) : (
               <div className="flex items-center gap-0.5">
-                <span className="font-medium text-foreground text-xs truncate max-w-[70px]">
+                <span className="font-medium text-foreground text-xs truncate max-w-[65px]">
                   {name}
                 </span>
                 {mode === 'singles' && (
                   <ChevronDown className={cn(
-                    "w-3 h-3 text-muted-foreground/60 transition-transform duration-200 shrink-0",
+                    "w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0",
                     isExpanded && "rotate-180"
                   )} />
                 )}
@@ -493,36 +495,36 @@ export function LeaderboardRowMobile({
         </td>
 
         {/* Avg Points */}
-        <td className="px-1.5 py-2.5 text-center">
-          <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
+        <td className="px-2 py-2.5 text-center">
+          <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-primary/15 text-primary">
             {avgPoints.toFixed(2)}
           </span>
         </td>
 
         {/* Win Percentage */}
-        <td className="px-1 py-2.5 text-center font-mono text-[11px] text-foreground/80 tabular-nums">
+        <td className="px-2 py-2.5 text-center font-medium text-foreground text-xs tabular-nums">
           {winPercentage.toFixed(0)}%
         </td>
 
         {/* Games Played */}
-        <td className="px-1 py-2.5 text-center font-mono text-[11px] text-foreground/80 tabular-nums">
+        <td className="px-2 py-2.5 text-center font-medium text-foreground text-xs tabular-nums">
           {gamesPlayed}
         </td>
 
         {/* Total Points */}
-        <td className="px-1 py-2.5 text-center font-mono text-[11px] text-muted-foreground tabular-nums">
+        <td className="px-2 py-2.5 text-center font-medium text-muted-foreground text-xs tabular-nums">
           {totalPoints.toFixed(0)}
         </td>
 
         {/* Status */}
-        <td className="px-1 py-2.5 text-center">
+        <td className="px-2 py-2.5 text-center">
           {qualifies ? (
-            <Badge variant="default" className="bg-secondary/80 text-secondary-foreground text-[8px] px-1.5 py-0.5">
+            <Badge variant="default" className="bg-secondary text-secondary-foreground text-[9px] px-1 py-0.5">
               <Star className="w-2 h-2 mr-0.5" />
               OK
             </Badge>
           ) : (
-            <span className="text-muted-foreground/70 text-[9px] font-mono tabular-nums">
+            <span className="text-muted-foreground text-[9px] whitespace-nowrap tabular-nums">
               {qualificationGames - gamesPlayed}
             </span>
           )}

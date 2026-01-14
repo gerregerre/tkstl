@@ -461,8 +461,8 @@ export function LeaderboardRowMobile({
     <>
       <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer", getRowBackground(rank))}>
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 px-2 py-2.5 bg-background min-w-[60px]">
-          <div className="flex items-center gap-1.5">
+        <td className="sticky left-0 z-10 px-1 py-2.5 bg-background min-w-[115px]">
+          <div className="flex items-center gap-1">
             <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>{rank}</span>
             {renderAvatar()}
             {mode === "doubles" && players ? (
@@ -472,7 +472,7 @@ export function LeaderboardRowMobile({
               </div>
             ) : (
               <div className="flex items-center gap-0.5">
-                <span className="font-medium text-foreground text-xs truncate max-w-[50px]">{name}</span>
+                <span className="font-medium text-foreground text-xs truncate max-w-[70px]">{name}</span>
                 {mode === "singles" && (
                   <ChevronDown
                     className={cn(

@@ -184,38 +184,38 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       </div>
 
       {/* Desktop Table - Unified for both Singles and Doubles */}
-      <div className="hidden md:block bg-card rounded-md border border-border overflow-hidden shadow-card">
+      <div className="hidden md:block bg-card rounded-xl border border-border/50 overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
-          <table className="w-full table-fixed">
+          <table className="w-full">
             <thead>
-              <tr className="border-b border-border bg-secondary/40">
-                <th className="w-[80px] px-5 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Rank
+              <tr className="border-b border-border/30 bg-muted/30">
+                <th className="w-[60px] px-4 py-3.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                  #
                 </th>
-                <th className="px-5 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-6 py-3.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
                   {mode === 'singles' ? 'Player' : 'Team'}
                 </th>
-                <th className="w-[100px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-primary">
-                  Avg Pts
+                <th className="w-[72px] px-3 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                  Avg
                 </th>
-                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Win %
+                <th className="w-[56px] px-2 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                  W%
                 </th>
-                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="w-[48px] px-2 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
                   GP
                 </th>
-                <th className="w-[80px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Total
+                <th className="w-[56px] px-2 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                  Pts
                 </th>
-                <th className="w-[160px] px-5 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="w-[100px] px-3 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody>
               {leaderboardData.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-8 text-center text-muted-foreground">
+                  <td colSpan={7} className="px-5 py-8 text-center text-muted-foreground text-sm">
                     {mode === 'singles' 
                       ? 'No player data yet. Record a session to see rankings.'
                       : 'No team data yet. Record a session to see team rankings.'}
@@ -243,32 +243,32 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       </div>
 
       {/* Mobile Table - Unified for both Singles and Doubles */}
-      <div className="md:hidden bg-background rounded-md border border-border overflow-hidden shadow-card">
-        <div className="overflow-x-auto scrollbar-visible bg-background">
-          <table className="w-full min-w-[480px]">
+      <div className="md:hidden bg-card rounded-xl border border-border/50 overflow-hidden shadow-lg">
+        <div className="overflow-x-auto scrollbar-visible bg-card">
+          <table className="w-full min-w-[400px]">
             <thead>
-              <tr className="border-b border-border bg-secondary/80">
-                <th className="sticky left-0 z-10 bg-secondary/80 px-2 py-2 text-left text-[9px] font-bold uppercase tracking-wider text-muted-foreground min-w-[130px]">
+              <tr className="border-b border-border/30 bg-muted/30">
+                <th className="sticky left-0 z-10 bg-muted/30 px-3 py-2.5 text-left text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/70 min-w-[140px]">
                   {mode === 'singles' ? 'Player' : 'Team'}
                 </th>
-                <th className="w-[52px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-primary whitespace-nowrap">
+                <th className="w-[50px] px-1.5 py-2.5 text-center text-[9px] font-semibold uppercase tracking-wider text-primary/80 whitespace-nowrap">
                   Avg
                 </th>
-                <th className="w-[40px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="w-[38px] px-1 py-2.5 text-center text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/70 whitespace-nowrap">
                   W%
                 </th>
-                <th className="w-[32px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="w-[30px] px-1 py-2.5 text-center text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/70 whitespace-nowrap">
                   GP
                 </th>
-                <th className="w-[40px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
-                  Tot
+                <th className="w-[38px] px-1 py-2.5 text-center text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/70 whitespace-nowrap">
+                  Pts
                 </th>
-                <th className="w-[36px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="w-[32px] px-1 py-2.5 text-center text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/70 whitespace-nowrap">
                   
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/70">
+            <tbody>
               {leaderboardData.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-3 py-6 text-center text-muted-foreground text-sm">

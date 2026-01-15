@@ -184,30 +184,30 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       </div>
 
       {/* Desktop Table - Unified for both Singles and Doubles */}
-      <div className="hidden md:block bg-card rounded-md border border-border overflow-hidden shadow-card">
+      <div className="hidden md:flex justify-center bg-card rounded-md border border-border overflow-hidden shadow-card">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-auto">
             <thead>
               <tr className="border-b border-border bg-secondary/40">
-                <th className="w-16 px-4 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-3 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Rank
                 </th>
-                <th className="w-auto px-4 py-4 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-3 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   {mode === 'singles' ? 'Player' : 'Team'}
                 </th>
-                <th className="w-24 px-4 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-primary">
-                  Avg Pts
+                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-primary whitespace-nowrap">
+                  Avg
                 </th>
-                <th className="w-20 px-4 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Win %
+                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
+                  W%
                 </th>
-                <th className="w-16 px-4 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   GP
                 </th>
-                <th className="w-20 px-4 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Total
                 </th>
-                <th className="w-28 px-4 py-4 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Status
                 </th>
               </tr>

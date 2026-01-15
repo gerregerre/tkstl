@@ -350,23 +350,24 @@ export function LeaderboardRowMobile({
   return <>
       <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer", getRowBackground(rank))}>
         {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 py-2 bg-background px-1.5">
-          <div className="flex items-center gap-0.5">
-            <span className={cn("font-display font-bold text-[10px] w-3 shrink-0", getRankColor(rank))}>
+        <td className="sticky left-0 z-10 py-2.5 bg-background w-auto px-2">
+          <div className="flex items-center gap-1">
+            <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>
               {rank}
             </span>
-            {mode === 'doubles' && players ? <div className="flex flex-col justify-center leading-none">
-                <span className="font-medium text-foreground text-[9px]">
+            {renderAvatar()}
+            {mode === 'doubles' && players ? <div className="flex flex-col justify-center leading-tight">
+                <span className="font-medium text-foreground text-[10px]">
                   {players[0]}
                 </span>
-                <span className="font-medium text-foreground/80 text-[9px]">
+                <span className="font-medium text-foreground/80 text-[10px]">
                   {players[1]}
                 </span>
               </div> : <div className="flex items-center gap-0.5">
-                <span className="font-medium text-foreground text-[10px] truncate max-w-[45px]">
+                <span className="font-medium text-foreground text-[11px] truncate max-w-[55px]">
                   {name}
                 </span>
-                {mode === 'singles' && <ChevronDown className={cn("w-2.5 h-2.5 text-muted-foreground transition-transform duration-200 shrink-0", isExpanded && "rotate-180")} />}
+                {mode === 'singles' && <ChevronDown className={cn("w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0", isExpanded && "rotate-180")} />}
               </div>}
           </div>
         </td>

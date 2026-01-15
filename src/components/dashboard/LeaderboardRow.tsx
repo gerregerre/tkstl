@@ -243,50 +243,50 @@ export function LeaderboardRowDesktop({
   };
   return <>
       <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer group", getRowBackground(rank))}>
-        {/* Rank - Fixed width */}
-        <td className="w-[80px] px-5 py-4">
-          <div className="flex items-center gap-2.5">
-            <span className={cn("font-display font-bold text-lg w-6", getRankColor(rank))}>
+        {/* Rank */}
+        <td className="w-16 px-4 py-4">
+          <div className="flex items-center gap-2">
+            <span className={cn("font-display font-bold text-lg w-5", getRankColor(rank))}>
               {rank}
             </span>
             {getRankIcon(rank)}
           </div>
         </td>
 
-        {/* Name - Flexible, takes remaining space */}
-        <td className="px-5 py-4">
+        {/* Name - Auto width based on content */}
+        <td className="w-auto px-4 py-4">
           {renderName()}
         </td>
 
-        {/* Avg Points - Fixed width */}
-        <td className="w-[100px] px-5 py-4 text-center">
-          <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
+        {/* Avg Points */}
+        <td className="w-24 px-4 py-4 text-center">
+          <span className="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-sm font-bold bg-primary/15 text-primary ring-1 ring-primary/20">
             {avgPoints.toFixed(2)}
           </span>
         </td>
 
-        {/* Win Percentage - Fixed width */}
-        <td className="w-[80px] px-5 py-4 text-center font-medium text-foreground tabular-nums">
+        {/* Win Percentage */}
+        <td className="w-20 px-4 py-4 text-center font-medium text-foreground tabular-nums">
           {winPercentage.toFixed(0)}%
         </td>
 
-        {/* Games Played - Fixed width */}
-        <td className="w-[80px] px-5 py-4 text-center font-semibold text-foreground tabular-nums">
+        {/* Games Played */}
+        <td className="w-16 px-4 py-4 text-center font-semibold text-foreground tabular-nums">
           {gamesPlayed}
         </td>
 
-        {/* Total Points - Fixed width */}
-        <td className="w-[80px] px-5 py-4 text-center font-medium text-muted-foreground tabular-nums">
+        {/* Total Points */}
+        <td className="w-20 px-4 py-4 text-center font-medium text-muted-foreground tabular-nums">
           {totalPoints.toFixed(1)}
         </td>
 
-        {/* Status - Fixed width */}
-        <td className="w-[180px] px-4 py-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground">
+        {/* Status */}
+        <td className="w-28 px-4 py-4 text-center">
+          <div className="flex items-center justify-center">
+            {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground text-xs">
                 <Star className="w-3 h-3 mr-1" />
                 Qualified
-              </Badge> : <Badge variant="outline" className="text-muted-foreground">
+              </Badge> : <Badge variant="outline" className="text-muted-foreground text-xs">
                 {qualificationGames - gamesPlayed} left
               </Badge>}
           </div>

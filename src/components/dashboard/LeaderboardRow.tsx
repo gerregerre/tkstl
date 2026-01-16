@@ -280,23 +280,12 @@ export function LeaderboardRowDesktop({
           {totalPoints.toFixed(1)}
         </td>
 
-        {/* Status */}
-        <td className="px-3 py-3 text-center whitespace-nowrap">
-          <div className="flex items-center justify-center">
-            {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5">
-                <Star className="w-3 h-3 mr-1" />
-                Qualified
-              </Badge> : <Badge variant="outline" className="text-muted-foreground text-xs px-1.5 py-0.5">
-                {qualificationGames - gamesPlayed} left
-              </Badge>}
-          </div>
-        </td>
       </tr>
       
       {/* Expanded Details Row */}
       {mode === 'singles' && <AnimatePresence>
           {isExpanded && <tr>
-              <td colSpan={7} className="p-0">
+              <td colSpan={6} className="p-0">
                 <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
               </td>
             </tr>}
@@ -394,21 +383,12 @@ export function LeaderboardRowMobile({
           {totalPoints.toFixed(0)}
         </td>
 
-        {/* Status */}
-        <td className="px-2 py-2.5 text-center">
-          {qualifies ? <Badge variant="default" className="bg-secondary text-secondary-foreground text-[9px] px-1 py-0.5">
-              <Star className="w-2 h-2 mr-0.5" />
-              OK
-            </Badge> : <span className="text-muted-foreground text-[9px] whitespace-nowrap tabular-nums">
-              {qualificationGames - gamesPlayed}
-            </span>}
-        </td>
       </tr>
 
       {/* Expanded Details Row for Mobile */}
       {mode === 'singles' && <AnimatePresence>
           {isExpanded && <tr>
-              <td colSpan={6} className="p-0 bg-background">
+              <td colSpan={5} className="p-0 bg-background">
                 <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
               </td>
             </tr>}

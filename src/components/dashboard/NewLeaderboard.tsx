@@ -243,27 +243,27 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
       </div>
 
       {/* Mobile Table - Unified for both Singles and Doubles */}
-      <div className="md:hidden bg-background rounded-md border border-border overflow-hidden shadow-card">
-        <div className="overflow-x-auto scrollbar-visible bg-background">
-          <table className="w-full min-w-[480px]">
+      <div className="md:hidden flex justify-center">
+        <div className="bg-background rounded-md border border-border overflow-hidden shadow-card">
+          <table className="w-fit">
             <thead>
               <tr className="border-b border-border bg-secondary/80">
-                <th className="sticky left-0 z-10 bg-secondary/80 px-2 py-2 text-left text-[9px] font-bold uppercase tracking-wider text-muted-foreground min-w-[130px]">
+                <th className="px-2 py-2 text-left text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   {mode === 'singles' ? 'Player' : 'Team'}
                 </th>
-                <th className="w-[52px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-primary whitespace-nowrap">
+                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-primary whitespace-nowrap">
                   Avg
                 </th>
-                <th className="w-[40px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   W%
                 </th>
-                <th className="w-[32px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   GP
                 </th>
-                <th className="w-[40px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   Tot
                 </th>
-                <th className="w-[36px] px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   
                 </th>
               </tr>

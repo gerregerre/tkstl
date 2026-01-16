@@ -349,8 +349,8 @@ export function LeaderboardRowMobile({
   };
   return <>
       <tr onClick={handleRowClick} className={cn("transition-all duration-200 cursor-pointer", getRowBackground(rank))}>
-        {/* Sticky Player/Team Column */}
-        <td className="sticky left-0 z-10 py-2.5 bg-background w-auto px-2">
+        {/* Player/Team Column */}
+        <td className="py-2.5 w-fit px-2 whitespace-nowrap">
           <div className="flex items-center gap-1">
             <span className={cn("font-display font-bold text-xs w-4 shrink-0", getRankColor(rank))}>
               {rank}

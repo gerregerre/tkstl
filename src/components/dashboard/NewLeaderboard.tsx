@@ -207,15 +207,12 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   Total
                 </th>
-                <th className="px-3 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
-                  Status
-                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {leaderboardData.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-8 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">
                     {mode === 'singles' 
                       ? 'No player data yet. Record a session to see rankings.'
                       : 'No team data yet. Record a session to see team rankings.'}
@@ -263,15 +260,12 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                 <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                   Tot
                 </th>
-                <th className="px-2 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
-                  
-                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/70">
               {leaderboardData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-3 py-6 text-center text-muted-foreground text-sm">
+                  <td colSpan={5} className="px-3 py-6 text-center text-muted-foreground text-sm">
                     {mode === 'singles' 
                       ? 'No player data yet. Record a session.'
                       : 'No team data yet. Record a session.'}

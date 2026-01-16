@@ -21,31 +21,49 @@ interface LeaderboardRowProps {
 const getRankIcon = (rank: number) => {
   switch (rank) {
     case 1:
-      return <Trophy className="w-5 h-5 text-gold" />;
+      return (
+        <div className="relative">
+          <Trophy className="w-5 h-5 text-gold drop-shadow-[0_0_6px_hsl(45,93%,58%,0.6)]" />
+          <div className="absolute inset-0 animate-pulse-subtle">
+            <Trophy className="w-5 h-5 text-gold/40 blur-sm" />
+          </div>
+        </div>
+      );
     case 2:
-      return <Medal className="w-5 h-5 text-silver" />;
+      return (
+        <div className="relative">
+          <Medal className="w-5 h-5 text-silver drop-shadow-[0_0_4px_hsl(210,10%,70%,0.5)]" />
+        </div>
+      );
     case 3:
-      return <Award className="w-5 h-5 text-bronze" />;
+      return (
+        <div className="relative">
+          <Award className="w-5 h-5 text-bronze drop-shadow-[0_0_4px_hsl(30,60%,50%,0.5)]" />
+        </div>
+      );
     default:
       return null;
   }
 };
+
 const getRankColor = (rank: number) => {
-  if (rank === 1) return 'text-gold';
+  if (rank === 1) return 'text-gold drop-shadow-[0_0_8px_hsl(45,93%,58%,0.4)]';
   if (rank === 2) return 'text-silver';
   if (rank === 3) return 'text-bronze';
   return 'text-foreground';
 };
+
 const getAvatarStyle = (rank: number) => {
-  if (rank === 1) return 'bg-gold/20 text-gold ring-1 ring-gold/30';
-  if (rank === 2) return 'bg-silver/15 text-silver ring-1 ring-silver/20';
-  if (rank === 3) return 'bg-bronze/15 text-bronze ring-1 ring-bronze/20';
+  if (rank === 1) return 'bg-gradient-to-br from-gold/30 to-gold/10 text-gold ring-2 ring-gold/50 shadow-[0_0_12px_-2px_hsl(45,93%,58%,0.4)]';
+  if (rank === 2) return 'bg-gradient-to-br from-silver/25 to-silver/10 text-silver ring-2 ring-silver/40 shadow-[0_0_8px_-2px_hsl(210,10%,70%,0.3)]';
+  if (rank === 3) return 'bg-gradient-to-br from-bronze/25 to-bronze/10 text-bronze ring-2 ring-bronze/40 shadow-[0_0_8px_-2px_hsl(30,60%,50%,0.3)]';
   return 'bg-muted text-foreground';
 };
+
 const getRowBackground = (rank: number) => {
-  if (rank === 1) return 'bg-gold/[0.04] hover:bg-gold/[0.08]';
-  if (rank === 2) return 'bg-silver/[0.03] hover:bg-silver/[0.06]';
-  if (rank === 3) return 'bg-bronze/[0.03] hover:bg-bronze/[0.06]';
+  if (rank === 1) return 'bg-gradient-to-r from-gold/[0.08] via-gold/[0.04] to-transparent hover:from-gold/[0.12] hover:via-gold/[0.06]';
+  if (rank === 2) return 'bg-gradient-to-r from-silver/[0.06] via-silver/[0.03] to-transparent hover:from-silver/[0.08] hover:via-silver/[0.04]';
+  if (rank === 3) return 'bg-gradient-to-r from-bronze/[0.06] via-bronze/[0.03] to-transparent hover:from-bronze/[0.08] hover:via-bronze/[0.04]';
   return 'hover:bg-muted/40';
 };
 

@@ -38,9 +38,9 @@ function calculatePoints(game: SessionGame, team: 'A' | 'B'): number {
   const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
   
   if (totalScore > 0) {
-    // Scored games (1 & 2)
+    // Scored games (PwC & Shibuya): Raw score as points
     const teamScore = team === 'A' ? game.team_a_score || 0 : game.team_b_score || 0;
-    return (teamScore / totalScore) * 10;
+    return teamScore;
   } else {
     // Tug of War (game 3): Winner gets 10, loser gets 5
     const isWinner = game.winner === team;

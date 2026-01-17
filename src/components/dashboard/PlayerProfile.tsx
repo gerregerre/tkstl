@@ -48,7 +48,7 @@ function calculateGamePoints(game: SessionGame, playerName: string): number {
   const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
   
   if (game.game_number === 3) {
-    // Game 3 (Tug Of War): Winner gets 10, Loser gets 5
+    // Game 3: Win/Loss only
     const teamAWon = game.winner === 'A';
     if (isTeamA) {
       return teamAWon ? 10 : 5;
@@ -56,15 +56,16 @@ function calculateGamePoints(game: SessionGame, playerName: string): number {
       return teamAWon ? 5 : 10;
     }
   } else {
-    // Games 1 & 2 (PwC Single & Shibuya Crossing): (score ÷ total) × 10
+    // Games 1 & 2: Score-based
     const teamAScore = game.team_a_score || 0;
     const teamBScore = game.team_b_score || 0;
-    const totalScore = teamAScore + teamBScore;
+    const teamAWon = teamAScore > teamBScore;
     
-    if (totalScore === 0) return 0;
-    
-    const playerScore = isTeamA ? teamAScore : teamBScore;
-    return (playerScore / totalScore) * 10;
+    if (isTeamA) {
+      return teamAWon ? 10 : (teamAScore / 9) * 10;
+    } else {
+      return teamAWon ? (teamBScore / 9) * 10 : 10;
+    }
   }
 }
 

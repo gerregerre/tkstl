@@ -51,11 +51,11 @@ function BreakdownContent({ breakdown, loading, playerName }: {
       <div className="grid grid-cols-2 gap-2 text-center pb-2 border-b border-border">
         <div>
           <div className="text-lg font-bold text-primary">{totalPoints.toFixed(1)}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total</div>
+          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Raw Total</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-foreground">{avgPoints.toFixed(2)}</div>
-          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Average</div>
+          <div className="text-lg font-bold text-foreground">{(totalPoints / 3).toFixed(2)}</div>
+          <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Per Session (÷3)</div>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ function BreakdownContent({ breakdown, loading, playerName }: {
       {/* Calculation Formula */}
       <div className="pt-2 border-t border-border">
         <div className="text-[10px] text-muted-foreground">
-          <span className="font-semibold">Formula:</span> PwC/Shibuya: (score ÷ total) × 10 | Tug Of War: Win=10, Loss=5
+          <span className="font-semibold">Formula:</span> (PwC score + Shibuya score + Tug Of War) ÷ 3 | Tug: Win=10, Loss=5
         </div>
       </div>
     </div>

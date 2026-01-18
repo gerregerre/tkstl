@@ -257,7 +257,8 @@ export function SessionHistory() {
       return `${game.team_a_score} - ${game.team_b_score}`;
     }
     if (game.winner) {
-      return game.winner === 'Team A' ? 'Win - Loss' : 'Loss - Win';
+      // Database stores 'A' or 'B', not 'Team A' or 'Team B'
+      return game.winner === 'A' ? 'Win - Loss' : 'Loss - Win';
     }
     return 'No result';
   };

@@ -124,9 +124,9 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
       const teamBWon = game.winner === 'B';
 
       if (totalScore > 0) {
-        // Scored games (games 1 & 2)
-        pointsA = ((game.team_a_score || 0) / totalScore) * 10;
-        pointsB = ((game.team_b_score || 0) / totalScore) * 10;
+        // Scored games (games 1 & 2): Raw score as points
+        pointsA = game.team_a_score || 0;
+        pointsB = game.team_b_score || 0;
       } else {
         // Game 3 (Tug Of War): Winner gets 10, loser gets 5
         if (game.winner === 'A') {
@@ -197,8 +197,9 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
       const teamBWon = game.winner === 'B';
 
       if (totalScore > 0) {
-        pointsA = ((game.team_a_score || 0) / totalScore) * 10;
-        pointsB = ((game.team_b_score || 0) / totalScore) * 10;
+        // Scored games: Raw score as points
+        pointsA = game.team_a_score || 0;
+        pointsB = game.team_b_score || 0;
       } else {
         if (game.winner === 'A') {
           pointsA = 10;

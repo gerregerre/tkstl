@@ -382,8 +382,7 @@ export function Information() {
                 <div className="flex items-start gap-3">
                   <div className="w-20 flex-shrink-0 font-semibold text-red-500">LOSER:</div>
                   <div className="text-muted-foreground">
-                    Receives <strong>0 points</strong>. Zero-sum means zero-sum—when the winner reaches 10, 
-                    the loser is at 0. It's dramatic. It's intentional.
+                    Receives <strong>5 points</strong>. You showed up, you fought—that counts for something.
                   </div>
                 </div>
               </div>
@@ -393,13 +392,20 @@ export function Information() {
             </div>
           </div>
 
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
-            <h4 className="font-bold text-foreground mb-2">Example Session</h4>
-            <div className="text-sm text-muted-foreground space-y-1">
-              <p>Game 1 (PwC): Your team wins 9-5 → You receive <strong>9 pts</strong></p>
-              <p>Game 2 (Shibuya): Your team loses 6-9 → You receive <strong>6 pts</strong></p>
-              <p>Game 3 (Tug): Your team wins 10-0 → You receive <strong>10 pts</strong></p>
-              <p className="pt-2 font-medium text-foreground">Total: 25 points from 3 games = 8.33 average</p>
+          <div className="bg-slate-800/80 border border-slate-700/50 rounded-lg p-4">
+            <h4 className="font-bold text-foreground mb-3">Example Session</h4>
+            <div className="text-sm text-muted-foreground space-y-2">
+              <p>Game 1 (PwC): Your team wins <strong>9-5</strong> → You receive <strong>9 pts</strong></p>
+              <p>Game 2 (Shibuya): Your team loses <strong>6-9</strong> → You receive <strong>6 pts</strong></p>
+              <p>Game 3 (Tug): Your team loses → You receive <strong>5 pts</strong> (winner gets 10)</p>
+              <div className="pt-3 mt-3 border-t border-slate-700/50">
+                <p className="font-semibold text-foreground">
+                  Noble Standard = (9 + 6 + 5) ÷ 3 = <span className="text-primary">6.67</span>
+                </p>
+                <p className="text-xs text-muted-foreground/70 mt-1">
+                  Formula: (Sum of all game scores) ÷ games played
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

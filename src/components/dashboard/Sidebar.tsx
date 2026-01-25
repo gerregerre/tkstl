@@ -21,6 +21,7 @@ const navLinks = [
   { id: 'info', label: 'Information' },
   { id: 'lore', label: 'The Lore' },
   { id: 'members', label: 'Members' },
+  { id: 'news-admin', label: 'News Admin' },
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {

@@ -114,16 +114,16 @@ export default function NewsCarousel() {
           {newsItems.map((item) => (
             <div
               key={item.id}
-              className="w-full flex-shrink-0 px-10 py-4 relative"
+              className="w-full flex-shrink-0 px-10 py-5 relative"
             >
-              <div className="relative z-10 text-center space-y-1.5">
+              <div className="relative z-10 text-center space-y-2">
                 {/* Title */}
                 <h4 className="text-base font-semibold text-foreground">
                   {item.title}
                 </h4>
                 
                 {/* Description */}
-                <p className="text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed line-clamp-2">
+                <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed line-clamp-3">
                   {item.description}
                 </p>
               </div>

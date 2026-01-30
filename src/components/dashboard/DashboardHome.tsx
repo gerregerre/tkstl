@@ -4,6 +4,7 @@ import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
 import { HeroSection } from './HeroSection';
 import { SessionSignup } from './SessionSignup';
+import { Sponsors } from './Sponsors';
 import { supabase } from '@/integrations/supabase/client';
 import NewsCarousel from '@/components/home/NewsCarousel';
 
@@ -124,6 +125,9 @@ export function DashboardHome({
 
       {/* Main Content */}
       <div ref={contentRef} className="space-y-6 md:space-y-8 pt-8 md:pt-16 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Sponsors Bar */}
+        <Sponsors />
+
         {/* News Carousel */}
         <NewsCarousel />
 

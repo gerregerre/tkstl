@@ -8,7 +8,7 @@ interface NewsItem {
   title: string;
   description: string;
   date_label: string;
-  type: 'update' | 'announcement' | 'result' | 'feature';
+  type: 'update' | 'announcement' | 'result' | 'feature' | 'breaking';
 }
 
 const TYPE_STYLES = {
@@ -16,6 +16,7 @@ const TYPE_STYLES = {
   update: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   result: 'bg-green-500/20 text-green-400 border-green-500/30',
   feature: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+  breaking: 'bg-red-500/30 text-red-400 border-red-500/50 animate-pulse',
 };
 
 const TYPE_LABELS = {
@@ -23,6 +24,7 @@ const TYPE_LABELS = {
   update: 'Update',
   result: 'Result',
   feature: 'Feature',
+  breaking: '⚡ BREAKING',
 };
 
 export default function NewsCarousel() {
@@ -110,9 +112,24 @@ export default function NewsCarousel() {
       </div>
 
       {/* News Card Container */}
-      <div className="relative bg-card/90 backdrop-blur-sm border border-border/60 rounded-xl shadow-lg overflow-hidden">
+      <div className={cn(
+        "relative bg-card/90 backdrop-blur-sm border rounded-xl shadow-lg overflow-hidden transition-all duration-500",
+        currentItem.type === 'breaking' 
+          ? "border-red-500/60 shadow-red-500/20 shadow-xl" 
+          : "border-border/60"
+      )}>
         {/* Top accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+        <div className={cn(
+          "absolute top-0 left-0 right-0 h-1",
+          currentItem.type === 'breaking'
+            ? "bg-gradient-to-r from-red-600 via-red-500 to-red-600 animate-pulse"
+            : "bg-gradient-to-r from-primary/50 via-primary to-primary/50"
+        )} />
+        
+        {/* Breaking News Glow Effect */}
+        {currentItem.type === 'breaking' && (
+          <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 via-transparent to-transparent pointer-events-none" />
+        )}
         
         {/* Navigation Arrows - Desktop */}
         <button
@@ -147,7 +164,8 @@ export default function NewsCarousel() {
                   <div className="flex items-center gap-3 flex-wrap justify-center">
                     <span className={cn(
                       "px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider border",
-                      TYPE_STYLES[item.type]
+                      TYPE_STYLES[item.type],
+                      item.type === 'breaking' && "shadow-lg shadow-red-500/30"
                     )}>
                       {TYPE_LABELS[item.type]}
                     </span>
@@ -157,7 +175,10 @@ export default function NewsCarousel() {
                   </div>
                   
                   {/* Title */}
-                  <h4 className="text-base sm:text-lg font-bold text-foreground leading-tight px-2">
+                  <h4 className={cn(
+                    "text-base sm:text-lg font-bold leading-tight px-2",
+                    item.type === 'breaking' ? "text-red-400" : "text-foreground"
+                  )}>
                     {item.title}
                   </h4>
                   

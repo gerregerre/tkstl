@@ -30,12 +30,13 @@ interface NewsItem {
   title: string;
   description: string;
   date_label: string;
-  type: 'update' | 'announcement' | 'result' | 'feature';
+  type: 'update' | 'announcement' | 'result' | 'feature' | 'breaking';
   is_active: boolean;
   created_at: string;
 }
 
 const NEWS_TYPES = [
+  { value: 'breaking', label: '⚡ Breaking', color: 'bg-red-500' },
   { value: 'announcement', label: 'Announcement', color: 'bg-primary' },
   { value: 'update', label: 'Update', color: 'bg-blue-500' },
   { value: 'result', label: 'Result', color: 'bg-green-500' },

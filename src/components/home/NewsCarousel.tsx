@@ -16,7 +16,7 @@ const TYPE_STYLES = {
   update: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   result: 'bg-green-500/20 text-green-400 border-green-500/30',
   feature: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  breaking: 'bg-red-500/30 text-red-400 border-red-500/50 animate-pulse',
+  breaking: 'bg-red-500/30 text-red-400 border-red-500/50',
 };
 
 const TYPE_LABELS = {
@@ -152,7 +152,7 @@ export default function NewsCarousel() {
         <div className={cn(
           "absolute top-0 left-0 right-0 h-1",
           currentItem.type === 'breaking'
-            ? "bg-gradient-to-r from-red-600 via-red-500 to-red-600 animate-pulse"
+            ? "bg-gradient-to-r from-red-600 via-red-500 to-red-600"
             : "bg-gradient-to-r from-primary/50 via-primary to-primary/50"
         )} />
         

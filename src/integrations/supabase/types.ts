@@ -130,6 +130,27 @@ export type Database = {
         }
         Relationships: []
       }
+      party_votes: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          vote_option: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          vote_option: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          vote_option?: string
+        }
+        Relationships: []
+      }
       players: {
         Row: {
           created_at: string

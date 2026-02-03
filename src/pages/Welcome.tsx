@@ -146,7 +146,7 @@ export default function Welcome() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
 
       {/* Voting Card */}
-      <Card className="relative z-10 w-full max-w-lg glass-card border-primary/20 shadow-2xl">
+      <Card className="relative z-10 w-full max-w-lg glass-card border-primary/20 shadow-2xl animate-scale-in">
         {showThankYou ? (
           <div className="p-8 text-center">
             {/* Success Icon */}

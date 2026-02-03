@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Loader2, Trophy, PartyPopper, Check } from 'lucide-react';
+import { Loader2, Trophy, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import heroImage from '@/assets/hero-tennis-court.jpg';
 
@@ -126,52 +126,80 @@ export default function Welcome() {
   }
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4">
-      {/* Blurred tennis court background */}
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+      {/* Background Image with blur */}
       <div 
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center scale-110"
         style={{ 
           backgroundImage: `url(${heroImage})`,
-          filter: 'blur(8px)',
-          transform: 'scale(1.05)',
+          filter: 'blur(6px)',
         }}
       />
-      <div className="absolute inset-0 bg-black/50" />
+      
+      {/* Dark gradient overlay - ATP style */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95" />
+      
+      {/* Diagonal accent */}
+      <div className="absolute inset-0 diagonal-accent opacity-40" />
+      
+      {/* Subtle radial glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
 
       {/* Voting Card */}
-      <Card className="relative z-10 w-full max-w-lg bg-white/95 backdrop-blur-sm shadow-2xl border-0">
+      <Card className="relative z-10 w-full max-w-lg glass-card border-primary/20 shadow-2xl">
         {showThankYou ? (
           <div className="p-8 text-center">
+            {/* Success Icon */}
             <div className="mb-6 flex justify-center">
-              <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
-                <Check className="w-10 h-10 text-green-600" />
+              <div className="w-20 h-20 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center shadow-glow">
+                <Check className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
-            <p className="text-gray-600 mb-4">Your vote has been recorded.</p>
+            
+            <h2 className="font-display text-2xl font-bold text-foreground mb-2 uppercase tracking-tight">
+              Thank You!
+            </h2>
+            <p className="text-muted-foreground mb-6">Your vote has been recorded.</p>
+            
             <div className="flex items-center justify-center gap-2 text-primary">
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-sm">Redirecting to dashboard...</span>
+              <span className="text-sm font-medium">Redirecting to dashboard...</span>
             </div>
           </div>
         ) : (
           <>
-            <CardHeader className="text-center pb-2">
-              <div className="flex justify-center gap-3 mb-4">
-                <Trophy className="w-8 h-8 text-amber-500" />
-                <PartyPopper className="w-8 h-8 text-pink-500" />
+            <CardHeader className="text-center pb-2 pt-8">
+              {/* Trophy Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                  <Trophy className="w-8 h-8 text-primary" />
+                </div>
               </div>
-              <CardTitle className="text-2xl text-gray-900 normal-case tracking-normal">
-                Welcome to TKSTL!
-              </CardTitle>
-              <CardDescription className="text-gray-600 text-base mt-2">
+              
+              {/* Badge */}
+              <div className="flex justify-center mb-4">
+                <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-3 py-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-primary font-bold tracking-widest text-[10px] uppercase">
+                    End of Season Poll
+                  </span>
+                </div>
+              </div>
+
+              {/* Title */}
+              <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground tracking-tight uppercase mb-2">
+                Welcome to TKSTL
+              </h1>
+              
+              <p className="text-muted-foreground text-sm">
                 Before we begin, we need your vote on an important matter...
-              </CardDescription>
+              </p>
             </CardHeader>
 
-            <CardContent className="pt-4">
+            <CardContent className="pt-6 pb-8 px-6">
+              {/* Question */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 text-center mb-4 text-lg">
+                <h3 className="font-display text-base font-bold text-foreground text-center mb-5 uppercase tracking-wide">
                   Who should arrange the end of season party?
                 </h3>
 
@@ -184,10 +212,10 @@ export default function Welcome() {
                     <div
                       key={option.value}
                       className={`
-                        relative flex items-start gap-3 p-4 rounded-lg border-2 transition-all cursor-pointer
+                        relative flex items-start gap-3 p-4 rounded-lg border transition-all cursor-pointer
                         ${selectedOption === option.value 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                          ? 'border-primary bg-primary/10 shadow-cyan' 
+                          : 'border-border/50 bg-secondary/30 hover:border-primary/50 hover:bg-secondary/50'
                         }
                       `}
                       onClick={() => setSelectedOption(option.value)}
@@ -195,16 +223,16 @@ export default function Welcome() {
                       <RadioGroupItem
                         value={option.value}
                         id={option.value}
-                        className="mt-0.5"
+                        className="mt-0.5 border-primary/50 text-primary"
                       />
                       <Label
                         htmlFor={option.value}
                         className="flex-1 cursor-pointer"
                       >
-                        <span className="block font-medium text-gray-900">
+                        <span className="block font-semibold text-foreground text-sm">
                           {option.label}
                         </span>
-                        <span className="block text-sm text-gray-500 mt-0.5">
+                        <span className="block text-xs text-muted-foreground mt-0.5">
                           {option.description}
                         </span>
                       </Label>
@@ -213,10 +241,12 @@ export default function Welcome() {
                 </RadioGroup>
               </div>
 
+              {/* Submit Button - ATP style */}
               <Button
                 onClick={handleSubmit}
                 disabled={!selectedOption || submitting}
-                className="w-full h-12 text-lg font-bold"
+                variant="atp"
+                className="w-full h-12 text-base"
                 size="lg"
               >
                 {submitting ? (
@@ -229,13 +259,19 @@ export default function Welcome() {
                 )}
               </Button>
 
-              <p className="text-center text-xs text-gray-400 mt-4">
+              <p className="text-center text-xs text-muted-foreground mt-4">
                 You can only vote once. Your vote is anonymous.
               </p>
             </CardContent>
           </>
         )}
+        
+        {/* Bottom accent line */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 rounded-b" />
       </Card>
+
+      {/* Bottom edge accent */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
     </div>
   );
 }

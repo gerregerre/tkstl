@@ -10,7 +10,6 @@ import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
-import { VoteResults } from '@/components/dashboard/VoteResults';
 
 
 export default function Dashboard() {
@@ -45,8 +44,6 @@ export default function Dashboard() {
         return <MemberProfiles />;
       case 'news-admin':
         return <NewsAdmin />;
-      case 'vote-results':
-        return <VoteResults />;
       case 'profile':
         return selectedPlayer ? (
           <PlayerProfile playerName={selectedPlayer} onBack={handleBackFromProfile} />

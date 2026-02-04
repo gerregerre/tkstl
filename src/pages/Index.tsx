@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 
 const Index = () => {
-  // Redirect to welcome/voting page instead of dashboard directly
-  return <Navigate to="/welcome" replace />;
+  // Redirect directly to dashboard
+  return <Navigate to="/dashboard" replace />;
 };
 
 export default Index;

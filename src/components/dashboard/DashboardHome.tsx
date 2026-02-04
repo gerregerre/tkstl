@@ -4,6 +4,7 @@ import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
 import { HeroSection } from './HeroSection';
 import { SessionSignup } from './SessionSignup';
+import { PartyVoting } from './PartyVoting';
 import { supabase } from '@/integrations/supabase/client';
 import NewsCarousel from '@/components/home/NewsCarousel';
 
@@ -169,8 +170,11 @@ export function DashboardHome({
             <NewLeaderboard onPlayerSelect={onPlayerSelect} />
           </div>
 
-          {/* Right Panel - Recent Results & Next Session */}
+          {/* Right Panel - Voting, Session Signup & Recent Results */}
           <div className="space-y-6">
+            {/* Party Voting */}
+            <PartyVoting />
+
             {/* Interactive Session Signup */}
             <SessionSignup sessionDate={nextSession} />
 

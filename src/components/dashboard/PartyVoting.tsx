@@ -8,6 +8,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { members } from '@/data/members';
 import { Progress } from '@/components/ui/progress';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
+interface PendingVoter {
+  id: string;
+  display_name: string | null;
+}
 
 interface VoteResult {
   vote_option: string;
@@ -41,6 +47,7 @@ export function PartyVoting() {
   const [voteCount, setVoteCount] = useState(0);
   const [voteResults, setVoteResults] = useState<VoteResult[]>([]);
   const [allVoted, setAllVoted] = useState(false);
+  const [pendingVoters, setPendingVoters] = useState<PendingVoter[]>([]);
 
   const totalMembers = members.length;
 
@@ -63,18 +70,31 @@ export function PartyVoting() {
 
       setHasVoted(!!userVote);
 
-      // Get total vote count
-      const { count } = await supabase
+      // Get all votes with user_ids
+      const { data: votes } = await supabase
         .from('party_votes')
-        .select('*', { count: 'exact', head: true });
+        .select('user_id');
 
-      const currentVoteCount = count || 0;
+      const votedUserIds = votes?.map(v => v.user_id) || [];
+      const currentVoteCount = votedUserIds.length;
       setVoteCount(currentVoteCount);
       setAllVoted(currentVoteCount >= totalMembers);
 
       // If all have voted, get results
       if (currentVoteCount >= totalMembers) {
         await fetchResults();
+      } else {
+        // Fetch all user profiles to determine who hasn't voted
+        const { data: allProfiles } = await supabase
+          .from('user_profiles')
+          .select('id, display_name');
+
+        if (allProfiles) {
+          const pending = allProfiles.filter(
+            profile => !votedUserIds.includes(profile.id)
+          );
+          setPendingVoters(pending);
+        }
       }
     } catch (error) {
       console.error('Error checking voting status:', error);
@@ -234,7 +254,7 @@ export function PartyVoting() {
 
         {hasVoted ? (
           // User has voted but waiting for others
-          <div className="text-center py-4 space-y-3">
+          <div className="text-center py-4 space-y-4">
             <div className="w-12 h-12 mx-auto rounded-full bg-primary/15 flex items-center justify-center">
               <CheckCircle2 className="w-6 h-6 text-primary" />
             </div>
@@ -244,6 +264,33 @@ export function PartyVoting() {
                 Waiting for {totalMembers - voteCount} more member{totalMembers - voteCount !== 1 ? 's' : ''} to vote
               </p>
             </div>
+
+            {/* Pending voters display */}
+            {pendingVoters.length > 0 && (
+              <div className="pt-2 border-t border-border/50">
+                <p className="text-xs text-muted-foreground mb-2">Still need to vote:</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {pendingVoters.map((voter) => {
+                    const initials = voter.display_name
+                      ? voter.display_name.slice(0, 2).toUpperCase()
+                      : '??';
+                    return (
+                      <div key={voter.id} className="flex flex-col items-center gap-1">
+                        <Avatar className="w-8 h-8 border border-border/50">
+                          <AvatarFallback className="bg-muted text-muted-foreground text-xs font-medium">
+                            {initials}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-[10px] text-muted-foreground max-w-[50px] truncate">
+                          {voter.display_name || 'Unknown'}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <Clock className="w-3 h-3" />
               <span>Results will appear when everyone has voted</span>

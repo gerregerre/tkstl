@@ -206,7 +206,10 @@ export function PartyVoting() {
   // Show results if all members have voted
   if (allVoted) {
     const maxVotes = Math.max(...voteResults.map((r) => r.count), 1);
-    const leadingOption = voteResults[0];
+    
+    // Detect ties - find all options with the max votes
+    const tiedOptions = voteResults.filter((r) => r.count === maxVotes);
+    const isTie = tiedOptions.length > 1;
 
     return (
       <Card className="bg-card border-border shadow-card overflow-hidden animate-fade-in-up">
@@ -224,37 +227,60 @@ export function PartyVoting() {
             All {totalMembers} members have voted! Here are the results:
           </p>
 
-          <div className="space-y-3">
-            {voteResults.map((result, index) => (
-              <div
-                key={result.vote_option}
-                className={`p-3 rounded-md border transition-all ${
-                  index === 0
-                    ? 'bg-primary/10 border-primary/30'
-                    : 'bg-muted/30 border-border/50'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-foreground">
-                      {getOptionLabel(result.vote_option)}
-                    </span>
-                    {index === 0 && (
-                      <span className="text-[9px] px-1.5 py-0.5 bg-primary/20 text-primary rounded font-bold uppercase tracking-wide">
-                        Winner
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-sm font-mono font-bold text-foreground tabular-nums">
-                    {result.count} vote{result.count !== 1 ? 's' : ''}
-                  </span>
-                </div>
-                <Progress
-                  value={(result.count / maxVotes) * 100}
-                  className="h-2"
-                />
+          {/* Tie notification banner */}
+          {isTie && (
+            <div className="flex items-center gap-2 p-3 bg-warning/10 border border-warning/30 rounded-md">
+              <span className="text-warning text-lg">⚖️</span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">It's a tie!</p>
+                <p className="text-xs text-muted-foreground">
+                  {tiedOptions.length} options have {maxVotes} vote{maxVotes !== 1 ? 's' : ''} each. A tie-breaker may be needed.
+                </p>
               </div>
-            ))}
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {voteResults.map((result) => {
+              const isLeader = result.count === maxVotes;
+              
+              return (
+                <div
+                  key={result.vote_option}
+                  className={`p-3 rounded-md border transition-all ${
+                    isLeader
+                      ? isTie
+                        ? 'bg-warning/10 border-warning/30'
+                        : 'bg-primary/10 border-primary/30'
+                      : 'bg-muted/30 border-border/50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-foreground">
+                        {getOptionLabel(result.vote_option)}
+                      </span>
+                      {isLeader && (
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide ${
+                          isTie 
+                            ? 'bg-warning/20 text-warning' 
+                            : 'bg-primary/20 text-primary'
+                        }`}>
+                          {isTie ? 'Tied' : 'Winner'}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-sm font-mono font-bold text-foreground tabular-nums">
+                      {result.count} vote{result.count !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <Progress
+                    value={(result.count / maxVotes) * 100}
+                    className="h-2"
+                  />
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

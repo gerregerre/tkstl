@@ -63,6 +63,10 @@
     --bronze: 30 60% 50%;
     --bronze-foreground: 30 80% 12%;
 
+    /* Warning/Tie Color - Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 100% 12%;
+
     /* Speed Line Geometry */
     --speed-line: 197 100% 47% / 0.12;
     --diagonal-accent: 197 100% 47% / 0.06;

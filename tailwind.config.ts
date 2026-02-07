@@ -110,6 +110,10 @@ export default {
 			bronze: {
 				DEFAULT: 'hsl(var(--bronze))',
 				foreground: 'hsl(var(--bronze-foreground))'
+			},
+			warning: {
+				DEFAULT: 'hsl(var(--warning))',
+				foreground: 'hsl(var(--warning-foreground))'
 			}
 		},
   		borderRadius: {

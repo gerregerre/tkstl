@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import confetti from 'canvas-confetti';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -48,8 +49,43 @@ export function PartyVoting() {
   const [voteResults, setVoteResults] = useState<VoteResult[]>([]);
   const [allVoted, setAllVoted] = useState(false);
   const [pendingVoters, setPendingVoters] = useState<PendingVoter[]>([]);
+  const confettiTriggered = useRef(false);
 
   const totalMembers = members.length;
+
+  // Trigger confetti when results are revealed
+  useEffect(() => {
+    if (allVoted && !confettiTriggered.current) {
+      confettiTriggered.current = true;
+      
+      // Fire confetti from both sides
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ['#00d4ff', '#0ea5e9', '#22d3ee', '#06b6d4', '#14b8a6'],
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ['#00d4ff', '#0ea5e9', '#22d3ee', '#06b6d4', '#14b8a6'],
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+
+      frame();
+    }
+  }, [allVoted]);
 
   useEffect(() => {
     if (user) {

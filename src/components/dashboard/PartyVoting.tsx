@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Vote, Trophy, CheckCircle2, Clock, Loader2, PartyPopper, Sparkles } from 'lucide-react';
+import { Vote, Trophy, CheckCircle2, Clock, Loader2, PartyPopper, Sparkles, Undo2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { members } from '@/data/members';
@@ -95,6 +95,7 @@ export function PartyVoting() {
   const [hasVoted, setHasVoted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [undoing, setUndoing] = useState(false);
   const [voteCount, setVoteCount] = useState(0);
   const [voteResults, setVoteResults] = useState<VoteResult[]>([]);
   const [allVoted, setAllVoted] = useState(false);
@@ -244,6 +245,31 @@ export function PartyVoting() {
       console.error('Error:', error);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleUndoVote = async () => {
+    if (!user) return;
+
+    setUndoing(true);
+    try {
+      const { error } = await supabase
+        .from('party_votes')
+        .delete()
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error undoing vote:', error);
+      } else {
+        setHasVoted(false);
+        setSelectedOption('');
+        voteConfettiTriggered.current = false;
+        await checkVotingStatus();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setUndoing(false);
     }
   };
 
@@ -413,6 +439,26 @@ export function PartyVoting() {
                 Waiting for {totalMembers - voteCount} more member{totalMembers - voteCount !== 1 ? 's' : ''}
               </p>
             </div>
+
+            {/* Undo vote button */}
+            <Button
+              onClick={handleUndoVote}
+              disabled={undoing}
+              variant="outline"
+              className="mx-auto flex items-center gap-2 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            >
+              {undoing ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Undoing...
+                </>
+              ) : (
+                <>
+                  <Undo2 className="w-4 h-4" />
+                  Undo My Vote
+                </>
+              )}
+            </Button>
 
             {/* Pending voters with pulsing glow */}
             {pendingVoters.length > 0 && (

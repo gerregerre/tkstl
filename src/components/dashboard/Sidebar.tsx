@@ -1,30 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
-  SheetClose,
 } from '@/components/ui/sheet';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
 }
 
-const navLinks = [
+const baseNavLinks = [
   { id: 'home', label: 'Home' },
   { id: 'headtohead', label: 'Head-to-Head' },
   { id: 'history', label: 'History' },
   { id: 'info', label: 'Information' },
   { id: 'lore', label: 'The Lore' },
   { id: 'members', label: 'Members' },
+];
+
+const adminOnlyLinks = [
   { id: 'news-admin', label: 'News Admin' },
 ];
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+  const { user } = useAuth();
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchDisplayName = async () => {
+      if (!user) {
+        setDisplayName(null);
+        return;
+      }
+      
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('display_name')
+        .eq('id', user.id)
+        .maybeSingle();
+      
+      setDisplayName(data?.display_name || null);
+    };
+    
+    fetchDisplayName();
+  }, [user]);
+  
+  // Only show admin links if user is Gerard
+  const isGerard = displayName?.toLowerCase() === 'gerard';
+  const navLinks = isGerard ? [...baseNavLinks, ...adminOnlyLinks] : baseNavLinks;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (tabId: string) => {

@@ -231,6 +231,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
                     onClick={() => mode === 'singles' && onPlayerSelect?.(entry.name)}
+                    isLastPlace={mode === 'doubles' && index === leaderboardData.length - 1 && leaderboardData.length > 1}
                   />
                 ))
               )}
@@ -284,6 +285,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
                     onClick={() => mode === 'singles' && onPlayerSelect?.(entry.name)}
+                    isLastPlace={mode === 'doubles' && index === leaderboardData.length - 1 && leaderboardData.length > 1}
                   />
                 ))
               )}

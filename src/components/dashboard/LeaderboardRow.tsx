@@ -17,6 +17,7 @@ interface LeaderboardRowProps {
   qualificationGames: number;
   onClick?: () => void;
   variant?: 'desktop' | 'mobile';
+  isLastPlace?: boolean;
 }
 const getRankIcon = (rank: number) => {
   switch (rank) {
@@ -190,7 +191,8 @@ export function LeaderboardRowDesktop({
   gamesPlayed,
   totalPoints,
   qualificationGames,
-  onClick
+  onClick,
+  isLastPlace
 }: LeaderboardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
@@ -248,6 +250,7 @@ export function LeaderboardRowDesktop({
               {players[1]}
             </span>
           </div>
+          {isLastPlace && <span className="text-base ml-1" title="Party Planner – Last place arranges the end-of-season party!">🥳</span>}
         </div>;
     }
 
@@ -321,7 +324,8 @@ export function LeaderboardRowMobile({
   gamesPlayed,
   totalPoints,
   qualificationGames,
-  onClick
+  onClick,
+  isLastPlace
 }: LeaderboardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const qualifies = gamesPlayed >= qualificationGames;
@@ -363,13 +367,16 @@ export function LeaderboardRowMobile({
               {rank}
             </span>
             {renderAvatar()}
-            {mode === 'doubles' && players ? <div className="flex flex-col justify-center leading-tight">
-                <span className="font-medium text-foreground text-[10px]">
-                  {players[0]}
-                </span>
-                <span className="font-medium text-foreground/80 text-[10px]">
-                  {players[1]}
-                </span>
+            {mode === 'doubles' && players ? <div className="flex items-center gap-0.5">
+                <div className="flex flex-col justify-center leading-tight">
+                  <span className="font-medium text-foreground text-[10px]">
+                    {players[0]}
+                  </span>
+                  <span className="font-medium text-foreground/80 text-[10px]">
+                    {players[1]}
+                  </span>
+                </div>
+                {isLastPlace && <span className="text-xs" title="Party Planner">🥳</span>}
               </div> : <div className="flex items-center gap-0.5">
                 <span className="font-medium text-foreground text-[11px] truncate max-w-[55px]">
                   {name}

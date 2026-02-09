@@ -172,8 +172,8 @@ export function DashboardHome({
 
           {/* Right Panel - Voting, Session Signup & Recent Results */}
           <div className="space-y-6">
-            {/* Party Voting */}
-            <PartyVoting />
+            {/* Party Voting - temporarily hidden, keeping code for re-enable */}
+            {/* <PartyVoting /> */}
 
             {/* Interactive Session Signup */}
             <SessionSignup sessionDate={nextSession} />

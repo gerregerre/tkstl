@@ -6,6 +6,7 @@ import { HeroSection } from './HeroSection';
 import { SessionSignup } from './SessionSignup';
 import { PartyVoting } from './PartyVoting';
 import { supabase } from '@/integrations/supabase/client';
+import { PartyPlanners } from './PartyPlanners';
 import NewsCarousel from '@/components/home/NewsCarousel';
 
 interface DashboardHomeProps {
@@ -172,6 +173,9 @@ export function DashboardHome({
 
           {/* Right Panel - Voting, Session Signup & Recent Results */}
           <div className="space-y-6">
+            {/* Party Planners - last place doubles team */}
+            <PartyPlanners />
+
             {/* Party Voting - temporarily hidden, keeping code for re-enable */}
             {/* <PartyVoting /> */}
 

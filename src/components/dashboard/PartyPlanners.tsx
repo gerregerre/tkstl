@@ -2,12 +2,16 @@ import { useFilteredPlayerStats } from '@/hooks/useFilteredPlayerStats';
 import { PartyPopper, Pizza } from 'lucide-react';
 
 const FUNNY_SUBTITLES = [
-  "Start looking for catering deals now! 🍕",
-  "The bottom of the table looks... expensive.",
-  "Hope you like organizing events!",
-  "DJ bookings don't make themselves.",
-  "Better start a group chat for decorations.",
-  "Pro tip: Costco has bulk napkins.",
+  "At least you're good at something... right? 😬",
+  "The only trophy you're getting is a receipt from the caterer.",
+  "Maybe focus less on tennis and more on party planning skills.",
+  "Your serve is weak but your event budget better not be.",
+  "Legends say they once won a game. Nobody can confirm.",
+  "Even the net has a better win rate than these two.",
+  "Don't worry, the party will be the only W you get this year.",
+  "Two players enter, zero points leave.",
+  "The table has a bottom and you found it. Congrats.",
+  "If losing was an Olympic sport, you'd still come second.",
 ];
 
 export function PartyPlanners() {

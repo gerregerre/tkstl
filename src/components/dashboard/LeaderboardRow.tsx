@@ -5,6 +5,7 @@ import { Trophy, Medal, Award, Star, ChevronDown, CheckCircle2, XCircle } from '
 import { Badge } from '@/components/ui/badge';
 import { PlayerPointsBreakdown, PlayerPointsBreakdownInline } from './PlayerPointsBreakdown';
 import { usePlayerGameBreakdown } from '@/hooks/usePlayerGameBreakdown';
+import { useTeamGameBreakdown } from '@/hooks/useTeamGameBreakdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Progress } from '@/components/ui/progress';
 interface LeaderboardRowProps {
@@ -175,6 +176,114 @@ function ExpandedPlayerDetails({
                     <span className="text-muted-foreground">{game.gameType}</span>
                   </div>
                   <span className="font-medium text-foreground">+{game.pointsEarned.toFixed(1)}</span>
+                </div>)}
+            </div>
+          </div>}
+      </div>
+    </motion.div>;
+}
+
+// Expanded Details Component for Doubles Teams
+function ExpandedTeamDetails({
+  player1,
+  player2,
+  gamesPlayed,
+  qualificationGames
+}: {
+  player1: string;
+  player2: string;
+  gamesPlayed: number;
+  qualificationGames: number;
+}) {
+  const { breakdown, loading } = useTeamGameBreakdown(player1, player2);
+  const qualifies = gamesPlayed >= qualificationGames;
+  const qualificationProgress = Math.min(gamesPlayed / qualificationGames * 100, 100);
+
+  const recentGames = breakdown.slice(0, 5);
+  const totalPoints = breakdown.reduce((sum, g) => sum + g.pointsEarned, 0);
+  const wins = breakdown.filter(g => g.won).length;
+  const losses = breakdown.filter(g => !g.won).length;
+
+  if (loading) {
+    return <div className="px-4 py-4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+      </div>;
+  }
+
+  return <motion.div initial={{
+    opacity: 0,
+    height: 0
+  }} animate={{
+    opacity: 1,
+    height: 'auto'
+  }} exit={{
+    opacity: 0,
+    height: 0
+  }} transition={{
+    duration: 0.2,
+    ease: 'easeInOut'
+  }} className="overflow-hidden">
+      <div className="px-4 py-4 bg-muted/30 border-t border-border/50 space-y-4">
+        {/* Qualification Progress */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-muted-foreground font-medium">Qualification Progress</span>
+            <span className={cn("font-bold", qualifies ? "text-secondary" : "text-muted-foreground")}>
+              {gamesPlayed}/{qualificationGames} games
+            </span>
+          </div>
+          <Progress value={qualificationProgress} className="h-2 bg-muted" />
+          {qualifies && <div className="flex items-center gap-1 text-xs text-secondary">
+              <Star className="w-3 h-3" />
+              <span>Qualified for rankings</span>
+            </div>}
+        </div>
+
+        {/* Recent Form - Last 5 Games */}
+        {recentGames.length > 0 && <div className="space-y-2">
+            <span className="text-xs text-muted-foreground font-medium">Recent Form (Last 5)</span>
+            <div className="flex items-center gap-1.5">
+              {recentGames.map((game) => <div key={game.id} className={cn("w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform hover:scale-110", game.won ? "bg-secondary/20 text-secondary ring-1 ring-secondary/30" : "bg-destructive/20 text-destructive ring-1 ring-destructive/30")} title={`${game.gameType}: ${game.won ? 'Won' : 'Lost'} vs ${game.opponents} (${game.pointsEarned.toFixed(1)} pts)`}>
+                  {game.won ? 'W' : 'L'}
+                </div>)}
+              {recentGames.length < 5 && <span className="text-xs text-muted-foreground ml-1">
+                  ({5 - recentGames.length} more to show)
+                </span>}
+            </div>
+          </div>}
+
+        {/* Stats Summary */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-foreground">{totalPoints.toFixed(1)}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Pts</div>
+          </div>
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-secondary">{wins}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Wins</div>
+          </div>
+          <div className="bg-background/50 rounded-lg p-2.5 text-center border border-border/50">
+            <div className="text-lg font-bold text-destructive">{losses}</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Losses</div>
+          </div>
+        </div>
+
+        {/* Game Breakdown */}
+        {breakdown.length > 0 && <div className="space-y-2">
+            <span className="text-xs text-muted-foreground font-medium">Game History</span>
+            <div className="max-h-32 overflow-y-auto space-y-1 pr-1">
+              {breakdown.slice(0, 8).map(game => <div key={game.id} className="flex items-center justify-between text-xs bg-background/40 rounded px-2 py-1.5">
+                  <div className="flex items-center gap-2">
+                    {game.won ? <CheckCircle2 className="w-3 h-3 text-secondary" /> : <XCircle className="w-3 h-3 text-destructive" />}
+                    <div>
+                      <span className="text-muted-foreground">{game.gameType}</span>
+                      <span className="text-muted-foreground/60 ml-1.5 text-[10px]">vs {game.opponents}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-medium text-foreground">+{game.pointsEarned.toFixed(1)}</span>
+                    {game.teamScore !== null && <span className="text-muted-foreground/60 ml-1.5 text-[10px]">{game.teamScore}-{game.opponentScore}</span>}
+                  </div>
                 </div>)}
             </div>
           </div>}

@@ -374,6 +374,7 @@ export function LeaderboardRowDesktop({
             </span>
           </div>
           {isLastPlace && <span className="text-base ml-1" title="Party Planner – Last place arranges the end-of-season party!">🥳</span>}
+          <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200", isExpanded && "rotate-180")} />
         </div>;
     }
 
@@ -427,13 +428,17 @@ export function LeaderboardRowDesktop({
       </tr>
       
       {/* Expanded Details Row */}
-      {mode === 'singles' && <AnimatePresence>
-          {isExpanded && <tr>
-              <td colSpan={6} className="p-0">
+      <AnimatePresence>
+        {isExpanded && <tr>
+            <td colSpan={6} className="p-0">
+              {mode === 'singles' ? (
                 <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
-              </td>
-            </tr>}
-        </AnimatePresence>}
+              ) : players ? (
+                <ExpandedTeamDetails player1={players[0]} player2={players[1]} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
+              ) : null}
+            </td>
+          </tr>}
+      </AnimatePresence>
     </>;
 }
 

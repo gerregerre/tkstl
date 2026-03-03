@@ -15,6 +15,8 @@ import {
   Award
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPlayerAvatar } from '@/lib/playerAvatars';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
   LineChart,
   Line,
@@ -167,6 +169,14 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
+        <Avatar className="w-14 h-14 border-2 border-primary/30">
+          {getPlayerAvatar(playerName) ? (
+            <AvatarImage src={getPlayerAvatar(playerName)!} alt={playerName} className="object-cover" />
+          ) : null}
+          <AvatarFallback className="bg-muted text-muted-foreground font-serif font-bold text-lg">
+            {playerName[0]}
+          </AvatarFallback>
+        </Avatar>
         <div>
           <h1 className="section-header">{playerName}</h1>
           <p className="text-muted-foreground ml-5">Player Profile & Statistics</p>

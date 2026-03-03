@@ -459,9 +459,7 @@ export function LeaderboardRowMobile({
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
   const handleRowClick = () => {
-    if (mode === 'singles') {
-      setIsExpanded(!isExpanded);
-    }
+    setIsExpanded(!isExpanded);
     onClick?.();
   };
   const renderAvatar = () => {
@@ -520,6 +518,7 @@ export function LeaderboardRowMobile({
                   </span>
                 </div>
                 {isLastPlace && <span className="text-xs" title="Party Planner">🥳</span>}
+                <ChevronDown className={cn("w-3 h-3 text-muted-foreground transition-transform duration-200 shrink-0", isExpanded && "rotate-180")} />
               </div> : <div className="flex items-center gap-0.5">
                 <span className="font-medium text-foreground text-[11px] truncate max-w-[55px]">
                   {name}
@@ -554,12 +553,16 @@ export function LeaderboardRowMobile({
       </tr>
 
       {/* Expanded Details Row for Mobile */}
-      {mode === 'singles' && <AnimatePresence>
-          {isExpanded && <tr>
-              <td colSpan={5} className="p-0 bg-background">
+      <AnimatePresence>
+        {isExpanded && <tr>
+            <td colSpan={5} className="p-0 bg-background">
+              {mode === 'singles' ? (
                 <ExpandedPlayerDetails playerName={name} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
-              </td>
-            </tr>}
-        </AnimatePresence>}
+              ) : players ? (
+                <ExpandedTeamDetails player1={players[0]} player2={players[1]} gamesPlayed={gamesPlayed} qualificationGames={qualificationGames} />
+              ) : null}
+            </td>
+          </tr>}
+      </AnimatePresence>
     </>;
 }

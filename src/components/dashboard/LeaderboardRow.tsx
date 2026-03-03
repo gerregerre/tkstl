@@ -308,9 +308,7 @@ export function LeaderboardRowDesktop({
   const qualifies = gamesPlayed >= qualificationGames;
   const players = mode === 'doubles' ? parseTeamName(name) : null;
   const handleRowClick = () => {
-    if (mode === 'singles') {
-      setIsExpanded(!isExpanded);
-    }
+    setIsExpanded(!isExpanded);
     onClick?.();
   };
   const renderAvatar = () => {

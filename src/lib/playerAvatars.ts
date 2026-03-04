@@ -12,7 +12,6 @@ const PLAYER_AVATARS: Record<string, string> = {
   Ludvig: ludvigAvatar,
   Hampus: hampusAvatar,
   Viktor: viktorAvatar,
-  Fredrik: fredrikAvatar,
 };
 
 export function getPlayerAvatar(name: string): string | null {

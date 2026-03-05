@@ -66,7 +66,7 @@ export function PartyPlanners() {
           {(() => {
             const avatar1 = getPlayerAvatar(lastTeam.player1);
             return avatar1 ? (
-              <img src={avatar1} alt={lastTeam.player1} className="w-12 h-12 rounded-full object-cover ring-2 ring-amber-500/30 shadow-[0_0_16px_-4px_hsl(38,92%,50%,0.3)]" />
+              <img src={avatar1} alt={lastTeam.player1} className="w-12 h-12 rounded-full object-cover ring-2 ring-amber-500/30 shadow-[0_0_16px_-4px_hsl(38,92%,50%,0.3)] bg-[#1a1f2e]" />
             ) : (
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500/30 to-rose-500/20 flex items-center justify-center font-display font-bold text-lg text-amber-500 ring-2 ring-amber-500/30 shadow-[0_0_16px_-4px_hsl(38,92%,50%,0.3)]">
                 {lastTeam.player1[0]}
@@ -77,7 +77,7 @@ export function PartyPlanners() {
           {(() => {
             const avatar2 = getPlayerAvatar(lastTeam.player2);
             return avatar2 ? (
-              <img src={avatar2} alt={lastTeam.player2} className="w-12 h-12 rounded-full object-cover ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]" />
+              <img src={avatar2} alt={lastTeam.player2} className="w-12 h-12 rounded-full object-cover ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)] bg-[#1a1f2e]" />
             ) : (
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500/30 to-purple-500/20 flex items-center justify-center font-display font-bold text-lg text-rose-400 ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]">
                 {lastTeam.player2[0]}

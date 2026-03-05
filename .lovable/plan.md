@@ -1,62 +1,28 @@
 
-# Add "Who Hasn't Voted" Display to Party Voting
 
-## Overview
-Add a feature that shows which members haven't voted yet in the party voting component. This will be visible to users who have already voted, helping encourage remaining members to participate.
+## Fix Kockum's Avatar Background Color
 
-## Implementation Approach
+**The Problem**: Kockum's avatar has a visibly lighter, more gray background compared to Viktor and Ludvig's dark navy-charcoal backgrounds. I confirmed this by inspecting the leaderboard — it is clearly a different shade.
 
-### 1. Fetch Voter Information
-- Query the `party_votes` table joined with `user_profiles` to get the list of users who have already voted
-- Compare against all registered users in `user_profiles` to determine who hasn't voted
+**The Fix**: Use the AI image editing model to re-process `src/assets/avatars/kockum.png`, feeding it Viktor's avatar as a color reference. The prompt will be explicit about extracting the exact background color from Viktor's image and applying it to Kockum's.
 
-### 2. Display "Pending Voters" Section
-- Show this section only when:
-  - The current user has already voted (in the "waiting" state)
-  - Not all members have voted yet
-- Display remaining members as avatar circles with initials or names
-- Style consistently with the ATP/professional design theme
+### Approach
 
-### 3. UI Design
-- Add a subtle section below the "Vote submitted!" confirmation
-- Show remaining members with a "Waiting for:" label
-- Use small avatar badges with member initials
-- Include a count indicator
+1. Create a small backend function (or inline script) that:
+   - Reads both `viktor.png` and `kockum.png`
+   - Sends them to the image generation model with a very explicit instruction: "Replace the background of the second image with the exact same background color as the first image. The background should be a solid dark navy-charcoal color, approximately #1a1f2e or whatever the exact color is in the reference image."
+   - Saves the result back as `kockum.png`
 
-## Component Changes
+2. Since previous AI image editing attempts have failed to match the color, an alternative and more reliable approach:
+   - **Manually set the background color in code**: Instead of relying on the image file alone, add a CSS background color to the avatar container specifically for Kockum (and all players) so the circular avatar has a consistent dark background regardless of minor image variations
+   - This would involve updating the avatar display components to add a consistent `bg-[#1a1f2e]` or similar dark background class to all avatar `<img>` containers
 
-**File: `src/components/dashboard/PartyVoting.tsx`**
+### Recommended: Hybrid approach
 
-1. Add new state to track pending voters:
-   - `pendingVoters: { id: string; display_name: string }[]`
+1. **Re-process the image** one more time with a more aggressive/explicit prompt to the AI image model, using Viktor's avatar as direct pixel reference
+2. **Add a fallback CSS background** to avatar containers across the app so that even if images have slight edge differences, the visible background is uniform
 
-2. Modify `checkVotingStatus()` to:
-   - Fetch all user_profiles
-   - Fetch user_ids from party_votes
-   - Calculate who hasn't voted yet
+### Files to modify
+- `src/assets/avatars/kockum.png` — re-generate with correct background
+- Optionally: components that render avatars (e.g., `NewLeaderboard`, `PartyPlanners`, `PlayerProfile`) — add a consistent dark background class to avatar containers as a safety net
 
-3. Update the "hasVoted" waiting state section to include:
-   - A "Waiting for:" label
-   - Avatar badges for each pending voter showing their initials
-   - Subtle styling that doesn't distract from the main message
-
-## Visual Layout (After Voting)
-
-```text
-+----------------------------------+
-|  [checkmark] Vote submitted!     |
-|  Waiting for 3 more members      |
-|                                  |
-|  Still need to vote:             |
-|  [K] [V] [H]  <- Avatar initials |
-|  Kockum, Viktor, Hampus          |
-|                                  |
-|  [clock] Results appear when     |
-|  everyone has voted              |
-+----------------------------------+
-```
-
-## Technical Notes
-- Uses existing `user_profiles` table which is already queried in other components
-- Leverages the existing Supabase client and query patterns
-- No database changes required - all data already exists

@@ -169,7 +169,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <Avatar className="w-14 h-14 border-2 border-primary/30 bg-[#1a1f2e]">
+        <Avatar className="w-14 h-14 border-2 border-primary/30 bg-white">
           {getPlayerAvatar(playerName) ? (
             <AvatarImage src={getPlayerAvatar(playerName)!} alt={playerName} className="object-cover" />
           ) : null}

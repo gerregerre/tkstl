@@ -524,10 +524,3 @@
 .scrollbar-track-transparent::-webkit-scrollbar-track {
   background: transparent;
 }
-
-/* Shared avatar background */
-.avatar-circle-bg {
-  background-color: hsl(0 0% 100%);
-  clip-path: circle(50%);
-  object-fit: cover;
-}

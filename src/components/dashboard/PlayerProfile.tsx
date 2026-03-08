@@ -437,33 +437,32 @@ function GameHistorySection({
             const points = calculateGamePoints(game, playerName);
 
             return (
-              <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+              <div key={game.id} className="px-3 md:px-6 py-3 md:py-4 hover:bg-secondary/20 transition-colors">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
                     <div className={cn(
-                      "w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide",
+                      "w-8 h-8 md:w-9 md:h-9 rounded-lg flex-shrink-0 flex items-center justify-center font-display text-[10px] md:text-xs tracking-wide",
                       won 
                         ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" 
                         : "bg-secondary/50 text-muted-foreground ring-1 ring-border"
                     )}>
                       G{game.game_number}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 text-sm">
+                    <div className="min-w-0">
+                      <div className="text-xs md:text-sm truncate">
                         <span className="font-semibold text-foreground">
                           {playerName} & {teammate}
                         </span>
-                        <span className="text-muted-foreground/50 text-xs">vs</span>
-                        <span className="text-muted-foreground text-sm">
+                        <span className="text-muted-foreground/50"> vs </span>
+                        <span className="text-muted-foreground">
                           {opponents.join(' & ')}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                      <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground mt-0.5">
                         <span>
                           {new Date(game.session_date).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
-                            year: 'numeric'
                           })}
                         </span>
                         {game.game_number !== 3 && (
@@ -477,9 +476,9 @@ function GameHistorySection({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
                     <Badge variant="outline" className={cn(
-                      "text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider",
+                      "text-[9px] md:text-[10px] px-1.5 md:px-2 py-0.5 font-semibold uppercase tracking-wider",
                       won 
                         ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
                         : "border-border text-muted-foreground bg-secondary/20"
@@ -487,7 +486,7 @@ function GameHistorySection({
                       {won ? 'W' : 'L'}
                     </Badge>
                     <span className={cn(
-                      "font-display text-base tabular-nums",
+                      "font-display text-sm md:text-base tabular-nums",
                       points >= 8 && "text-emerald-400",
                       points >= 5 && points < 8 && "text-primary",
                       points < 5 && "text-muted-foreground"

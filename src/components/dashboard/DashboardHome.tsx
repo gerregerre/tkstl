@@ -131,10 +131,23 @@ export function DashboardHome({
       {/* Main Content */}
       <div ref={contentRef} className="space-y-6 md:space-y-8 pt-8 md:pt-16 px-4 md:px-8 max-w-7xl mx-auto">
         {/* News Carousel */}
-        <NewsCarousel />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <NewsCarousel />
+        </motion.div>
 
         {/* Compact Info Bar - Next Session & Duty Roster */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4"
+        >
           {/* Compact Countdown - ATP Style */}
           <div className="bg-card border border-border rounded-md px-4 md:px-5 py-3.5 md:py-4 flex items-center gap-3 md:gap-4 shadow-card">
             <div className="w-9 md:w-10 h-9 md:h-10 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
@@ -166,84 +179,118 @@ export function DashboardHome({
 
           {/* Compact Duty Roster - ATP Style */}
           
-        </div>
+        </motion.div>
 
         {/* Main Content - Leaderboard & Right Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Leaderboard - Takes 2 columns */}
-          <div className="lg:col-span-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:col-span-2"
+          >
             <NewLeaderboard onPlayerSelect={onPlayerSelect} onTeamSelect={onTeamSelect} />
-          </div>
+          </motion.div>
 
           {/* Right Panel - Voting, Session Signup & Recent Results */}
           <div className="space-y-6">
             {/* Party Planners - last place doubles team */}
-            <PartyPlanners />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <PartyPlanners />
+            </motion.div>
 
             {/* Party Voting - temporarily hidden, keeping code for re-enable */}
             {/* <PartyVoting /> */}
 
             {/* Interactive Session Signup */}
-            <SessionSignup sessionDate={nextSession} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <SessionSignup sessionDate={nextSession} />
+            </motion.div>
 
             {/* Recent Results - ATP Style */}
-            <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
-              <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
-                <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
-                <Trophy className="w-4 h-4 text-primary" />
-                <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
-                  Recent Results
-                </h3>
-              </div>
-              <div className="divide-y divide-border/50">
-                {loadingResults ? <div className="p-5 text-center text-sm text-muted-foreground">
-                    Loading results...
-                  </div> : recentResults.length === 0 ? <div className="p-5 text-center text-sm text-muted-foreground">
-                    No session games yet
-                  </div> : recentResults.map(game => {
-                const teamAWon = game.winner === 'A';
-                const teamBWon = game.winner === 'B';
-                const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
-                const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
-                const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null ? `${game.team_a_score} - ${game.team_b_score}` : game.winner ? teamAWon ? 'W - L' : 'L - W' : 'TBD';
-                return <div key={game.id} className="p-4 transition-colors hover:bg-muted/20">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                            {game.game_number === 1 ? 'PwC Single' : game.game_number === 2 ? 'Shibuya Crossing' : 'Tug Of War'}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground font-medium tabular-nums">
-                            {new Date(game.session_date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <span className={`text-xs font-semibold truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
-                              {teamADisplay}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
+                <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
+                  <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
+                  <Trophy className="w-4 h-4 text-primary" />
+                  <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
+                    Recent Results
+                  </h3>
+                </div>
+                <div className="divide-y divide-border/50">
+                  {loadingResults ? <div className="p-5 text-center text-sm text-muted-foreground">
+                      Loading results...
+                    </div> : recentResults.length === 0 ? <div className="p-5 text-center text-sm text-muted-foreground">
+                      No session games yet
+                    </div> : recentResults.map(game => {
+                  const teamAWon = game.winner === 'A';
+                  const teamBWon = game.winner === 'B';
+                  const teamADisplay = `${game.team_a_player1} & ${game.team_a_player2}`;
+                  const teamBDisplay = `${game.team_b_player1} & ${game.team_b_player2}`;
+                  const scoreDisplay = game.team_a_score !== null && game.team_b_score !== null ? `${game.team_a_score} - ${game.team_b_score}` : game.winner ? teamAWon ? 'W - L' : 'L - W' : 'TBD';
+                  return <div key={game.id} className="p-4 transition-colors hover:bg-muted/20">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
+                              {game.game_number === 1 ? 'PwC Single' : game.game_number === 2 ? 'Shibuya Crossing' : 'Tug Of War'}
                             </span>
-                            {teamAWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
-                          </div>
-                          <span className="font-mono text-sm font-black text-foreground mx-3 shrink-0 tabular-nums">
-                            {scoreDisplay}
-                          </span>
-                          <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
-                            {teamBWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
-                            <span className={`text-xs font-semibold truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
-                              {teamBDisplay}
+                            <span className="text-[10px] text-muted-foreground font-medium tabular-nums">
+                              {new Date(game.session_date).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
                             </span>
                           </div>
-                        </div>
-                      </div>;
-              })}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                              <span className={`text-xs font-semibold truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                {teamADisplay}
+                              </span>
+                              {teamAWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
+                            </div>
+                            <span className="font-mono text-sm font-black text-foreground mx-3 shrink-0 tabular-nums">
+                              {scoreDisplay}
+                            </span>
+                            <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
+                              {teamBWon && <span className="text-[8px] px-1.5 py-0.5 bg-primary/15 text-primary rounded font-bold shrink-0 uppercase tracking-wide">W</span>}
+                              <span className={`text-xs font-semibold truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                {teamBDisplay}
+                              </span>
+                            </div>
+                          </div>
+                        </div>;
+                })}
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Messageboard */}
-        <MessageBoard />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <MessageBoard />
+        </motion.div>
       </div>
     </div>;
 }

@@ -91,6 +91,14 @@ export function useFilteredPlayerStats(filter: GameTypeFilter, seasonRange?: Sea
         query = query.eq('game_number', GAME_TYPE_TO_NUMBER[filter]);
       }
 
+      // Filter by season date range
+      if (seasonRange) {
+        query = query.gte('session_date', seasonRange.startDate);
+        if (seasonRange.endDate) {
+          query = query.lte('session_date', seasonRange.endDate);
+        }
+      }
+
       const { data, error } = await query;
 
       if (error) {
@@ -116,7 +124,7 @@ export function useFilteredPlayerStats(filter: GameTypeFilter, seasonRange?: Sea
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [filter]);
+  }, [filter, seasonRange?.startDate, seasonRange?.endDate]);
 
   const playerStats = useMemo((): FilteredPlayerStats[] => {
     const statsMap = new Map<string, { totalPoints: number; gamesPlayed: number; wins: number }>();

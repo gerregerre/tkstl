@@ -35,6 +35,8 @@ export default function Dashboard() {
         return <HeadToHead />;
       case 'history':
         return <SessionHistory />;
+      case 'records':
+        return <HallOfRecords />;
       case 'recorder':
         return <NewSessionRecorder />;
       case 'lore':

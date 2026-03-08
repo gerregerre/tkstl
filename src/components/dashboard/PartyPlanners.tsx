@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useFilteredPlayerStats } from '@/hooks/useFilteredPlayerStats';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
-import { PartyPopper, Pizza } from 'lucide-react';
+import { PartyPopper, Pizza, Flame, Trophy, Skull } from 'lucide-react';
 
-const FUNNY_SUBTITLES = [
+const ROASTS = [
   "At least you're good at something... right? 😬",
   "The only trophy you're getting is a receipt from the caterer.",
   "Maybe focus less on tennis and more on party planning skills.",
@@ -17,98 +19,168 @@ const FUNNY_SUBTITLES = [
 
 export function PartyPlanners() {
   const { teamStats, loading } = useFilteredPlayerStats('all');
+  const [roastIndex, setRoastIndex] = useState(0);
+
+  const lastTeam = teamStats.length > 1 ? teamStats[teamStats.length - 1] : null;
+
+  useEffect(() => {
+    if (!lastTeam) return;
+    const startIndex = (lastTeam.player1.length + lastTeam.player2.length) % ROASTS.length;
+    setRoastIndex(startIndex);
+    const interval = setInterval(() => {
+      setRoastIndex((prev) => (prev + 1) % ROASTS.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [lastTeam?.player1, lastTeam?.player2]);
 
   if (loading) {
     return (
-      <div className="bg-card border border-border rounded-md overflow-hidden shadow-card">
+      <div className="relative bg-card/90 backdrop-blur-sm border border-border rounded-xl overflow-hidden shadow-card">
         <div className="p-5 text-center text-sm text-muted-foreground">Loading...</div>
       </div>
     );
   }
 
-  // Get last place team (teams are sorted by avg descending in the hook)
-  const lastTeam = teamStats.length > 1 ? teamStats[teamStats.length - 1] : null;
+  if (!lastTeam) return null;
 
-  if (!lastTeam) {
-    return null;
-  }
-
-  // Pick a "random" subtitle based on the team name length for consistency
-  const subtitleIndex = (lastTeam.player1.length + lastTeam.player2.length) % FUNNY_SUBTITLES.length;
-  const subtitle = FUNNY_SUBTITLES[subtitleIndex];
+  const avatar1 = getPlayerAvatar(lastTeam.player1);
+  const avatar2 = getPlayerAvatar(lastTeam.player2);
 
   return (
-    <div className="bg-card border border-border rounded-md overflow-hidden shadow-card relative">
-      {/* Animated gradient border accent */}
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 via-rose-500 to-purple-500 animate-pulse" />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.97 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] }}
+      className="relative bg-card/90 backdrop-blur-sm border rounded-xl overflow-hidden transition-all duration-500 border-red-500/60 shadow-red-500/20 shadow-xl"
+    >
+      {/* Animated top bar — pulsing danger gradient */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-red-500 to-red-600" />
+
+      {/* Subtle danger overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-red-500/10 via-transparent to-transparent pointer-events-none" />
+
+      {/* Animated background embers */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-red-500/30"
+            initial={{ x: `${20 + i * 30}%`, y: '100%', opacity: 0 }}
+            animate={{
+              y: [null, '-20%'],
+              opacity: [0, 0.6, 0],
+              x: `${20 + i * 30 + Math.sin(i) * 10}%`,
+            }}
+            transition={{
+              duration: 3 + i,
+              repeat: Infinity,
+              delay: i * 1.2,
+              ease: 'easeOut',
+            }}
+          />
+        ))}
+      </div>
 
       {/* Header */}
-      <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
-        <div className="w-1 h-5 bg-amber-500 rounded-full shadow-[0_0_6px_hsl(38,92%,50%,0.4)]" />
-        <PartyPopper className="w-4 h-4 text-amber-500" />
-        <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
-          Party Planners
-        </h3>
-        <span className="text-sm ml-auto">🥳</span>
+      <div className="relative bg-red-950/40 px-5 py-3.5 flex items-center gap-3 border-b border-red-500/20">
+        <div className="flex items-center gap-2">
+          <Skull className="w-4 h-4 text-red-400" />
+          <h3 className="text-[11px] font-bold text-red-300 uppercase tracking-[0.15em]">
+            Party Planners
+          </h3>
+        </div>
+        <div className="ml-auto flex items-center gap-1.5">
+          <Flame className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+          <span className="text-[9px] font-bold text-red-400/80 uppercase tracking-widest">Last Place</span>
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-5 space-y-4">
-        {/* Title */}
-        <div className="text-center space-y-1">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-            Current Organizers of the Year-End Bash
-          </p>
-        </div>
+      <div className="relative p-5 space-y-4">
+        {/* Subtitle */}
+        <p className="text-[9px] text-red-300/60 uppercase tracking-[0.2em] font-bold text-center">
+          Current organizers of the year-end bash
+        </p>
 
-        {/* The "Winners" */}
-        <div className="flex items-center justify-center gap-3">
-          {(() => {
-            const avatar1 = getPlayerAvatar(lastTeam.player1);
-            return avatar1 ? (
-              <div className="w-12 h-12 rounded-full player-avatar ring-2 ring-amber-500/30 shadow-[0_0_16px_-4px_hsl(38,92%,50%,0.3)]">
+        {/* Avatars with dramatic presentation */}
+        <div className="flex items-center justify-center gap-4">
+          <motion.div
+            whileHover={{ scale: 1.08, rotate: -3 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="relative"
+          >
+            {avatar1 ? (
+              <div className="w-14 h-14 rounded-full player-avatar ring-2 ring-red-500/40 shadow-[0_0_20px_-4px_hsl(0,70%,50%,0.4)]">
                 <img src={avatar1} alt={lastTeam.player1} className="player-avatar-img w-full h-full" />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500/30 to-rose-500/20 flex items-center justify-center font-display font-bold text-lg text-amber-500 ring-2 ring-amber-500/30 shadow-[0_0_16px_-4px_hsl(38,92%,50%,0.3)]">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-red-500/30 to-red-900/40 flex items-center justify-center font-display font-bold text-xl text-red-400 ring-2 ring-red-500/40">
                 {lastTeam.player1[0]}
               </div>
-            );
-          })()}
-          <span className="text-muted-foreground font-bold text-xs">&</span>
-          {(() => {
-            const avatar2 = getPlayerAvatar(lastTeam.player2);
-            return avatar2 ? (
-              <div className="w-12 h-12 rounded-full player-avatar ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]">
+            )}
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card border border-red-500/40 flex items-center justify-center text-[10px]">
+              💀
+            </div>
+          </motion.div>
+
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-red-500/60 font-black text-lg">&</span>
+          </div>
+
+          <motion.div
+            whileHover={{ scale: 1.08, rotate: 3 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="relative"
+          >
+            {avatar2 ? (
+              <div className="w-14 h-14 rounded-full player-avatar ring-2 ring-red-500/40 shadow-[0_0_20px_-4px_hsl(0,70%,50%,0.4)]">
                 <img src={avatar2} alt={lastTeam.player2} className="player-avatar-img w-full h-full" />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500/30 to-purple-500/20 flex items-center justify-center font-display font-bold text-lg text-rose-400 ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-red-900/40 to-red-500/30 flex items-center justify-center font-display font-bold text-xl text-red-400 ring-2 ring-red-500/40">
                 {lastTeam.player2[0]}
               </div>
-            );
-          })()}
+            )}
+            <div className="absolute -bottom-1 -left-1 w-5 h-5 rounded-full bg-card border border-red-500/40 flex items-center justify-center text-[10px]">
+              💀
+            </div>
+          </motion.div>
         </div>
 
-        <div className="text-center">
+        {/* Names */}
+        <div className="text-center space-y-1.5">
           <p className="font-display font-black text-foreground text-base tracking-tight">
             {lastTeam.player1} & {lastTeam.player2}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Avg: <span className="font-mono font-bold text-foreground">{lastTeam.avgPoints.toFixed(2)}</span>
-            <span className="mx-2 text-border">·</span>
-            W%: <span className="font-mono font-bold text-foreground">{lastTeam.winPercentage.toFixed(0)}%</span>
-          </p>
+          <div className="flex items-center justify-center gap-3 text-xs">
+            <span className="flex items-center gap-1 text-muted-foreground">
+              Avg: <span className="font-mono font-bold text-red-400">{lastTeam.avgPoints.toFixed(2)}</span>
+            </span>
+            <span className="text-red-500/30">|</span>
+            <span className="flex items-center gap-1 text-muted-foreground">
+              W%: <span className="font-mono font-bold text-red-400">{lastTeam.winPercentage.toFixed(0)}%</span>
+            </span>
+          </div>
         </div>
 
-        {/* Funny subtitle */}
-        <div className="bg-muted/50 border border-border/50 rounded-md px-3 py-2.5 text-center">
-          <p className="text-xs text-muted-foreground italic flex items-center justify-center gap-1.5">
-            <Pizza className="w-3.5 h-3.5 text-amber-500/70 shrink-0" />
-            {subtitle}
-          </p>
+        {/* Rotating roast with animation */}
+        <div className="bg-red-950/30 border border-red-500/15 rounded-lg px-3.5 py-3 text-center min-h-[3rem] flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={roastIndex}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+              className="text-[11px] text-red-300/70 italic leading-relaxed flex items-start gap-2"
+            >
+              <Pizza className="w-3.5 h-3.5 text-red-500/50 shrink-0 mt-0.5" />
+              <span>{ROASTS[roastIndex]}</span>
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -28,10 +28,10 @@ export interface GameBreakdownItem {
   won: boolean;
 }
 
-const GAME_TYPE_NAMES: Record<number, string> = {
-  1: 'PwC Single',
-  2: 'Shibuya Crossing',
-  3: 'Tug Of War',
+const getGameTypeName = (gameNumber: number): string => {
+  if (gameNumber === 1) return 'PwC Single';
+  if (gameNumber === 2) return 'Shibuya Crossing';
+  return 'Tug Of War';
 };
 
 function calculatePoints(game: SessionGame, team: 'A' | 'B'): number {

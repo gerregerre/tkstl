@@ -84,18 +84,39 @@ export default function Dashboard() {
           {renderContent()}
         </div>
 
-        {/* ATP-Style Footer */}
-        <footer className="border-t border-border py-8 md:py-12 mt-8 md:mt-16 bg-card/50">
-          <div className="max-w-7xl mx-auto text-center px-4 md:px-8">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <div className="w-1 h-6 bg-primary rounded-full" />
-              <p className="font-display text-lg md:text-xl font-black text-foreground tracking-tight uppercase">
-                TKSTL
+        {/* Team Photo & Footer */}
+        <footer className="border-t border-border mt-8 md:mt-16 bg-card/50">
+          {/* Team Photo Section */}
+          <div className="max-w-4xl mx-auto px-4 md:px-8 pt-10 md:pt-14 pb-6">
+            <div className="text-center mb-6">
+              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                The Squad
               </p>
             </div>
-            <p className="text-xs md:text-sm text-muted-foreground font-medium uppercase tracking-wider">
-              Where Tradition Meets Excellence · Est. 2017
-            </p>
+            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-lg">
+              <img 
+                src={teamPhoto} 
+                alt="TKSTL Team Photo" 
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            </div>
+          </div>
+
+          {/* Footer Text */}
+          <div className="py-8 md:py-10">
+            <div className="max-w-7xl mx-auto text-center px-4 md:px-8">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                <p className="font-display text-lg md:text-xl font-black text-foreground tracking-tight uppercase">
+                  TKSTL
+                </p>
+              </div>
+              <p className="text-xs md:text-sm text-muted-foreground font-medium uppercase tracking-wider">
+                Where Tradition Meets Excellence · Est. 2017
+              </p>
+            </div>
           </div>
         </footer>
       </main>

@@ -362,7 +362,9 @@ export function LeaderboardRowMobile({
     if (mode === 'singles') {
       const avatar = getPlayerAvatar(name);
       return avatar ? (
-        <img src={avatar} alt={name} style={{ clipPath: 'circle(50%)' }} className={cn("w-7 h-7 rounded-full object-cover bg-[#1a1f2e] shrink-0", rank <= 3 && "shadow-[0_0_8px_-2px_hsl(45,93%,58%,0.3)]")} />
+        <div className={cn("w-7 h-7 rounded-full player-avatar shrink-0", rank <= 3 && "shadow-[0_0_8px_-2px_hsl(45,93%,58%,0.3)]")}>
+          <img src={avatar} alt={name} className="player-avatar-img w-full h-full" />
+        </div>
       ) : (
         <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0", getAvatarStyle(rank))}>
           {name[0]}

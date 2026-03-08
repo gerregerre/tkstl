@@ -503,6 +503,7 @@ function GameHistorySection({
 }
 
 
+export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   const { players, getAveragePoints } = usePlayers();
   const [games, setGames] = useState<SessionGame[]>([]);
   const [loading, setLoading] = useState(true);

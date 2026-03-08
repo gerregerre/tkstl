@@ -208,7 +208,9 @@ export function LeaderboardRowDesktop({
     if (mode === 'singles') {
       const avatar = getPlayerAvatar(name);
       return avatar ? (
-        <img src={avatar} alt={name} style={{ clipPath: 'circle(50%)' }} className={cn("w-10 h-10 rounded-full object-cover bg-[#1a1f2e] transition-transform duration-200 group-hover:scale-105 shrink-0 ring-2 ring-background", rank <= 3 && "shadow-[0_0_12px_-2px_hsl(45,93%,58%,0.3)]")} />
+        <div className={cn("w-10 h-10 rounded-full player-avatar transition-transform duration-200 group-hover:scale-105 shrink-0 ring-2 ring-background", rank <= 3 && "shadow-[0_0_12px_-2px_hsl(45,93%,58%,0.3)]")}>
+          <img src={avatar} alt={name} className="player-avatar-img w-full h-full" />
+        </div>
       ) : (
         <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0", getAvatarStyle(rank))}>
           {name[0]}

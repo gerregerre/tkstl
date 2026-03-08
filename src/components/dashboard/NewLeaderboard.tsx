@@ -23,6 +23,7 @@ const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
 
 interface NewLeaderboardProps {
   onPlayerSelect?: (playerName: string) => void;
+  onTeamSelect?: (teamName: string) => void;
 }
 
 interface LeaderboardEntry {

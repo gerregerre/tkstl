@@ -146,6 +146,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
   const [loading, setLoading] = useState(true);
   const [historyView, setHistoryView] = useState<'games' | 'sessions'>('sessions');
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
+  const [seasonTitles, setSeasonTitles] = useState<string[]>([]);
 
   const players = teamName.split(' & ').map(s => s.trim());
   const player1 = players[0];
@@ -166,8 +167,30 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
       }
       setLoading(false);
     };
+
+    const fetchSeasonTitles = async () => {
+      const { data } = await supabase
+        .from('seasons')
+        .select('name, champion_doubles')
+        .eq('is_active', false);
+
+      if (data) {
+        // Check both orderings of team name
+        const sorted = [player1, player2].sort().join(' & ');
+        const titles = data
+          .filter(s => {
+            if (!s.champion_doubles) return false;
+            const champSorted = s.champion_doubles.split(' & ').map((n: string) => n.trim()).sort().join(' & ');
+            return champSorted === sorted;
+          })
+          .map(s => s.name);
+        setSeasonTitles(titles);
+      }
+    };
+
     fetchGames();
-  }, []);
+    fetchSeasonTitles();
+  }, [player1, player2]);
 
   // Filter to team games
   const teamGames = useMemo(() => {
@@ -335,6 +358,15 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                   Form: {recentAvg.toFixed(1)}
                 </Badge>
               )}
+              {seasonTitles.map((title, i) => (
+                <Badge 
+                  key={i} 
+                  className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1"
+                >
+                  <Trophy className="w-3 h-3" />
+                  {title} Doubles Champion
+                </Badge>
+              ))}
             </div>
           </div>
         </div>

@@ -641,9 +641,9 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                         G{game.game_number}
                       </div>
                       <div className="min-w-0">
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground/50 text-xs">vs</span>
-                          <span className="text-muted-foreground text-sm">{opponents}</span>
+                        <div className="text-xs md:text-sm truncate">
+                          <span className="text-muted-foreground/50">vs </span>
+                          <span className="text-muted-foreground">{opponents}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
                           <span>{new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>

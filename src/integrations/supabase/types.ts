@@ -226,6 +226,95 @@ export type Database = {
         }
         Relationships: []
       }
+      season_standings: {
+        Row: {
+          avg_points: number
+          created_at: string
+          games_played: number
+          id: string
+          is_champion: boolean
+          name: string
+          rank: number
+          season_id: string
+          total_points: number
+          type: string
+          win_percentage: number
+        }
+        Insert: {
+          avg_points?: number
+          created_at?: string
+          games_played?: number
+          id?: string
+          is_champion?: boolean
+          name: string
+          rank: number
+          season_id: string
+          total_points?: number
+          type?: string
+          win_percentage?: number
+        }
+        Update: {
+          avg_points?: number
+          created_at?: string
+          games_played?: number
+          id?: string
+          is_champion?: boolean
+          name?: string
+          rank?: number
+          season_id?: string
+          total_points?: number
+          type?: string
+          win_percentage?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "season_standings_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seasons: {
+        Row: {
+          champion_doubles: string | null
+          champion_singles: string | null
+          created_at: string
+          end_date: string | null
+          id: string
+          is_active: boolean
+          name: string
+          start_date: string
+          total_games: number | null
+          total_sessions: number | null
+        }
+        Insert: {
+          champion_doubles?: string | null
+          champion_singles?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          start_date?: string
+          total_games?: number | null
+          total_sessions?: number | null
+        }
+        Update: {
+          champion_doubles?: string | null
+          champion_singles?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          start_date?: string
+          total_games?: number | null
+          total_sessions?: number | null
+        }
+        Relationships: []
+      }
       session_games: {
         Row: {
           created_at: string

@@ -19,6 +19,7 @@ const baseNavLinks = [
   { id: 'home', label: 'Home' },
   { id: 'headtohead', label: 'Head-to-Head' },
   { id: 'history', label: 'History' },
+  { id: 'seasons', label: 'Seasons' },
   { id: 'info', label: 'Information' },
   { id: 'lore', label: 'The Lore' },
   { id: 'members', label: 'Members' },

@@ -594,7 +594,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                 <div className={cn("w-6 h-6 md:w-7 md:h-7 rounded flex-shrink-0 flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>
                                   G{game.game_number}
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                   <div className="flex items-center gap-1.5 text-xs">
                                     <span className="text-muted-foreground/50">vs</span>
                                     <span className="text-muted-foreground">{opponents}</span>

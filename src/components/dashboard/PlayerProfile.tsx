@@ -186,8 +186,8 @@ function GameHistorySection({
     <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       
-      <div className="p-5 md:p-6 border-b border-border">
-        <div className="flex items-center justify-between">
+      <div className="p-4 md:p-6 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h3 className="font-display text-sm uppercase tracking-widest text-foreground">
               {historyView === 'sessions' ? 'Session Breakdown' : 'Game History'}
@@ -204,7 +204,7 @@ function GameHistorySection({
               <button
                 onClick={() => setHistoryView('sessions')}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                   historyView === 'sessions'
                     ? "bg-primary/15 text-primary shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -216,7 +216,7 @@ function GameHistorySection({
               <button
                 onClick={() => setHistoryView('games')}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                   historyView === 'games'
                     ? "bg-primary/15 text-primary shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -226,7 +226,7 @@ function GameHistorySection({
                 Games
               </button>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-2">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Swords className="w-3.5 h-3.5" />
               <span>{wins}W / {games.length - wins}L</span>
             </div>
@@ -354,38 +354,38 @@ function GameHistorySection({
                       const points = calculateGamePoints(game, playerName);
 
                       return (
-                        <div key={game.id} className="px-5 md:px-6 pl-12 md:pl-14 py-3 border-t border-border/20">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
+                        <div key={game.id} className="px-3 md:px-6 pl-10 md:pl-14 py-3 border-t border-border/20">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
                               <div className={cn(
-                                "w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide",
+                                "w-6 h-6 md:w-7 md:h-7 rounded flex-shrink-0 flex items-center justify-center font-display text-[10px] tracking-wide",
                                 won 
                                   ? "bg-emerald-500/10 text-emerald-400" 
                                   : "bg-secondary/50 text-muted-foreground"
                               )}>
                                 G{game.game_number}
                               </div>
-                              <div>
-                                <div className="flex items-center gap-1.5 text-xs">
+                              <div className="min-w-0">
+                                <div className="text-xs truncate">
                                   <span className="font-medium text-foreground">
                                     {playerName} & {teammate}
                                   </span>
-                                  <span className="text-muted-foreground/50">vs</span>
+                                  <span className="text-muted-foreground/50"> vs </span>
                                   <span className="text-muted-foreground">
                                     {opponents.join(' & ')}
                                   </span>
                                 </div>
                                 {game.game_number !== 3 && (
                                   <span className={cn(
-                                    "text-[10px] mt-0.5",
+                                    "text-[10px] mt-0.5 block",
                                     won ? "text-emerald-400/60" : "text-muted-foreground/60"
                                   )}>
-                                    Score: {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
+                                    {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
                               <Badge variant="outline" className={cn(
                                 "text-[9px] px-1.5 py-0 font-semibold uppercase tracking-wider",
                                 won 
@@ -437,33 +437,32 @@ function GameHistorySection({
             const points = calculateGamePoints(game, playerName);
 
             return (
-              <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+              <div key={game.id} className="px-3 md:px-6 py-3 md:py-4 hover:bg-secondary/20 transition-colors">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
                     <div className={cn(
-                      "w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide",
+                      "w-8 h-8 md:w-9 md:h-9 rounded-lg flex-shrink-0 flex items-center justify-center font-display text-[10px] md:text-xs tracking-wide",
                       won 
                         ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" 
                         : "bg-secondary/50 text-muted-foreground ring-1 ring-border"
                     )}>
                       G{game.game_number}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 text-sm">
+                    <div className="min-w-0">
+                      <div className="text-xs md:text-sm truncate">
                         <span className="font-semibold text-foreground">
                           {playerName} & {teammate}
                         </span>
-                        <span className="text-muted-foreground/50 text-xs">vs</span>
-                        <span className="text-muted-foreground text-sm">
+                        <span className="text-muted-foreground/50"> vs </span>
+                        <span className="text-muted-foreground">
                           {opponents.join(' & ')}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                      <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground mt-0.5">
                         <span>
                           {new Date(game.session_date).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
-                            year: 'numeric'
                           })}
                         </span>
                         {game.game_number !== 3 && (
@@ -477,9 +476,9 @@ function GameHistorySection({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
                     <Badge variant="outline" className={cn(
-                      "text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider",
+                      "text-[9px] md:text-[10px] px-1.5 md:px-2 py-0.5 font-semibold uppercase tracking-wider",
                       won 
                         ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
                         : "border-border text-muted-foreground bg-secondary/20"
@@ -487,7 +486,7 @@ function GameHistorySection({
                       {won ? 'W' : 'L'}
                     </Badge>
                     <span className={cn(
-                      "font-display text-base tabular-nums",
+                      "font-display text-sm md:text-base tabular-nums",
                       points >= 8 && "text-emerald-400",
                       points >= 5 && points < 8 && "text-primary",
                       points < 5 && "text-muted-foreground"
@@ -677,7 +676,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5 pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         
-        <div className="relative p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative p-4 md:p-8 flex flex-col items-center sm:flex-row gap-4 md:gap-6">
           {/* Avatar with neon glow */}
           <div className="relative shrink-0">
             {/* Outer glow rings */}
@@ -685,7 +684,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary/30 to-cyan-300/20 rounded-full" />
             
             {/* Avatar */}
-            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full player-avatar ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)]">
+            <div className="relative w-20 h-20 md:w-36 md:h-36 rounded-full player-avatar ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)]">
               {avatar ? (
                 <img 
                   src={avatar} 
@@ -702,7 +701,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
 
           {/* Player Info */}
           <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight uppercase">
+            <h1 className="font-display text-2xl md:text-4xl text-foreground tracking-tight uppercase">
               {playerName}
             </h1>
             <p className="text-muted-foreground text-sm mt-1 tracking-wide">
@@ -811,7 +810,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
         <div className="relative bg-card border border-border rounded-xl overflow-hidden shadow-card">
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
           
-          <div className="p-6 md:p-8">
+          <div className="p-4 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-display text-sm uppercase tracking-widest text-foreground">Performance Trend</h3>
@@ -829,7 +828,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
               </div>
             </div>
             
-            <div className="h-72 md:h-80">
+            <div className="h-56 md:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trendData}>
                   <defs>

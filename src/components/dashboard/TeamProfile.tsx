@@ -307,24 +307,24 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5 pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-        <div className="relative p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative p-4 md:p-8 flex flex-col items-center sm:flex-row gap-4 md:gap-6">
           {/* Dual Avatar */}
           <div className="relative shrink-0 flex items-center">
             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/20 via-primary/5 to-cyan-400/20 blur-md animate-pulse-subtle" />
-            <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] z-10">
+            <div className="relative w-16 h-16 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] z-10">
               {avatar1 ? (
                 <img src={avatar1} alt={player1} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-3xl text-primary">
+                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-2xl md:text-3xl text-primary">
                   {player1[0]}
                 </div>
               )}
             </div>
-            <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] -ml-6 z-0">
+            <div className="relative w-16 h-16 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] -ml-5 md:-ml-6 z-0">
               {avatar2 ? (
                 <img src={avatar2} alt={player2} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-3xl text-primary">
+                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-2xl md:text-3xl text-primary">
                   {player2[0]}
                 </div>
               )}
@@ -333,8 +333,8 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
 
           {/* Team Info */}
           <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-2xl md:text-3xl text-foreground tracking-tight uppercase">
-              {teamName}
+            <h1 className="font-display text-xl md:text-3xl text-foreground tracking-tight uppercase">
+              {player1} & {player2}
             </h1>
             <p className="text-muted-foreground text-sm mt-1 tracking-wide">
               Doubles Team Statistics & Performance
@@ -421,7 +421,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
       {trendData.length > 0 && (
         <div className="relative bg-card border border-border rounded-xl overflow-hidden shadow-card">
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-          <div className="p-6 md:p-8">
+          <div className="p-4 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-display text-sm uppercase tracking-widest text-foreground">Performance Trend</h3>
@@ -438,7 +438,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                 </div>
               </div>
             </div>
-            <div className="h-72 md:h-80">
+            <div className="h-56 md:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trendData}>
                   <defs>
@@ -480,8 +480,8 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
       {/* Game History */}
       <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="p-5 md:p-6 border-b border-border">
-          <div className="flex items-center justify-between">
+        <div className="p-4 md:p-6 border-b border-border">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <h3 className="font-display text-sm uppercase tracking-widest text-foreground">
                 {historyView === 'sessions' ? 'Session Breakdown' : 'Game History'}
@@ -495,7 +495,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                 <button
                   onClick={() => setHistoryView('sessions')}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                     historyView === 'sessions' ? "bg-primary/15 text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -504,14 +504,14 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                 <button
                   onClick={() => setHistoryView('games')}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                     historyView === 'games' ? "bg-primary/15 text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   <List className="w-3 h-3" />Games
                 </button>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-2">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Swords className="w-3.5 h-3.5" />
                 <span>{totalWins}W / {totalGames - totalWins}L</span>
               </div>
@@ -588,14 +588,14 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                           : `${game.team_a_player1} & ${game.team_a_player2}`;
 
                         return (
-                          <div key={game.id} className="px-5 md:px-6 pl-12 md:pl-14 py-3 border-t border-border/20">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2.5">
-                                <div className={cn("w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>
+                          <div key={game.id} className="px-3 md:px-6 pl-10 md:pl-14 py-3 border-t border-border/20">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className={cn("w-6 h-6 md:w-7 md:h-7 rounded flex-shrink-0 flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>
                                   G{game.game_number}
                                 </div>
-                                <div>
-                                  <div className="flex items-center gap-1.5 text-xs">
+                                <div className="min-w-0">
+                                  <div className="text-xs truncate">
                                     <span className="text-muted-foreground/50">vs</span>
                                     <span className="text-muted-foreground">{opponents}</span>
                                   </div>
@@ -606,7 +606,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                   )}
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1.5 flex-shrink-0">
                                 <Badge variant="outline" className={cn("text-[9px] px-1.5 py-0 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
                                   {won ? 'W' : 'L'}
                                 </Badge>
@@ -634,18 +634,18 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                 : `${game.team_a_player1} & ${game.team_a_player2}`;
 
               return (
-                <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide", won ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : "bg-secondary/50 text-muted-foreground ring-1 ring-border")}>
+                <div key={game.id} className="px-3 md:px-6 py-3 md:py-4 hover:bg-secondary/20 transition-colors">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                      <div className={cn("w-8 h-8 md:w-9 md:h-9 rounded-lg flex-shrink-0 flex items-center justify-center font-display text-[10px] md:text-xs tracking-wide", won ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : "bg-secondary/50 text-muted-foreground ring-1 ring-border")}>
                         G{game.game_number}
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="text-muted-foreground/50 text-xs">vs</span>
-                          <span className="text-muted-foreground text-sm">{opponents}</span>
+                      <div className="min-w-0">
+                        <div className="text-xs md:text-sm truncate">
+                          <span className="text-muted-foreground/50">vs </span>
+                          <span className="text-muted-foreground">{opponents}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                        <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground mt-0.5">
                           <span>{new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                           {game.game_number !== 3 && (
                             <>
@@ -658,11 +658,11 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant="outline" className={cn("text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
+                    <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
+                      <Badge variant="outline" className={cn("text-[9px] md:text-[10px] px-1.5 md:px-2 py-0.5 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
                         {won ? 'W' : 'L'}
                       </Badge>
-                      <span className={cn("font-display text-base tabular-nums", points >= 8 && "text-emerald-400", points >= 5 && points < 8 && "text-primary", points < 5 && "text-muted-foreground")}>
+                      <span className={cn("font-display text-sm md:text-base tabular-nums", points >= 8 && "text-emerald-400", points >= 5 && points < 8 && "text-primary", points < 5 && "text-muted-foreground")}>
                         +{points.toFixed(1)}
                       </span>
                     </div>

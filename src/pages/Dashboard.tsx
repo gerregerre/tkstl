@@ -91,9 +91,19 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="pt-16 min-h-screen">
-        <div className={activeTab === 'home' ? '' : 'p-4 md:p-8 max-w-7xl mx-auto'}>
-          {renderContent()}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab + (selectedPlayer || '') + (selectedTeam || '')}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={pageTransition}
+            className={activeTab === 'home' ? '' : 'p-4 md:p-8 max-w-7xl mx-auto'}
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
 
         {/* ATP-Style Footer */}
         <footer className="border-t border-border py-8 md:py-12 mt-8 md:mt-16 bg-card/50">

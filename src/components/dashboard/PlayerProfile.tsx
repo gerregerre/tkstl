@@ -676,7 +676,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5 pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         
-        <div className="relative p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative p-4 md:p-8 flex flex-col items-center sm:flex-row gap-4 md:gap-6">
           {/* Avatar with neon glow */}
           <div className="relative shrink-0">
             {/* Outer glow rings */}

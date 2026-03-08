@@ -333,8 +333,8 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
 
           {/* Team Info */}
           <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-2xl md:text-3xl text-foreground tracking-tight uppercase">
-              {teamName}
+            <h1 className="font-display text-xl md:text-3xl text-foreground tracking-tight uppercase">
+              {player1} & {player2}
             </h1>
             <p className="text-muted-foreground text-sm mt-1 tracking-wide">
               Doubles Team Statistics & Performance

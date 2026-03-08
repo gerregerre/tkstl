@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
+import { computeAchievements } from '@/lib/achievements';
+import { AchievementsBadges } from '@/components/dashboard/AchievementsBadges';
 import {
   LineChart,
   Line,
@@ -761,6 +763,11 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           </div>
         ))}
       </div>
+
+      {/* Achievements */}
+      {!loading && games.length > 0 && (
+        <AchievementsBadges achievements={computeAchievements(games, playerName)} />
+      )}
 
       {/* Performance Trend Chart */}
       {trendData.length > 0 && (

@@ -12,6 +12,7 @@ import NewsCarousel from '@/components/home/NewsCarousel';
 
 interface DashboardHomeProps {
   onPlayerSelect?: (playerName: string) => void;
+  onTeamSelect?: (teamName: string) => void;
 }
 interface SessionGame {
   id: string;

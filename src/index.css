@@ -331,7 +331,7 @@
   .player-avatar {
     background-color: #FFFFFF;
     clip-path: circle(50%);
-    overflow: hidden;
+    object-fit: cover;
   }
 
   .player-avatar img,
@@ -340,7 +340,6 @@
     mix-blend-mode: multiply;
     clip-path: circle(50%);
     object-fit: cover;
-    filter: none;
   }
 
   /* News feed item style */

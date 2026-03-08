@@ -329,19 +329,17 @@
 
   /* Global Player Avatar */
   .player-avatar {
-    background-color: #FFFFFF !important;
+    background-color: #FFFFFF;
     clip-path: circle(50%);
-    overflow: hidden;
+    object-fit: cover;
   }
 
   .player-avatar img,
   .player-avatar-img {
     background-color: transparent;
-    mix-blend-mode: screen;
+    mix-blend-mode: multiply;
     clip-path: circle(50%);
     object-fit: cover;
-    mask-image: radial-gradient(circle, white 100%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
   }
 
   /* News feed item style */

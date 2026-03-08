@@ -543,7 +543,8 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           if (season.champion_singles === playerName) {
             titles.push({ name: season.name, type: 'singles' });
           }
-          if (season.champion_doubles === playerName) {
+          // Check if player is part of doubles champion team
+          if (season.champion_doubles && season.champion_doubles.includes(playerName)) {
             titles.push({ name: season.name, type: 'doubles' });
           }
         }

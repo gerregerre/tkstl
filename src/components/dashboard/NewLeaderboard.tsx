@@ -119,7 +119,23 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
             </p>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-0">
+          <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-0 flex-wrap">
+            {/* Season Selector */}
+            <Select value={selectedSeasonId} onValueChange={setSelectedSeasonId}>
+              <SelectTrigger className="w-[140px] md:w-[180px] h-8 md:h-9 text-xs md:text-sm">
+                <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1 shrink-0" />
+                <SelectValue placeholder="Season" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Seasons</SelectItem>
+                {seasons.map((season) => (
+                  <SelectItem key={season.id} value={season.id}>
+                    {season.name}{season.is_active ? ' (Active)' : ''}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
             {/* Recalculate Button */}
             <Button
               variant="outline"

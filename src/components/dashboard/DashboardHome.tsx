@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Calendar, Trophy } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
 import { HeroSection } from './HeroSection';

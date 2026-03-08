@@ -87,7 +87,7 @@ export function usePlayerGameBreakdown(playerName: string | null) {
           return {
             id: game.id,
             gameNumber: game.game_number,
-            gameType: GAME_TYPE_NAMES[game.game_number] || `Game ${game.game_number}`,
+            gameType: getGameTypeName(game.game_number),
             sessionDate: game.session_date,
             team,
             teammate,

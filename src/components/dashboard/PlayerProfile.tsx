@@ -444,118 +444,16 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
       )}
 
       {/* Game History */}
-      <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        
-        <div className="p-5 md:p-6 border-b border-border">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-display text-sm uppercase tracking-widest text-foreground">Game History</h3>
-              <p className="text-xs text-muted-foreground mt-1">{games.length} games recorded</p>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Swords className="w-3.5 h-3.5" />
-              <span>{wins}W / {games.length - wins}L</span>
-            </div>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center p-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/30 border-t-primary"></div>
-          </div>
-        ) : games.length === 0 ? (
-          <div className="text-center p-12 text-muted-foreground text-sm">
-            No games recorded yet
-          </div>
-        ) : (
-          <div className="divide-y divide-border/50 max-h-[500px] overflow-y-auto scrollbar-thin">
-            {[...games].reverse().map((game) => {
-              const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-              const teammate = isTeamA 
-                ? (game.team_a_player1 === playerName ? game.team_a_player2 : game.team_a_player1)
-                : (game.team_b_player1 === playerName ? game.team_b_player2 : game.team_b_player1);
-              const opponents = isTeamA 
-                ? [game.team_b_player1, game.team_b_player2]
-                : [game.team_a_player1, game.team_a_player2];
-              
-              let won = false;
-              if (game.game_number === 3) {
-                won = isTeamA ? game.winner === 'A' : game.winner === 'B';
-              } else {
-                const teamAScore = game.team_a_score || 0;
-                const teamBScore = game.team_b_score || 0;
-                won = isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;
-              }
-
-              const points = calculateGamePoints(game, playerName);
-
-              return (
-                <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide",
-                        won 
-                          ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" 
-                          : "bg-secondary/50 text-muted-foreground ring-1 ring-border"
-                      )}>
-                        G{game.game_number}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="font-semibold text-foreground">
-                            {playerName} & {teammate}
-                          </span>
-                          <span className="text-muted-foreground/50 text-xs">vs</span>
-                          <span className="text-muted-foreground text-sm">
-                            {opponents.join(' & ')}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                          <span>
-                            {new Date(game.session_date).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
-                          </span>
-                          {game.game_number !== 3 && (
-                            <>
-                              <span className="text-border">·</span>
-                              <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>
-                                {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant="outline" className={cn(
-                        "text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider",
-                        won 
-                          ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
-                          : "border-border text-muted-foreground bg-secondary/20"
-                      )}>
-                        {won ? 'W' : 'L'}
-                      </Badge>
-                      <span className={cn(
-                        "font-display text-base tabular-nums",
-                        points >= 8 && "text-emerald-400",
-                        points >= 5 && points < 8 && "text-primary",
-                        points < 5 && "text-muted-foreground"
-                      )}>
-                        +{points.toFixed(1)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <GameHistorySection
+        games={games}
+        loading={loading}
+        playerName={playerName}
+        wins={wins}
+        historyView={historyView}
+        setHistoryView={setHistoryView}
+        expandedSessions={expandedSessions}
+        setExpandedSessions={setExpandedSessions}
+      />
     </div>
   );
 }

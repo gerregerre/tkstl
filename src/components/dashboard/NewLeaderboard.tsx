@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePlayers } from '@/hooks/usePlayers';
-import { useFilteredPlayerStats, GameTypeFilter } from '@/hooks/useFilteredPlayerStats';
+import { useFilteredPlayerStats, GameTypeFilter, SeasonDateRange } from '@/hooks/useFilteredPlayerStats';
+import { useSeasons } from '@/hooks/useSeasons';
 import { cn } from '@/lib/utils';
-import { User, Users, RefreshCw, Filter } from 'lucide-react';
+import { User, Users, RefreshCw, Filter, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -12,6 +13,13 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { LeaderboardRowDesktop, LeaderboardRowMobile } from './LeaderboardRow';
 
 const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {

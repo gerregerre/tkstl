@@ -21,6 +21,7 @@ export function SeasonArchives() {
   const [showStartDialog, setShowStartDialog] = useState(false);
   const [showEndDialog, setShowEndDialog] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [endPassword, setEndPassword] = useState('');
   const [standingsMode, setStandingsMode] = useState<'singles' | 'doubles'>('singles');
 
   const handleSelectSeason = async (season: Season) => {

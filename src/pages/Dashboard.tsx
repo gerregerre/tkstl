@@ -87,20 +87,51 @@ export default function Dashboard() {
         {/* Team Photo & Footer */}
         <footer className="border-t border-border mt-8 md:mt-16 bg-card/50">
           {/* Team Photo Section */}
-          <div className="max-w-4xl mx-auto px-4 md:px-8 pt-10 md:pt-14 pb-6">
+          <div className="max-w-3xl mx-auto px-4 md:px-8 pt-10 md:pt-14 pb-6">
             <div className="text-center mb-6">
               <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
                 The Squad
               </p>
             </div>
-            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-lg">
-              <img 
-                src={teamPhoto} 
-                alt="TKSTL Team Photo" 
-                className="w-full h-auto object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            <div className="relative rounded-lg overflow-hidden border border-border/50 shadow-lg bg-gradient-to-b from-[hsl(220,25%,12%)] via-[hsl(220,20%,15%)] to-[hsl(220,25%,10%)] py-8 md:py-12 px-4">
+              {/* Stadium lights effect */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(220,30%,25%)_0%,transparent_60%)] opacity-60" />
+              <div className="absolute top-0 left-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+              
+              {/* Back Row */}
+              <div className="relative flex justify-center gap-4 md:gap-8 mb-2 md:mb-4">
+                {['Kockum', 'Gerard', 'Ludvig'].map((name) => (
+                  <div key={name} className="flex flex-col items-center gap-2">
+                    <div className="w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-border/40 shadow-[0_4px_20px_rgba(0,0,0,0.5)] bg-white">
+                      <img 
+                        src={getPlayerAvatar(name)!} 
+                        alt={name}
+                        className="w-full h-full object-cover mix-blend-multiply"
+                      />
+                    </div>
+                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground">{name}</span>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Front Row */}
+              <div className="relative flex justify-center gap-4 md:gap-8 -mt-2 md:-mt-3">
+                {['Hampus', 'Joel', 'Viktor'].map((name) => (
+                  <div key={name} className="flex flex-col items-center gap-2">
+                    <div className="w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-border/40 shadow-[0_4px_20px_rgba(0,0,0,0.5)] bg-white">
+                      <img 
+                        src={getPlayerAvatar(name)!} 
+                        alt={name}
+                        className="w-full h-full object-cover mix-blend-multiply"
+                      />
+                    </div>
+                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground">{name}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom fade */}
+              <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[hsl(220,25%,10%)] to-transparent" />
             </div>
           </div>
 

@@ -684,7 +684,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary/30 to-cyan-300/20 rounded-full" />
             
             {/* Avatar */}
-            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full player-avatar ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)]">
+            <div className="relative w-20 h-20 md:w-36 md:h-36 rounded-full player-avatar ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)]">
               {avatar ? (
                 <img 
                   src={avatar} 

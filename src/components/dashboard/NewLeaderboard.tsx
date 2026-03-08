@@ -45,12 +45,22 @@ interface LeaderboardEntry {
 
 export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardProps) {
   const { recalculateStats } = usePlayers();
+  const { seasons, activeSeason } = useSeasons();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
+  const [selectedSeasonId, setSelectedSeasonId] = useState<string>('all');
   const [isRecalculating, setIsRecalculating] = useState(false);
 
+  // Compute season date range from selected season
+  const seasonRange: SeasonDateRange | null = (() => {
+    if (selectedSeasonId === 'all') return null;
+    const season = seasons.find(s => s.id === selectedSeasonId);
+    if (!season) return null;
+    return { startDate: season.start_date, endDate: season.end_date };
+  })();
+
   // Filtered stats hook - always used for accurate win percentage calculation
-  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading } = useFilteredPlayerStats(gameTypeFilter);
+  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading } = useFilteredPlayerStats(gameTypeFilter, seasonRange);
 
   const handleRecalculate = async () => {
     setIsRecalculating(true);

@@ -635,9 +635,9 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
 
               return (
                 <div key={game.id} className="px-3 md:px-6 py-3 md:py-4 hover:bg-secondary/20 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide", won ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : "bg-secondary/50 text-muted-foreground ring-1 ring-border")}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                      <div className={cn("w-8 h-8 md:w-9 md:h-9 rounded-lg flex-shrink-0 flex items-center justify-center font-display text-[10px] md:text-xs tracking-wide", won ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : "bg-secondary/50 text-muted-foreground ring-1 ring-border")}>
                         G{game.game_number}
                       </div>
                       <div>

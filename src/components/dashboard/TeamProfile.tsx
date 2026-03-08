@@ -307,24 +307,24 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5 pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-        <div className="relative p-6 md:p-8 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative p-4 md:p-8 flex flex-col items-center sm:flex-row gap-4 md:gap-6">
           {/* Dual Avatar */}
           <div className="relative shrink-0 flex items-center">
             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/20 via-primary/5 to-cyan-400/20 blur-md animate-pulse-subtle" />
-            <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] z-10">
+            <div className="relative w-16 h-16 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] z-10">
               {avatar1 ? (
                 <img src={avatar1} alt={player1} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-3xl text-primary">
+                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-2xl md:text-3xl text-primary">
                   {player1[0]}
                 </div>
               )}
             </div>
-            <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] -ml-6 z-0">
+            <div className="relative w-16 h-16 md:w-28 md:h-28 rounded-full overflow-hidden ring-2 ring-primary/40 shadow-[0_0_30px_-4px_hsl(197_100%_47%/0.4)] -ml-5 md:-ml-6 z-0">
               {avatar2 ? (
                 <img src={avatar2} alt={player2} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-3xl text-primary">
+                <div className="w-full h-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center font-display text-2xl md:text-3xl text-primary">
                   {player2[0]}
                 </div>
               )}

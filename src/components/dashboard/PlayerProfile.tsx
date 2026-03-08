@@ -701,7 +701,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
 
           {/* Player Info */}
           <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-3xl md:text-4xl text-foreground tracking-tight uppercase">
+            <h1 className="font-display text-2xl md:text-4xl text-foreground tracking-tight uppercase">
               {playerName}
             </h1>
             <p className="text-muted-foreground text-sm mt-1 tracking-wide">

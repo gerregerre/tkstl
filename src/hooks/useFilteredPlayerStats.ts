@@ -46,7 +46,7 @@ const GAME_TYPE_TO_NUMBER: Record<Exclude<GameTypeFilter, 'all'>, number> = {
   tow: 3,
 };
 
-export function useFilteredPlayerStats(filter: GameTypeFilter) {
+export function useFilteredPlayerStats(filter: GameTypeFilter, seasonRange?: SeasonDateRange | null) {
   const [sessionGames, setSessionGames] = useState<SessionGame[]>([]);
   const [allPlayers, setAllPlayers] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);

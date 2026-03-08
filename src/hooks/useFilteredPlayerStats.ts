@@ -3,6 +3,11 @@ import { supabase } from '@/integrations/supabase/client';
 
 export type GameTypeFilter = 'all' | 'pwc' | 'shibuya' | 'tow';
 
+export interface SeasonDateRange {
+  startDate: string;
+  endDate: string | null;
+}
+
 interface SessionGame {
   id: string;
   game_number: number;
@@ -41,7 +46,7 @@ const GAME_TYPE_TO_NUMBER: Record<Exclude<GameTypeFilter, 'all'>, number> = {
   tow: 3,
 };
 
-export function useFilteredPlayerStats(filter: GameTypeFilter) {
+export function useFilteredPlayerStats(filter: GameTypeFilter, seasonRange?: SeasonDateRange | null) {
   const [sessionGames, setSessionGames] = useState<SessionGame[]>([]);
   const [allPlayers, setAllPlayers] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,6 +91,14 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
         query = query.eq('game_number', GAME_TYPE_TO_NUMBER[filter]);
       }
 
+      // Filter by season date range
+      if (seasonRange) {
+        query = query.gte('session_date', seasonRange.startDate);
+        if (seasonRange.endDate) {
+          query = query.lte('session_date', seasonRange.endDate);
+        }
+      }
+
       const { data, error } = await query;
 
       if (error) {
@@ -111,7 +124,7 @@ export function useFilteredPlayerStats(filter: GameTypeFilter) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [filter]);
+  }, [filter, seasonRange?.startDate, seasonRange?.endDate]);
 
   const playerStats = useMemo((): FilteredPlayerStats[] => {
     const statsMap = new Map<string, { totalPoints: number; gamesPlayed: number; wins: number }>();

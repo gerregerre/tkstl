@@ -543,7 +543,8 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           if (season.champion_singles === playerName) {
             titles.push({ name: season.name, type: 'singles' });
           }
-          if (season.champion_doubles === playerName) {
+          // Check if player is part of doubles champion team
+          if (season.champion_doubles && season.champion_doubles.includes(playerName)) {
             titles.push({ name: season.name, type: 'doubles' });
           }
         }
@@ -734,15 +735,27 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
                   Form: {recentAvg.toFixed(1)}
                 </Badge>
               )}
-              {seasonTitles.map((title, i) => (
-                <Badge 
-                  key={i} 
-                  className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1"
-                >
-                  <Trophy className="w-3 h-3" />
-                  {title.name} {title.type === 'singles' ? 'Singles' : 'Doubles'} Champion
-                </Badge>
-              ))}
+              {/* Championship Count Summary */}
+              {seasonTitles.length > 0 && (() => {
+                const singlesCount = seasonTitles.filter(t => t.type === 'singles').length;
+                const doublesCount = seasonTitles.filter(t => t.type === 'doubles').length;
+                return (
+                  <>
+                    {singlesCount > 0 && (
+                      <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1">
+                        <Trophy className="w-3 h-3" />
+                        {singlesCount}x Singles Champion
+                      </Badge>
+                    )}
+                    {doublesCount > 0 && (
+                      <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1">
+                        <Trophy className="w-3 h-3" />
+                        {doublesCount}x Doubles Champion
+                      </Badge>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>

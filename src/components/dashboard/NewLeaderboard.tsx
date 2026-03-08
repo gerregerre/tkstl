@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePlayers } from '@/hooks/usePlayers';
-import { useFilteredPlayerStats, GameTypeFilter } from '@/hooks/useFilteredPlayerStats';
+import { useFilteredPlayerStats, GameTypeFilter, SeasonDateRange } from '@/hooks/useFilteredPlayerStats';
+import { useSeasons } from '@/hooks/useSeasons';
 import { cn } from '@/lib/utils';
-import { User, Users, RefreshCw, Filter } from 'lucide-react';
+import { User, Users, RefreshCw, Filter, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -12,6 +13,13 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { LeaderboardRowDesktop, LeaderboardRowMobile } from './LeaderboardRow';
 
 const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
@@ -37,12 +45,22 @@ interface LeaderboardEntry {
 
 export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardProps) {
   const { recalculateStats } = usePlayers();
+  const { seasons, activeSeason } = useSeasons();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
+  const [selectedSeasonId, setSelectedSeasonId] = useState<string>('all');
   const [isRecalculating, setIsRecalculating] = useState(false);
 
+  // Compute season date range from selected season
+  const seasonRange: SeasonDateRange | null = (() => {
+    if (selectedSeasonId === 'all') return null;
+    const season = seasons.find(s => s.id === selectedSeasonId);
+    if (!season) return null;
+    return { startDate: season.start_date, endDate: season.end_date };
+  })();
+
   // Filtered stats hook - always used for accurate win percentage calculation
-  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading } = useFilteredPlayerStats(gameTypeFilter);
+  const { playerStats: filteredPlayerStats, teamStats: filteredTeamStats, loading: filteredLoading } = useFilteredPlayerStats(gameTypeFilter, seasonRange);
 
   const handleRecalculate = async () => {
     setIsRecalculating(true);
@@ -101,7 +119,23 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
             </p>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-0">
+          <div className="flex items-center gap-2 md:gap-3 ml-4 md:ml-0 flex-wrap">
+            {/* Season Selector */}
+            <Select value={selectedSeasonId} onValueChange={setSelectedSeasonId}>
+              <SelectTrigger className="w-[140px] md:w-[180px] h-8 md:h-9 text-xs md:text-sm">
+                <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1 shrink-0" />
+                <SelectValue placeholder="Season" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Seasons</SelectItem>
+                {seasons.map((season) => (
+                  <SelectItem key={season.id} value={season.id}>
+                    {season.name}{season.is_active ? ' (Active)' : ''}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
             {/* Recalculate Button */}
             <Button
               variant="outline"
@@ -166,19 +200,27 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
           </div>
         </div>
         
-        {/* Active Filter Badge */}
-        {gameTypeFilter !== 'all' && (
-          <div className="flex items-center gap-2 ml-4 md:ml-5">
-            <Badge variant="secondary" className="text-xs">
-              Filtered: {GAME_TYPE_LABELS[gameTypeFilter]}
-            </Badge>
+        {/* Active Filter Badges */}
+        {(gameTypeFilter !== 'all' || selectedSeasonId !== 'all') && (
+          <div className="flex items-center gap-2 ml-4 md:ml-5 flex-wrap">
+            {selectedSeasonId !== 'all' && (
+              <Badge variant="secondary" className="text-xs gap-1">
+                <Calendar className="w-3 h-3" />
+                {seasons.find(s => s.id === selectedSeasonId)?.name || 'Season'}
+              </Badge>
+            )}
+            {gameTypeFilter !== 'all' && (
+              <Badge variant="secondary" className="text-xs">
+                Filtered: {GAME_TYPE_LABELS[gameTypeFilter]}
+              </Badge>
+            )}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setGameTypeFilter('all')}
+              onClick={() => { setGameTypeFilter('all'); setSelectedSeasonId('all'); }}
               className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
             >
-              Clear
+              Clear All
             </Button>
           </div>
         )}

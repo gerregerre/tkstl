@@ -358,15 +358,12 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                   Form: {recentAvg.toFixed(1)}
                 </Badge>
               )}
-              {seasonTitles.map((title, i) => (
-                <Badge 
-                  key={i} 
-                  className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1"
-                >
+              {seasonTitles.length > 0 && (
+                <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/20 gap-1.5 px-3 py-1">
                   <Trophy className="w-3 h-3" />
-                  {title} Doubles Champion
+                  {seasonTitles.length}x Doubles Champion
                 </Badge>
-              ))}
+              )}
             </div>
           </div>
         </div>

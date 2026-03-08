@@ -132,10 +132,21 @@ export function SeasonArchives() {
                   <p className="text-sm text-muted-foreground">
                     Current standings will be saved with {playerStats.filter(p => p.gamesPlayed > 0).length} singles and {teamStats.filter(t => t.gamesPlayed > 0).length} doubles entries.
                   </p>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 block">
+                      Manager Password
+                    </label>
+                    <Input
+                      type="password"
+                      placeholder="Enter manager password"
+                      value={endPassword}
+                      onChange={(e) => setEndPassword(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setShowEndDialog(false)}>Cancel</Button>
-                  <Button onClick={handleEndSeason} disabled={processing}>
+                  <Button variant="outline" onClick={() => { setShowEndDialog(false); setEndPassword(''); }}>Cancel</Button>
+                  <Button onClick={handleEndSeason} disabled={processing || !endPassword}>
                     {processing ? 'Archiving...' : 'End & Archive'}
                   </Button>
                 </DialogFooter>

@@ -9,7 +9,7 @@ import { PartyVoting } from './PartyVoting';
 import { supabase } from '@/integrations/supabase/client';
 import { PartyPlanners } from './PartyPlanners';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
-import NewsCarousel from '@/components/home/NewsCarousel';
+
 
 interface DashboardHomeProps {
   onPlayerSelect?: (playerName: string) => void;

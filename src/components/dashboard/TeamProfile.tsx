@@ -590,8 +590,8 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                         return (
                           <div key={game.id} className="px-3 md:px-6 pl-10 md:pl-14 py-3 border-t border-border/20">
                             <div className="flex items-center justify-between gap-2">
-                              <div className="flex items-center gap-2.5">
-                                <div className={cn("w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className={cn("w-6 h-6 md:w-7 md:h-7 rounded flex-shrink-0 flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>
                                   G{game.game_number}
                                 </div>
                                 <div>

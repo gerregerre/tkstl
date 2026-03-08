@@ -354,38 +354,38 @@ function GameHistorySection({
                       const points = calculateGamePoints(game, playerName);
 
                       return (
-                        <div key={game.id} className="px-5 md:px-6 pl-12 md:pl-14 py-3 border-t border-border/20">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
+                        <div key={game.id} className="px-3 md:px-6 pl-10 md:pl-14 py-3 border-t border-border/20">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
                               <div className={cn(
-                                "w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide",
+                                "w-6 h-6 md:w-7 md:h-7 rounded flex-shrink-0 flex items-center justify-center font-display text-[10px] tracking-wide",
                                 won 
                                   ? "bg-emerald-500/10 text-emerald-400" 
                                   : "bg-secondary/50 text-muted-foreground"
                               )}>
                                 G{game.game_number}
                               </div>
-                              <div>
-                                <div className="flex items-center gap-1.5 text-xs">
+                              <div className="min-w-0">
+                                <div className="text-xs truncate">
                                   <span className="font-medium text-foreground">
                                     {playerName} & {teammate}
                                   </span>
-                                  <span className="text-muted-foreground/50">vs</span>
+                                  <span className="text-muted-foreground/50"> vs </span>
                                   <span className="text-muted-foreground">
                                     {opponents.join(' & ')}
                                   </span>
                                 </div>
                                 {game.game_number !== 3 && (
                                   <span className={cn(
-                                    "text-[10px] mt-0.5",
+                                    "text-[10px] mt-0.5 block",
                                     won ? "text-emerald-400/60" : "text-muted-foreground/60"
                                   )}>
-                                    Score: {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
+                                    {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
                               <Badge variant="outline" className={cn(
                                 "text-[9px] px-1.5 py-0 font-semibold uppercase tracking-wider",
                                 won 

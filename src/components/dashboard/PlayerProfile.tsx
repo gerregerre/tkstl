@@ -14,7 +14,11 @@ import {
   Star,
   Award,
   Zap,
-  Swords
+  Swords,
+  CalendarDays,
+  List,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';

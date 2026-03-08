@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
+import { SESSION_PASSWORD } from './PasswordModal';
 
 export function SeasonArchives() {
   const { activeSeason, pastSeasons, loading, endSeason, startSeason, getStandings } = useSeasons();

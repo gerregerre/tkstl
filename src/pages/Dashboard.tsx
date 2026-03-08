@@ -39,7 +39,7 @@ export default function Dashboard() {
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
-        return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
+        return <DashboardHome onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />;
       case 'headtohead':
         return <HeadToHead />;
       case 'history':

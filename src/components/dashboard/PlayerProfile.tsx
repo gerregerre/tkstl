@@ -503,12 +503,6 @@ function GameHistorySection({
     </div>
   );
 }
-import {
-  Tooltip as UITooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 
 export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {

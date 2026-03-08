@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import teamPhoto from '@/assets/team-photo.jpg';
+import { getPlayerAvatar } from '@/lib/playerAvatars';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';

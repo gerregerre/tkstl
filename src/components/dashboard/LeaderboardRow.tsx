@@ -208,7 +208,9 @@ export function LeaderboardRowDesktop({
     if (mode === 'singles') {
       const avatar = getPlayerAvatar(name);
       return avatar ? (
-        <img src={avatar} alt={name} style={{ clipPath: 'circle(50%)' }} className={cn("w-10 h-10 rounded-full object-cover bg-[#1a1f2e] transition-transform duration-200 group-hover:scale-105 shrink-0 ring-2 ring-background", rank <= 3 && "shadow-[0_0_12px_-2px_hsl(45,93%,58%,0.3)]")} />
+        <div className={cn("w-10 h-10 rounded-full player-avatar transition-transform duration-200 group-hover:scale-105 shrink-0 ring-2 ring-background", rank <= 3 && "shadow-[0_0_12px_-2px_hsl(45,93%,58%,0.3)]")}>
+          <img src={avatar} alt={name} className="player-avatar-img w-full h-full" />
+        </div>
       ) : (
         <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm transition-transform duration-200 group-hover:scale-105 shrink-0", getAvatarStyle(rank))}>
           {name[0]}
@@ -222,14 +224,18 @@ export function LeaderboardRowDesktop({
       const avatar2 = getPlayerAvatar(players[1]);
       return <div className="flex items-center -space-x-2 shrink-0">
           {avatar1 ? (
-            <img src={avatar1} alt={players[0]} style={{ clipPath: 'circle(50%)' }} className="w-10 h-10 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background z-10 transition-transform duration-200 group-hover:scale-105" />
+            <div className="w-10 h-10 rounded-full player-avatar ring-2 ring-background z-10 transition-transform duration-200 group-hover:scale-105">
+              <img src={avatar1} alt={players[0]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background z-10 transition-transform duration-200 group-hover:scale-105", getAvatarStyle(rank))}>
               {players[0][0]}
             </div>
           )}
           {avatar2 ? (
-            <img src={avatar2} alt={players[1]} style={{ clipPath: 'circle(50%)' }} className="w-10 h-10 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background transition-transform duration-200 group-hover:scale-105" />
+            <div className="w-10 h-10 rounded-full player-avatar ring-2 ring-background transition-transform duration-200 group-hover:scale-105">
+              <img src={avatar2} alt={players[1]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background transition-transform duration-200 group-hover:scale-105", getAvatarStyle(rank))}>
               {players[1][0]}
@@ -356,7 +362,9 @@ export function LeaderboardRowMobile({
     if (mode === 'singles') {
       const avatar = getPlayerAvatar(name);
       return avatar ? (
-        <img src={avatar} alt={name} style={{ clipPath: 'circle(50%)' }} className={cn("w-7 h-7 rounded-full object-cover bg-[#1a1f2e] shrink-0", rank <= 3 && "shadow-[0_0_8px_-2px_hsl(45,93%,58%,0.3)]")} />
+        <div className={cn("w-7 h-7 rounded-full player-avatar shrink-0", rank <= 3 && "shadow-[0_0_8px_-2px_hsl(45,93%,58%,0.3)]")}>
+          <img src={avatar} alt={name} className="player-avatar-img w-full h-full" />
+        </div>
       ) : (
         <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0", getAvatarStyle(rank))}>
           {name[0]}
@@ -370,14 +378,18 @@ export function LeaderboardRowMobile({
       const avatar2 = getPlayerAvatar(players[1]);
       return <div className="flex items-center -space-x-1.5 shrink-0">
           {avatar1 ? (
-            <img src={avatar1} alt={players[0]} style={{ clipPath: 'circle(50%)' }} className="w-7 h-7 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background z-10" />
+            <div className="w-7 h-7 rounded-full player-avatar ring-2 ring-background z-10">
+              <img src={avatar1} alt={players[0]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background z-10", getAvatarStyle(rank))}>
               {players[0][0]}
             </div>
           )}
           {avatar2 ? (
-            <img src={avatar2} alt={players[1]} style={{ clipPath: 'circle(50%)' }} className="w-7 h-7 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background" />
+            <div className="w-7 h-7 rounded-full player-avatar ring-2 ring-background">
+              <img src={avatar2} alt={players[1]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background", getAvatarStyle(rank))}>
               {players[1][0]}

@@ -169,9 +169,9 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <Avatar className="w-14 h-14 border-2 border-primary/30 bg-[#1a1f2e]">
+        <Avatar className="w-14 h-14 border-2 border-primary/30 player-avatar">
           {getPlayerAvatar(playerName) ? (
-            <AvatarImage src={getPlayerAvatar(playerName)!} alt={playerName} className="object-cover" />
+            <AvatarImage src={getPlayerAvatar(playerName)!} alt={playerName} className="player-avatar-img" />
           ) : null}
           <AvatarFallback className="bg-muted text-muted-foreground font-serif font-bold text-lg">
             {playerName[0]}

@@ -810,7 +810,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
         <div className="relative bg-card border border-border rounded-xl overflow-hidden shadow-card">
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
           
-          <div className="p-6 md:p-8">
+          <div className="p-4 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="font-display text-sm uppercase tracking-widest text-foreground">Performance Trend</h3>

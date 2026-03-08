@@ -15,7 +15,9 @@ import {
   Send,
   ChevronLeft,
   ChevronRight,
-  RotateCcw
+  RotateCcw,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -33,28 +35,39 @@ interface GameTeams {
   teamB: string[];
 }
 
-type Step = 'select' | 'draft1' | 'score1' | 'draft2' | 'score2' | 'draft3' | 'score3';
+interface GameData {
+  teams: GameTeams;
+  score: GameScore;
+  type: 'scored' | 'winloss'; // scored = PwC Single/Shibuya, winloss = Tug Of War
+}
 
 const GAME_NAMES = ['PwC Single', 'Shibuya Crossing', 'Tug Of War'];
+
+const getGameName = (index: number): string => {
+  if (index < GAME_NAMES.length) {
+    return GAME_NAMES[index];
+  }
+  return `Game ${index + 1}`;
+};
+
+const getGameType = (index: number): 'scored' | 'winloss' => {
+  // Games 1 & 2 are scored, Game 3+ are win/loss (Tug of War style)
+  return index < 2 ? 'scored' : 'winloss';
+};
 
 export function NewSessionRecorder() {
   const { players, loading } = usePlayers();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
-  const [currentStep, setCurrentStep] = useState<Step>('select');
-  const [gameTeams, setGameTeams] = useState<GameTeams[]>([
-    { teamA: [], teamB: [] },
-    { teamA: [], teamB: [] },
-    { teamA: [], teamB: [] },
-  ]);
-  const [gameScores, setGameScores] = useState<GameScore[]>([
-    { teamAScore: 0, teamBScore: 0 },
-    { teamAScore: 0, teamBScore: 0 },
-    { teamAScore: 0, teamBScore: 0, teamAWon: undefined },
+  const [currentStep, setCurrentStep] = useState<'select' | number>('select'); // 'select' or game index
+  const [currentPhase, setCurrentPhase] = useState<'draft' | 'score'>('draft');
+  const [games, setGames] = useState<GameData[]>([
+    { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0 }, type: 'scored' },
+    { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0 }, type: 'scored' },
+    { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0, teamAWon: undefined }, type: 'winloss' },
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check for existing authentication
   useEffect(() => {
     const isAuth = sessionStorage.getItem('session_recorder_auth') === 'true';
     setIsAuthenticated(isAuth);
@@ -77,92 +90,109 @@ export function NewSessionRecorder() {
   };
 
   const updateGameScore = (gameIndex: number, field: keyof GameScore, value: number | boolean) => {
-    setGameScores(prev => {
+    setGames(prev => {
       const updated = [...prev];
-      updated[gameIndex] = { ...updated[gameIndex], [field]: value };
+      updated[gameIndex] = { 
+        ...updated[gameIndex], 
+        score: { ...updated[gameIndex].score, [field]: value } 
+      };
       return updated;
     });
   };
 
   const handleTeamConfirm = (gameIndex: number, teamA: string[], teamB: string[]) => {
-    setGameTeams(prev => {
+    setGames(prev => {
       const updated = [...prev];
-      updated[gameIndex] = { teamA, teamB };
+      updated[gameIndex] = { 
+        ...updated[gameIndex], 
+        teams: { teamA, teamB } 
+      };
       return updated;
     });
   };
 
-  const getStepIndex = (step: Step): number => {
-    const steps: Step[] = ['select', 'draft1', 'score1', 'draft2', 'score2', 'draft3', 'score3'];
-    return steps.indexOf(step);
+  const addGame = () => {
+    const newGameIndex = games.length;
+    const newGameType = getGameType(newGameIndex);
+    setGames(prev => [
+      ...prev,
+      { 
+        teams: { teamA: [], teamB: [] }, 
+        score: { teamAScore: 0, teamBScore: 0, teamAWon: undefined }, 
+        type: newGameType 
+      }
+    ]);
   };
 
-  const navigateStep = (direction: 'next' | 'prev') => {
-    const steps: Step[] = ['select', 'draft1', 'score1', 'draft2', 'score2', 'draft3', 'score3'];
-    const currentIndex = steps.indexOf(currentStep);
-    
-    if (direction === 'next' && currentIndex < steps.length - 1) {
-      setCurrentStep(steps[currentIndex + 1]);
-    } else if (direction === 'prev' && currentIndex > 0) {
-      setCurrentStep(steps[currentIndex - 1]);
+  const removeGame = (index: number) => {
+    if (games.length <= 1) return;
+    setGames(prev => prev.filter((_, i) => i !== index));
+    // If we're on a step that no longer exists, go back
+    if (typeof currentStep === 'number' && currentStep >= games.length - 1) {
+      setCurrentStep(games.length - 2);
+      setCurrentPhase('score');
     }
+  };
+
+  const navigateToGame = (gameIndex: number, phase: 'draft' | 'score') => {
+    setCurrentStep(gameIndex);
+    setCurrentPhase(phase);
   };
 
   const resetSession = () => {
     setSelectedPlayers([]);
     setCurrentStep('select');
-    setGameTeams([
-      { teamA: [], teamB: [] },
-      { teamA: [], teamB: [] },
-      { teamA: [], teamB: [] },
-    ]);
-    setGameScores([
-      { teamAScore: 0, teamBScore: 0 },
-      { teamAScore: 0, teamBScore: 0 },
-      { teamAScore: 0, teamBScore: 0, teamAWon: undefined },
+    setCurrentPhase('draft');
+    setGames([
+      { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0 }, type: 'scored' },
+      { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0 }, type: 'scored' },
+      { teams: { teamA: [], teamB: [] }, score: { teamAScore: 0, teamBScore: 0, teamAWon: undefined }, type: 'winloss' },
     ]);
   };
 
-  const isGame3Valid = gameScores[2].teamAWon !== undefined;
-  const canSubmit = selectedPlayers.length === 4 && isGame3Valid && 
-    gameTeams.every(t => t.teamA.length === 2 && t.teamB.length === 2);
+  const isGameValid = (game: GameData): boolean => {
+    const hasTeams = game.teams.teamA.length === 2 && game.teams.teamB.length === 2;
+    if (!hasTeams) return false;
+    
+    if (game.type === 'winloss') {
+      return game.score.teamAWon !== undefined;
+    }
+    return true; // Scored games are always valid if teams are set
+  };
+
+  const allGamesValid = games.every(isGameValid);
+  const canSubmit = selectedPlayers.length === 4 && allGamesValid;
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setIsSubmitting(true);
 
     try {
-      const gamesToInsert = [];
-      
-      for (let gameIndex = 0; gameIndex < 3; gameIndex++) {
-        const teams = gameTeams[gameIndex];
-        const score = gameScores[gameIndex];
-
-        if (gameIndex < 2) {
-          gamesToInsert.push({
+      const gamesToInsert = games.map((game, gameIndex) => {
+        if (game.type === 'scored') {
+          return {
             game_number: gameIndex + 1,
-            team_a_player1: teams.teamA[0],
-            team_a_player2: teams.teamA[1],
-            team_b_player1: teams.teamB[0],
-            team_b_player2: teams.teamB[1],
-            team_a_score: score.teamAScore,
-            team_b_score: score.teamBScore,
-            winner: score.teamAScore > score.teamBScore ? 'A' : 'B',
-          });
+            team_a_player1: game.teams.teamA[0],
+            team_a_player2: game.teams.teamA[1],
+            team_b_player1: game.teams.teamB[0],
+            team_b_player2: game.teams.teamB[1],
+            team_a_score: game.score.teamAScore,
+            team_b_score: game.score.teamBScore,
+            winner: game.score.teamAScore > game.score.teamBScore ? 'A' : 'B',
+          };
         } else {
-          const teamAWon = score.teamAWon === true;
-          gamesToInsert.push({
-            game_number: 3,
-            team_a_player1: teams.teamA[0],
-            team_a_player2: teams.teamA[1],
-            team_b_player1: teams.teamB[0],
-            team_b_player2: teams.teamB[1],
+          return {
+            game_number: gameIndex + 1,
+            team_a_player1: game.teams.teamA[0],
+            team_a_player2: game.teams.teamA[1],
+            team_b_player1: game.teams.teamB[0],
+            team_b_player2: game.teams.teamB[1],
             team_a_score: null,
             team_b_score: null,
-            winner: teamAWon ? 'A' : 'B',
-          });
+            winner: game.score.teamAWon ? 'A' : 'B',
+          };
         }
-      }
+      });
 
       const { error: insertError } = await supabase.from('session_games').insert(gamesToInsert);
       
@@ -174,7 +204,7 @@ export function NewSessionRecorder() {
 
       toast({
         title: "Session Recorded!",
-        description: "All game results and player stats have been updated.",
+        description: `All ${games.length} game results and player stats have been updated.`,
       });
 
       resetSession();
@@ -190,7 +220,6 @@ export function NewSessionRecorder() {
     }
   };
 
-  // Show password gate if not authenticated
   if (!isAuthenticated) {
     return <SessionPasswordGate onAuthenticated={() => setIsAuthenticated(true)} />;
   }
@@ -203,20 +232,15 @@ export function NewSessionRecorder() {
     );
   }
 
-  // Progress indicator
+  // Progress indicator - dynamic based on number of games
   const progressSteps = [
     { key: 'select', label: 'Players' },
-    { key: 'draft1', label: 'Game 1' },
-    { key: 'draft2', label: 'Game 2' },
-    { key: 'draft3', label: 'Game 3' },
+    ...games.map((_, i) => ({ key: `game${i}`, label: getGameName(i) }))
   ];
 
   const getProgressIndex = () => {
     if (currentStep === 'select') return 0;
-    if (currentStep === 'draft1' || currentStep === 'score1') return 1;
-    if (currentStep === 'draft2' || currentStep === 'score2') return 2;
-    if (currentStep === 'draft3' || currentStep === 'score3') return 3;
-    return 0;
+    return (currentStep as number) + 1;
   };
 
   return (
@@ -239,12 +263,12 @@ export function NewSessionRecorder() {
 
       {/* Progress Bar */}
       <div className="bg-card rounded-lg border border-border p-4">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2 overflow-x-auto gap-2">
           {progressSteps.map((step, index) => (
             <div 
               key={step.key}
               className={cn(
-                "flex items-center gap-2",
+                "flex items-center gap-2 flex-shrink-0",
                 index <= getProgressIndex() ? "text-primary" : "text-muted-foreground"
               )}
             >
@@ -256,7 +280,7 @@ export function NewSessionRecorder() {
               )}>
                 {index < getProgressIndex() ? <Check className="w-4 h-4" /> : index + 1}
               </div>
-              <span className="hidden sm:inline text-sm font-medium">{step.label}</span>
+              <span className="hidden sm:inline text-sm font-medium whitespace-nowrap">{step.label}</span>
             </div>
           ))}
         </div>
@@ -350,9 +374,45 @@ export function NewSessionRecorder() {
               })}
             </div>
 
+            {/* Game Count Manager */}
+            {selectedPlayers.length === 4 && (
+              <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-border">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-medium text-foreground">Games to record: {games.length}</span>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={addGame}
+                    className="gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Game
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {games.map((_, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center gap-1 px-3 py-1.5 bg-background rounded-full border border-border"
+                    >
+                      <span className="text-sm font-medium">{getGameName(index)}</span>
+                      {games.length > 1 && (
+                        <button 
+                          onClick={() => removeGame(index)}
+                          className="ml-1 text-muted-foreground hover:text-destructive transition-colors"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-6">
               <Button
-                onClick={() => setCurrentStep('draft1')}
+                onClick={() => navigateToGame(0, 'draft')}
                 disabled={selectedPlayers.length !== 4}
                 variant="atp"
                 className="w-full gap-2"
@@ -364,140 +424,101 @@ export function NewSessionRecorder() {
           </motion.div>
         )}
 
-        {/* Game 1 Draft */}
-        {currentStep === 'draft1' && (
-          <motion.div
-            key="draft1"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card"
-          >
-            <TeamDraft
-              players={selectedPlayerObjects}
-              gameNumber={1}
-              gameName={GAME_NAMES[0]}
-              onConfirm={(teamA, teamB) => {
-                handleTeamConfirm(0, teamA, teamB);
-                setCurrentStep('score1');
-              }}
-              onBack={() => setCurrentStep('select')}
-            />
-          </motion.div>
-        )}
+        {/* Game Steps - Dynamic */}
+        {typeof currentStep === 'number' && games[currentStep] && (
+          <>
+            {currentPhase === 'draft' && (
+              <motion.div
+                key={`draft${currentStep}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className={cn(
+                  "bg-card rounded-lg border-2 p-6 shadow-card",
+                  currentStep === 0 && "border-primary/30",
+                  currentStep === 1 && "border-secondary/30",
+                  currentStep >= 2 && "border-gold/30"
+                )}
+              >
+                <TeamDraft
+                  players={selectedPlayerObjects}
+                  gameNumber={currentStep + 1}
+                  gameName={getGameName(currentStep)}
+                  onConfirm={(teamA, teamB) => {
+                    handleTeamConfirm(currentStep, teamA, teamB);
+                    setCurrentPhase('score');
+                  }}
+                  onBack={() => {
+                    if (currentStep === 0) {
+                      setCurrentStep('select');
+                    } else {
+                      navigateToGame(currentStep - 1, 'score');
+                    }
+                  }}
+                />
+              </motion.div>
+            )}
 
-        {/* Game 1 Score */}
-        {currentStep === 'score1' && (
-          <motion.div
-            key="score1"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-primary/30 p-6 shadow-card"
-          >
-            <ScoreInput
-              gameNumber={1}
-              gameName={GAME_NAMES[0]}
-              teams={gameTeams[0]}
-              score={gameScores[0]}
-              onScoreChange={(field, value) => updateGameScore(0, field, value)}
-              onNext={() => setCurrentStep('draft2')}
-              onBack={() => setCurrentStep('draft1')}
-            />
-          </motion.div>
-        )}
-
-        {/* Game 2 Draft */}
-        {currentStep === 'draft2' && (
-          <motion.div
-            key="draft2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-secondary/30 p-6 shadow-card"
-          >
-            <TeamDraft
-              players={selectedPlayerObjects}
-              gameNumber={2}
-              gameName={GAME_NAMES[1]}
-              onConfirm={(teamA, teamB) => {
-                handleTeamConfirm(1, teamA, teamB);
-                setCurrentStep('score2');
-              }}
-              onBack={() => setCurrentStep('score1')}
-            />
-          </motion.div>
-        )}
-
-        {/* Game 2 Score */}
-        {currentStep === 'score2' && (
-          <motion.div
-            key="score2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-secondary/30 p-6 shadow-card"
-          >
-            <ScoreInput
-              gameNumber={2}
-              gameName={GAME_NAMES[1]}
-              teams={gameTeams[1]}
-              score={gameScores[1]}
-              onScoreChange={(field, value) => updateGameScore(1, field, value)}
-              onNext={() => setCurrentStep('draft3')}
-              onBack={() => setCurrentStep('draft2')}
-            />
-          </motion.div>
-        )}
-
-        {/* Game 3 Draft */}
-        {currentStep === 'draft3' && (
-          <motion.div
-            key="draft3"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-card"
-          >
-            <TeamDraft
-              players={selectedPlayerObjects}
-              gameNumber={3}
-              gameName={GAME_NAMES[2]}
-              onConfirm={(teamA, teamB) => {
-                handleTeamConfirm(2, teamA, teamB);
-                setCurrentStep('score3');
-              }}
-              onBack={() => setCurrentStep('score2')}
-            />
-          </motion.div>
-        )}
-
-        {/* Game 3 Score (Win/Loss only) */}
-        {currentStep === 'score3' && (
-          <motion.div
-            key="score3"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="bg-card rounded-lg border-2 border-gold/30 p-6 shadow-card"
-          >
-            <TugOfWarInput
-              teams={gameTeams[2]}
-              teamAWon={gameScores[2].teamAWon}
-              onWinnerChange={(teamAWon) => updateGameScore(2, 'teamAWon', teamAWon)}
-              onSubmit={handleSubmit}
-              onBack={() => setCurrentStep('draft3')}
-              isSubmitting={isSubmitting}
-              canSubmit={canSubmit}
-            />
-          </motion.div>
+            {currentPhase === 'score' && (
+              <motion.div
+                key={`score${currentStep}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className={cn(
+                  "bg-card rounded-lg border-2 p-6 shadow-card",
+                  currentStep === 0 && "border-primary/30",
+                  currentStep === 1 && "border-secondary/30",
+                  currentStep >= 2 && "border-gold/30"
+                )}
+              >
+                {games[currentStep].type === 'scored' ? (
+                  <ScoreInput
+                    gameNumber={currentStep + 1}
+                    gameName={getGameName(currentStep)}
+                    teams={games[currentStep].teams}
+                    score={games[currentStep].score}
+                    onScoreChange={(field, value) => updateGameScore(currentStep, field, value)}
+                    onNext={() => {
+                      if (currentStep < games.length - 1) {
+                        navigateToGame(currentStep + 1, 'draft');
+                      }
+                    }}
+                    onBack={() => setCurrentPhase('draft')}
+                    isLastGame={currentStep === games.length - 1}
+                    onSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    canSubmit={canSubmit}
+                  />
+                ) : (
+                  <TugOfWarInput
+                    gameNumber={currentStep + 1}
+                    gameName={getGameName(currentStep)}
+                    teams={games[currentStep].teams}
+                    teamAWon={games[currentStep].score.teamAWon}
+                    onWinnerChange={(teamAWon) => updateGameScore(currentStep, 'teamAWon', teamAWon)}
+                    onNext={() => {
+                      if (currentStep < games.length - 1) {
+                        navigateToGame(currentStep + 1, 'draft');
+                      }
+                    }}
+                    onSubmit={handleSubmit}
+                    onBack={() => setCurrentPhase('draft')}
+                    isSubmitting={isSubmitting}
+                    canSubmit={canSubmit}
+                    isLastGame={currentStep === games.length - 1}
+                  />
+                )}
+              </motion.div>
+            )}
+          </>
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-// Score Input Component for Games 1 & 2
+// Score Input Component for scored games (PwC Single, Shibuya)
 interface ScoreInputProps {
   gameNumber: number;
   gameName: string;
@@ -506,16 +527,33 @@ interface ScoreInputProps {
   onScoreChange: (field: keyof GameScore, value: number) => void;
   onNext: () => void;
   onBack: () => void;
+  isLastGame: boolean;
+  onSubmit: () => void;
+  isSubmitting: boolean;
+  canSubmit: boolean;
 }
 
-function ScoreInput({ gameNumber, gameName, teams, score, onScoreChange, onNext, onBack }: ScoreInputProps) {
+function ScoreInput({ 
+  gameNumber, 
+  gameName, 
+  teams, 
+  score, 
+  onScoreChange, 
+  onNext, 
+  onBack,
+  isLastGame,
+  onSubmit,
+  isSubmitting,
+  canSubmit
+}: ScoreInputProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <div className={cn(
           "w-10 h-10 rounded-full flex items-center justify-center font-bold",
           gameNumber === 1 && "bg-primary/20 text-primary",
-          gameNumber === 2 && "bg-secondary/40 text-secondary-foreground"
+          gameNumber === 2 && "bg-secondary/40 text-secondary-foreground",
+          gameNumber >= 3 && "bg-gold/20 text-gold"
         )}>
           {gameNumber}
         </div>
@@ -586,35 +624,72 @@ function ScoreInput({ gameNumber, gameName, teams, score, onScoreChange, onNext,
           <ChevronLeft className="w-4 h-4" />
           Back
         </Button>
-        <Button variant="atp" onClick={onNext} className="flex-1 gap-2">
-          Next Game
-          <ChevronRight className="w-4 h-4" />
-        </Button>
+        {isLastGame ? (
+          <Button
+            onClick={onSubmit}
+            variant="atp"
+            className="flex-1 gap-2"
+            disabled={!canSubmit || isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
+                Recording...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                Submit Session
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button variant="atp" onClick={onNext} className="flex-1 gap-2">
+            Next Game
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        )}
       </div>
     </div>
   );
 }
 
-// Tug of War Input Component
+// Tug of War Input Component (Win/Loss only)
 interface TugOfWarInputProps {
+  gameNumber: number;
+  gameName: string;
   teams: GameTeams;
   teamAWon: boolean | undefined;
   onWinnerChange: (teamAWon: boolean) => void;
+  onNext: () => void;
   onSubmit: () => void;
   onBack: () => void;
   isSubmitting: boolean;
   canSubmit: boolean;
+  isLastGame: boolean;
 }
 
-function TugOfWarInput({ teams, teamAWon, onWinnerChange, onSubmit, onBack, isSubmitting, canSubmit }: TugOfWarInputProps) {
+function TugOfWarInput({ 
+  gameNumber,
+  gameName,
+  teams, 
+  teamAWon, 
+  onWinnerChange, 
+  onNext,
+  onSubmit, 
+  onBack, 
+  isSubmitting, 
+  canSubmit,
+  isLastGame
+}: TugOfWarInputProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-bold text-gold">
-          3
+          {gameNumber}
         </div>
         <div>
-          <h3 className="font-display text-lg font-bold text-foreground">Tug Of War</h3>
+          <h3 className="font-display text-lg font-bold text-foreground">{gameName}</h3>
           <p className="text-sm text-muted-foreground">Win/Loss only • Winners: 10pts • Losers: 5pts</p>
         </div>
       </div>
@@ -677,24 +752,36 @@ function TugOfWarInput({ teams, teamAWon, onWinnerChange, onSubmit, onBack, isSu
           <ChevronLeft className="w-4 h-4" />
           Back
         </Button>
-        <Button
-          onClick={onSubmit}
-          variant="atp"
-          className="flex-1 gap-2"
-          disabled={!canSubmit || isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
-              Recording...
-            </>
-          ) : (
-            <>
-              <Send className="w-4 h-4" />
-              Submit Session
-            </>
-          )}
-        </Button>
+        {isLastGame ? (
+          <Button
+            onClick={onSubmit}
+            variant="atp"
+            className="flex-1 gap-2"
+            disabled={!canSubmit || isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
+                Recording...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                Submit Session
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button 
+            variant="atp" 
+            onClick={onNext} 
+            className="flex-1 gap-2"
+            disabled={teamAWon === undefined}
+          >
+            Next Game
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        )}
       </div>
     </div>
   );

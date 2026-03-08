@@ -285,7 +285,7 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
                     gamesPlayed={entry.gamesPlayed}
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
-                    onClick={() => mode === 'singles' && onPlayerSelect?.(entry.name)}
+                    onClick={() => mode === 'singles' ? onPlayerSelect?.(entry.name) : onTeamSelect?.(entry.name)}
                     isLastPlace={mode === 'doubles' && index === leaderboardData.length - 1 && leaderboardData.length > 1}
                   />
                 ))

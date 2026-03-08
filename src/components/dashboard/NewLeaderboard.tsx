@@ -23,6 +23,7 @@ const GAME_TYPE_LABELS: Record<GameTypeFilter, string> = {
 
 interface NewLeaderboardProps {
   onPlayerSelect?: (playerName: string) => void;
+  onTeamSelect?: (teamName: string) => void;
 }
 
 interface LeaderboardEntry {
@@ -34,7 +35,7 @@ interface LeaderboardEntry {
   totalPoints: number;
 }
 
-export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
+export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardProps) {
   const { recalculateStats } = usePlayers();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
@@ -230,7 +231,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     gamesPlayed={entry.gamesPlayed}
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
-                    onClick={() => mode === 'singles' && onPlayerSelect?.(entry.name)}
+                    onClick={() => mode === 'singles' ? onPlayerSelect?.(entry.name) : onTeamSelect?.(entry.name)}
                     isLastPlace={mode === 'doubles' && index === leaderboardData.length - 1 && leaderboardData.length > 1}
                   />
                 ))
@@ -284,7 +285,7 @@ export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
                     gamesPlayed={entry.gamesPlayed}
                     totalPoints={entry.totalPoints}
                     qualificationGames={qualificationGames}
-                    onClick={() => mode === 'singles' && onPlayerSelect?.(entry.name)}
+                    onClick={() => mode === 'singles' ? onPlayerSelect?.(entry.name) : onTeamSelect?.(entry.name)}
                     isLastPlace={mode === 'doubles' && index === leaderboardData.length - 1 && leaderboardData.length > 1}
                   />
                 ))

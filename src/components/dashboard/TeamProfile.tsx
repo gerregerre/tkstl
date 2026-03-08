@@ -588,7 +588,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                           : `${game.team_a_player1} & ${game.team_a_player2}`;
 
                         return (
-                          <div key={game.id} className="px-5 md:px-6 pl-12 md:pl-14 py-3 border-t border-border/20">
+                          <div key={game.id} className="px-3 md:px-6 pl-10 md:pl-14 py-3 border-t border-border/20">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2.5">
                                 <div className={cn("w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide", won ? "bg-emerald-500/10 text-emerald-400" : "bg-secondary/50 text-muted-foreground")}>

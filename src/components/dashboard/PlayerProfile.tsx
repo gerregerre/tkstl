@@ -36,6 +36,12 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface SessionGame {
   id: string;

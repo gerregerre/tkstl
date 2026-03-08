@@ -3,6 +3,11 @@ import { supabase } from '@/integrations/supabase/client';
 
 export type GameTypeFilter = 'all' | 'pwc' | 'shibuya' | 'tow';
 
+export interface SeasonDateRange {
+  startDate: string;
+  endDate: string | null;
+}
+
 interface SessionGame {
   id: string;
   game_number: number;

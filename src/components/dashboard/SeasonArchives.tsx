@@ -69,6 +69,7 @@ export function SeasonArchives() {
       await endSeason(activeSeason.id, activeSeason.name, singlesStandings, doublesStandings);
       toast.success(`Season "${activeSeason.name}" has been archived!`);
       setShowEndDialog(false);
+      setEndPassword('');
     } catch {
       toast.error('Failed to end season');
     } finally {

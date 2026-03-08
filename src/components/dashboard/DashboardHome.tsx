@@ -259,6 +259,16 @@ export function DashboardHome({
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 flex-1 min-w-0">
+                              <div className="flex -space-x-1.5 shrink-0">
+                                {[game.team_a_player1, game.team_a_player2].map(p => {
+                                  const avatar = getPlayerAvatar(p);
+                                  return avatar ? (
+                                    <div key={p} className="w-5 h-5 rounded-full player-avatar ring-1 ring-card">
+                                      <img src={avatar} alt={p} className="w-full h-full player-avatar-img" />
+                                    </div>
+                                  ) : null;
+                                })}
+                              </div>
                               <span className={`text-xs font-semibold truncate ${teamAWon ? 'text-foreground' : 'text-muted-foreground'}`}>
                                 {teamADisplay}
                               </span>
@@ -272,6 +282,16 @@ export function DashboardHome({
                               <span className={`text-xs font-semibold truncate ${teamBWon ? 'text-foreground' : 'text-muted-foreground'}`}>
                                 {teamBDisplay}
                               </span>
+                              <div className="flex -space-x-1.5 shrink-0">
+                                {[game.team_b_player1, game.team_b_player2].map(p => {
+                                  const avatar = getPlayerAvatar(p);
+                                  return avatar ? (
+                                    <div key={p} className="w-5 h-5 rounded-full player-avatar ring-1 ring-card">
+                                      <img src={avatar} alt={p} className="w-full h-full player-avatar-img" />
+                                    </div>
+                                  ) : null;
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>;

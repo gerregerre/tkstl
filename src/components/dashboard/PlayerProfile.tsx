@@ -108,6 +108,8 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   const { players, getAveragePoints } = usePlayers();
   const [games, setGames] = useState<SessionGame[]>([]);
   const [loading, setLoading] = useState(true);
+  const [historyView, setHistoryView] = useState<'games' | 'sessions'>('sessions');
+  const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
 
   const player = players.find(p => p.name === playerName);
 

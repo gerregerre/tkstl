@@ -35,7 +35,7 @@ export function SeasonArchives() {
 
   const handleEndSeason = async () => {
     if (!activeSeason) return;
-    if (endPassword !== 'tennis2024') {
+    if (endPassword !== SESSION_PASSWORD) {
       toast.error('Incorrect manager password');
       return;
     }

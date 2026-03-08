@@ -6,6 +6,7 @@ import { TheLore } from '@/components/dashboard/TheLore';
 import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
+import { TeamProfile } from '@/components/dashboard/TeamProfile';
 import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
@@ -15,14 +16,23 @@ import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
   const handlePlayerSelect = (playerName: string) => {
     setSelectedPlayer(playerName);
+    setSelectedTeam(null);
     setActiveTab('profile');
+  };
+
+  const handleTeamSelect = (teamName: string) => {
+    setSelectedTeam(teamName);
+    setSelectedPlayer(null);
+    setActiveTab('team-profile');
   };
 
   const handleBackFromProfile = () => {
     setSelectedPlayer(null);
+    setSelectedTeam(null);
     setActiveTab('leaderboard');
   };
 

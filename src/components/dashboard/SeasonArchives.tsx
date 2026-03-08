@@ -34,6 +34,10 @@ export function SeasonArchives() {
 
   const handleEndSeason = async () => {
     if (!activeSeason) return;
+    if (endPassword !== 'gerre') {
+      toast.error('Incorrect manager password');
+      return;
+    }
     setProcessing(true);
     try {
       const singlesStandings = playerStats

@@ -10,6 +10,7 @@ import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
+import { HallOfRecords } from '@/components/dashboard/HallOfRecords';
 
 
 export default function Dashboard() {

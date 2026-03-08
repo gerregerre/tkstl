@@ -634,7 +634,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                 : `${game.team_a_player1} & ${game.team_a_player2}`;
 
               return (
-                <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
+                <div key={game.id} className="px-3 md:px-6 py-3 md:py-4 hover:bg-secondary/20 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide", won ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : "bg-secondary/50 text-muted-foreground ring-1 ring-border")}>

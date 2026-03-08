@@ -21,6 +21,7 @@ export function SeasonArchives() {
   const [showStartDialog, setShowStartDialog] = useState(false);
   const [showEndDialog, setShowEndDialog] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [endPassword, setEndPassword] = useState('');
   const [standingsMode, setStandingsMode] = useState<'singles' | 'doubles'>('singles');
 
   const handleSelectSeason = async (season: Season) => {
@@ -33,6 +34,10 @@ export function SeasonArchives() {
 
   const handleEndSeason = async () => {
     if (!activeSeason) return;
+    if (endPassword !== 'gerre') {
+      toast.error('Incorrect manager password');
+      return;
+    }
     setProcessing(true);
     try {
       const singlesStandings = playerStats
@@ -64,6 +69,7 @@ export function SeasonArchives() {
       await endSeason(activeSeason.id, activeSeason.name, singlesStandings, doublesStandings);
       toast.success(`Season "${activeSeason.name}" has been archived!`);
       setShowEndDialog(false);
+      setEndPassword('');
     } catch {
       toast.error('Failed to end season');
     } finally {
@@ -126,10 +132,21 @@ export function SeasonArchives() {
                   <p className="text-sm text-muted-foreground">
                     Current standings will be saved with {playerStats.filter(p => p.gamesPlayed > 0).length} singles and {teamStats.filter(t => t.gamesPlayed > 0).length} doubles entries.
                   </p>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 block">
+                      Manager Password
+                    </label>
+                    <Input
+                      type="password"
+                      placeholder="Enter manager password"
+                      value={endPassword}
+                      onChange={(e) => setEndPassword(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setShowEndDialog(false)}>Cancel</Button>
-                  <Button onClick={handleEndSeason} disabled={processing}>
+                  <Button variant="outline" onClick={() => { setShowEndDialog(false); setEndPassword(''); }}>Cancel</Button>
+                  <Button onClick={handleEndSeason} disabled={processing || !endPassword}>
                     {processing ? 'Archiving...' : 'End & Archive'}
                   </Button>
                 </DialogFooter>

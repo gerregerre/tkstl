@@ -11,6 +11,7 @@ import { HeadToHead } from '@/components/dashboard/HeadToHead';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
+import { SeasonArchives } from '@/components/dashboard/SeasonArchives';
 
 
 export default function Dashboard() {

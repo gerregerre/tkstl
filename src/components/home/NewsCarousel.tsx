@@ -143,7 +143,7 @@ export default function NewsCarousel() {
 
       {/* News Card Container */}
       <div className={cn(
-        "relative bg-card/90 backdrop-blur-sm border rounded-xl shadow-lg overflow-hidden transition-[border-color,box-shadow] duration-500",
+        "relative bg-card/90 backdrop-blur-sm border rounded-xl shadow-lg overflow-hidden transition-all duration-500",
         currentItem.type === 'breaking' 
           ? "border-red-500/60 shadow-red-500/20 shadow-xl" 
           : "border-border/60"

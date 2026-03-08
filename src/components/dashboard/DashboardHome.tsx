@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Calendar, Trophy } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NewLeaderboard } from './NewLeaderboard';
 import { MessageBoard } from './MessageBoard';
 import { HeroSection } from './HeroSection';
@@ -169,7 +169,19 @@ export function DashboardHome({
                 value: formatNumber(countdown.secs),
                 label: 'S'
               }].map((item, i) => <span key={item.label} className="flex items-center">
-                    <span className="font-mono font-black text-primary text-base md:text-lg tabular-nums">{item.value}</span>
+                    <span className="font-mono font-black text-primary text-base md:text-lg tabular-nums relative overflow-hidden inline-flex" style={{ height: '1.4em' }}>
+                      <AnimatePresence mode="popLayout">
+                        <motion.span
+                          key={item.value}
+                          initial={{ y: '100%', opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: '-100%', opacity: 0 }}
+                          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] }}
+                        >
+                          {item.value}
+                        </motion.span>
+                      </AnimatePresence>
+                    </span>
                     <span className="text-[9px] md:text-[10px] text-muted-foreground font-bold ml-0.5 uppercase">{item.label}</span>
                     {i < 3 && <span className="text-border mx-1 md:mx-1.5 font-light opacity-50">:</span>}
                   </span>)}

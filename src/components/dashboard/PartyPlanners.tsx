@@ -79,7 +79,9 @@ export function PartyPlanners() {
           {(() => {
             const avatar2 = getPlayerAvatar(lastTeam.player2);
             return avatar2 ? (
-              <img src={avatar2} alt={lastTeam.player2} className="w-12 h-12 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]" />
+              <div className="w-12 h-12 rounded-full player-avatar ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]">
+                <img src={avatar2} alt={lastTeam.player2} className="player-avatar-img w-full h-full" />
+              </div>
             ) : (
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500/30 to-purple-500/20 flex items-center justify-center font-display font-bold text-lg text-rose-400 ring-2 ring-rose-500/30 shadow-[0_0_16px_-4px_hsl(350,80%,55%,0.3)]">
                 {lastTeam.player2[0]}

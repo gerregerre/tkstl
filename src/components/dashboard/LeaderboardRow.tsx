@@ -387,7 +387,9 @@ export function LeaderboardRowMobile({
             </div>
           )}
           {avatar2 ? (
-            <img src={avatar2} alt={players[1]} style={{ clipPath: 'circle(50%)' }} className="w-7 h-7 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background" />
+            <div className="w-7 h-7 rounded-full player-avatar ring-2 ring-background">
+              <img src={avatar2} alt={players[1]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-7 h-7 rounded-full flex items-center justify-center font-display font-bold text-xs ring-2 ring-background", getAvatarStyle(rank))}>
               {players[1][0]}

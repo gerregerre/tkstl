@@ -327,6 +327,21 @@
     transform: skewX(5deg);
   }
 
+  /* Global Player Avatar */
+  .player-avatar {
+    background-color: #FFFFFF;
+    clip-path: circle(50%);
+    object-fit: cover;
+  }
+
+  .player-avatar img,
+  .player-avatar-img {
+    background-color: transparent;
+    mix-blend-mode: multiply;
+    clip-path: circle(50%);
+    object-fit: cover;
+  }
+
   /* News feed item style */
   .news-item {
     @apply py-4 border-b border-border/50 last:border-b-0;

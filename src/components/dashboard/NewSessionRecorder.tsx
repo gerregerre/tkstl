@@ -44,10 +44,8 @@ interface GameData {
 const GAME_NAMES = ['PwC Single', 'Shibuya Crossing', 'Tug Of War'];
 
 const getGameName = (index: number): string => {
-  if (index < GAME_NAMES.length) {
-    return GAME_NAMES[index];
-  }
-  return `Game ${index + 1}`;
+  if (index < 2) return GAME_NAMES[index];
+  return 'Tug Of War';
 };
 
 const getGameType = (index: number): 'scored' | 'winloss' => {

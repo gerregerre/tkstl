@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
 import { computeAchievements } from '@/lib/achievements';
 import { AchievementsBadges } from '@/components/dashboard/AchievementsBadges';
+import { BestPartnerAnalysis } from '@/components/dashboard/BestPartnerAnalysis';
 import {
   LineChart,
   Line,

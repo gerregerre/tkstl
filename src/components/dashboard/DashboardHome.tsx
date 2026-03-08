@@ -130,16 +130,6 @@ export function DashboardHome({
 
       {/* Main Content */}
       <div ref={contentRef} className="space-y-6 md:space-y-8 pt-8 md:pt-16 px-4 md:px-8 max-w-7xl mx-auto">
-        {/* News Carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <NewsCarousel />
-        </motion.div>
-
         {/* Compact Info Bar - Next Session & Duty Roster */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

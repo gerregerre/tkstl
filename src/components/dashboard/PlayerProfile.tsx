@@ -186,8 +186,8 @@ function GameHistorySection({
     <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       
-      <div className="p-5 md:p-6 border-b border-border">
-        <div className="flex items-center justify-between">
+      <div className="p-4 md:p-6 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h3 className="font-display text-sm uppercase tracking-widest text-foreground">
               {historyView === 'sessions' ? 'Session Breakdown' : 'Game History'}
@@ -204,7 +204,7 @@ function GameHistorySection({
               <button
                 onClick={() => setHistoryView('sessions')}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                   historyView === 'sessions'
                     ? "bg-primary/15 text-primary shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -216,7 +216,7 @@ function GameHistorySection({
               <button
                 onClick={() => setHistoryView('games')}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
                   historyView === 'games'
                     ? "bg-primary/15 text-primary shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -226,7 +226,7 @@ function GameHistorySection({
                 Games
               </button>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-2">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Swords className="w-3.5 h-3.5" />
               <span>{wins}W / {games.length - wins}L</span>
             </div>

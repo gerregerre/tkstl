@@ -35,7 +35,7 @@ interface LeaderboardEntry {
   totalPoints: number;
 }
 
-export function NewLeaderboard({ onPlayerSelect }: NewLeaderboardProps) {
+export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardProps) {
   const { recalculateStats } = usePlayers();
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');

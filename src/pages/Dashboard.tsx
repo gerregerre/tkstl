@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
@@ -12,6 +13,17 @@ import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
 import { SeasonArchives } from '@/components/dashboard/SeasonArchives';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+};
+
+const pageTransition = {
+  duration: 0.25,
+  ease: [0.25, 0.1, 0.25, 1],
+};
 
 
 export default function Dashboard() {

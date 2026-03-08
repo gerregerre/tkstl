@@ -595,7 +595,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                   G{game.game_number}
                                 </div>
                                 <div className="min-w-0">
-                                  <div className="flex items-center gap-1.5 text-xs">
+                                  <div className="text-xs truncate">
                                     <span className="text-muted-foreground/50">vs</span>
                                     <span className="text-muted-foreground">{opponents}</span>
                                   </div>

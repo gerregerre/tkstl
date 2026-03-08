@@ -12,6 +12,7 @@ import NewsCarousel from '@/components/home/NewsCarousel';
 
 interface DashboardHomeProps {
   onPlayerSelect?: (playerName: string) => void;
+  onTeamSelect?: (teamName: string) => void;
 }
 interface SessionGame {
   id: string;
@@ -70,7 +71,8 @@ function getWeekRange() {
   return `${formatDate(monday)} - ${formatDate(sunday)}`;
 }
 export function DashboardHome({
-  onPlayerSelect
+  onPlayerSelect,
+  onTeamSelect
 }: DashboardHomeProps) {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
   const [recentResults, setRecentResults] = useState<SessionGame[]>([]);
@@ -169,7 +171,7 @@ export function DashboardHome({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Leaderboard - Takes 2 columns */}
           <div className="lg:col-span-2">
-            <NewLeaderboard onPlayerSelect={onPlayerSelect} />
+            <NewLeaderboard onPlayerSelect={onPlayerSelect} onTeamSelect={onTeamSelect} />
           </div>
 
           {/* Right Panel - Voting, Session Signup & Recent Results */}

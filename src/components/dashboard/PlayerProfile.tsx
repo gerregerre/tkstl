@@ -36,12 +36,6 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-import {
-  Tooltip as UITooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 interface SessionGame {
   id: string;
@@ -717,26 +711,17 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
             
             {/* Status Badges */}
             <div className="flex flex-wrap items-center gap-2 mt-4 justify-center sm:justify-start">
-              <TooltipProvider>
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    {qualifies ? (
-                      <Badge className="bg-emerald-500/15 text-emerald-400 border-emerald-500/20 gap-1.5 px-3 py-1 cursor-help">
-                        <Star className="w-3 h-3" />
-                        Qualified
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="text-muted-foreground border-border gap-1.5 px-3 py-1 cursor-help">
-                        <Zap className="w-3 h-3" />
-                        {18 - player.games_played} games to qualify
-                      </Badge>
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="max-w-[220px] text-center">
-                    <p className="text-xs">Players need 18 games played to earn qualified status for the season rankings.</p>
-                  </TooltipContent>
-                </UITooltip>
-              </TooltipProvider>
+              {qualifies ? (
+                <Badge className="bg-emerald-500/15 text-emerald-400 border-emerald-500/20 gap-1.5 px-3 py-1">
+                  <Star className="w-3 h-3" />
+                  Qualified
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-muted-foreground border-border gap-1.5 px-3 py-1">
+                  <Zap className="w-3 h-3" />
+                  {18 - player.games_played} games to qualify
+                </Badge>
+              )}
               {recentGames.length > 0 && (
                 <Badge variant="outline" className={cn(
                   "gap-1.5 px-3 py-1",

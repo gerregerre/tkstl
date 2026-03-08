@@ -606,7 +606,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                   )}
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1.5 flex-shrink-0">
                                 <Badge variant="outline" className={cn("text-[9px] px-1.5 py-0 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
                                   {won ? 'W' : 'L'}
                                 </Badge>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { DashboardHome } from '@/components/dashboard/DashboardHome';
 import { NewLeaderboard } from '@/components/dashboard/NewLeaderboard';
@@ -12,6 +13,17 @@ import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
 import { SeasonArchives } from '@/components/dashboard/SeasonArchives';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+};
+
+const pageTransition = {
+  duration: 0.25,
+  ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
+};
 
 
 export default function Dashboard() {
@@ -79,9 +91,19 @@ export default function Dashboard() {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="pt-16 min-h-screen">
-        <div className={activeTab === 'home' ? '' : 'p-4 md:p-8 max-w-7xl mx-auto'}>
-          {renderContent()}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab + (selectedPlayer || '') + (selectedTeam || '')}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={pageTransition}
+            className={activeTab === 'home' ? '' : 'p-4 md:p-8 max-w-7xl mx-auto'}
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
 
         {/* ATP-Style Footer */}
         <footer className="border-t border-border py-8 md:py-12 mt-8 md:mt-16 bg-card/50">

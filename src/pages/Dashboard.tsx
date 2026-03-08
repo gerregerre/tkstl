@@ -67,7 +67,7 @@ export default function Dashboard() {
           <NewLeaderboard onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />
         );
       default:
-        return <DashboardHome onPlayerSelect={handlePlayerSelect} />;
+        return <DashboardHome onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />;
     }
   };
 

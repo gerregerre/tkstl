@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { usePlayers } from '@/hooks/usePlayers';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,11 @@ import {
   Star,
   Award,
   Zap,
-  Swords
+  Swords,
+  CalendarDays,
+  List,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
@@ -100,10 +104,411 @@ function GlowDot(props: any) {
   );
 }
 
+// Helper: group games by session date
+interface SessionGroup {
+  date: string;
+  dateFormatted: string;
+  games: SessionGame[];
+  totalPoints: number;
+  wins: number;
+  losses: number;
+  avgPoints: number;
+}
+
+function groupGamesBySessions(games: SessionGame[], playerName: string): SessionGroup[] {
+  const map = new Map<string, SessionGame[]>();
+  
+  for (const game of games) {
+    const dateKey = new Date(game.session_date).toISOString().split('T')[0];
+    if (!map.has(dateKey)) map.set(dateKey, []);
+    map.get(dateKey)!.push(game);
+  }
+
+  const sessions: SessionGroup[] = [];
+  for (const [date, sessionGames] of map) {
+    const points = sessionGames.map(g => calculateGamePoints(g, playerName));
+    const totalPoints = points.reduce((a, b) => a + b, 0);
+    const winsCount = sessionGames.filter(game => {
+      const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
+      if (game.game_number === 3) return isTeamA ? game.winner === 'A' : game.winner === 'B';
+      const teamAScore = game.team_a_score || 0;
+      const teamBScore = game.team_b_score || 0;
+      return isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;
+    }).length;
+
+    sessions.push({
+      date,
+      dateFormatted: new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      games: sessionGames,
+      totalPoints,
+      wins: winsCount,
+      losses: sessionGames.length - winsCount,
+      avgPoints: totalPoints / sessionGames.length,
+    });
+  }
+
+  return sessions.sort((a, b) => b.date.localeCompare(a.date));
+}
+
+// Game History Section with toggle
+function GameHistorySection({
+  games,
+  loading,
+  playerName,
+  wins,
+  historyView,
+  setHistoryView,
+  expandedSessions,
+  setExpandedSessions,
+}: {
+  games: SessionGame[];
+  loading: boolean;
+  playerName: string;
+  wins: number;
+  historyView: 'games' | 'sessions';
+  setHistoryView: (v: 'games' | 'sessions') => void;
+  expandedSessions: Set<string>;
+  setExpandedSessions: (s: Set<string>) => void;
+}) {
+  const sessions = useMemo(() => groupGamesBySessions(games, playerName), [games, playerName]);
+
+  const toggleSession = (date: string) => {
+    const next = new Set(expandedSessions);
+    if (next.has(date)) next.delete(date);
+    else next.add(date);
+    setExpandedSessions(next);
+  };
+
+  return (
+    <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      
+      <div className="p-5 md:p-6 border-b border-border">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-display text-sm uppercase tracking-widest text-foreground">
+              {historyView === 'sessions' ? 'Session Breakdown' : 'Game History'}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              {historyView === 'sessions' 
+                ? `${sessions.length} sessions recorded` 
+                : `${games.length} games recorded`
+              }
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center bg-secondary/30 rounded-lg p-0.5 border border-border/50">
+              <button
+                onClick={() => setHistoryView('sessions')}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  historyView === 'sessions'
+                    ? "bg-primary/15 text-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <CalendarDays className="w-3 h-3" />
+                Sessions
+              </button>
+              <button
+                onClick={() => setHistoryView('games')}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-semibold transition-all",
+                  historyView === 'games'
+                    ? "bg-primary/15 text-primary shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <List className="w-3 h-3" />
+                Games
+              </button>
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-2">
+              <Swords className="w-3.5 h-3.5" />
+              <span>{wins}W / {games.length - wins}L</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center p-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/30 border-t-primary"></div>
+        </div>
+      ) : games.length === 0 ? (
+        <div className="text-center p-12 text-muted-foreground text-sm">
+          No games recorded yet
+        </div>
+      ) : historyView === 'sessions' ? (
+        /* Session-grouped view */
+        <div className="divide-y divide-border/50 max-h-[600px] overflow-y-auto scrollbar-thin">
+          {sessions.map((session) => {
+            const isExpanded = expandedSessions.has(session.date);
+            const sessionWinRate = session.games.length > 0 ? (session.wins / session.games.length) * 100 : 0;
+            
+            return (
+              <div key={session.date}>
+                {/* Session Header */}
+                <button
+                  onClick={() => toggleSession(session.date)}
+                  className="w-full px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors text-left"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+                        sessionWinRate >= 60
+                          ? "bg-emerald-500/10 ring-1 ring-emerald-500/20"
+                          : sessionWinRate >= 40
+                          ? "bg-primary/10 ring-1 ring-primary/20"
+                          : "bg-secondary/50 ring-1 ring-border"
+                      )}>
+                        {isExpanded 
+                          ? <ChevronDown className="w-4 h-4 text-primary" />
+                          : <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                        }
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-foreground text-sm">{session.dateFormatted}</span>
+                          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                            {session.games.length} game{session.games.length !== 1 ? 's' : ''}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          {/* W/L indicators */}
+                          <div className="flex items-center gap-1">
+                            {session.games.map((game, gi) => {
+                              const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
+                              let won = false;
+                              if (game.game_number === 3) {
+                                won = isTeamA ? game.winner === 'A' : game.winner === 'B';
+                              } else {
+                                won = isTeamA 
+                                  ? (game.team_a_score || 0) > (game.team_b_score || 0) 
+                                  : (game.team_b_score || 0) > (game.team_a_score || 0);
+                              }
+                              return (
+                                <div
+                                  key={gi}
+                                  className={cn(
+                                    "w-5 h-5 rounded text-[9px] font-bold flex items-center justify-center",
+                                    won 
+                                      ? "bg-emerald-500/15 text-emerald-400" 
+                                      : "bg-red-500/10 text-red-400/70"
+                                  )}
+                                >
+                                  {won ? 'W' : 'L'}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <div className={cn(
+                          "font-display text-base tabular-nums",
+                          session.avgPoints >= 8 && "text-emerald-400",
+                          session.avgPoints >= 5 && session.avgPoints < 8 && "text-primary",
+                          session.avgPoints < 5 && "text-muted-foreground"
+                        )}>
+                          {session.avgPoints.toFixed(1)}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider">avg</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-display text-base tabular-nums text-foreground">
+                          {session.totalPoints.toFixed(1)}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider">total</div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Expanded Games */}
+                {isExpanded && (
+                  <div className="bg-secondary/10 border-t border-border/30">
+                    {session.games.map((game) => {
+                      const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
+                      const teammate = isTeamA 
+                        ? (game.team_a_player1 === playerName ? game.team_a_player2 : game.team_a_player1)
+                        : (game.team_b_player1 === playerName ? game.team_b_player2 : game.team_b_player1);
+                      const opponents = isTeamA 
+                        ? [game.team_b_player1, game.team_b_player2]
+                        : [game.team_a_player1, game.team_a_player2];
+                      
+                      let won = false;
+                      if (game.game_number === 3) {
+                        won = isTeamA ? game.winner === 'A' : game.winner === 'B';
+                      } else {
+                        won = isTeamA 
+                          ? (game.team_a_score || 0) > (game.team_b_score || 0) 
+                          : (game.team_b_score || 0) > (game.team_a_score || 0);
+                      }
+                      const points = calculateGamePoints(game, playerName);
+
+                      return (
+                        <div key={game.id} className="px-5 md:px-6 pl-12 md:pl-14 py-3 border-t border-border/20">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <div className={cn(
+                                "w-7 h-7 rounded flex items-center justify-center font-display text-[10px] tracking-wide",
+                                won 
+                                  ? "bg-emerald-500/10 text-emerald-400" 
+                                  : "bg-secondary/50 text-muted-foreground"
+                              )}>
+                                G{game.game_number}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-1.5 text-xs">
+                                  <span className="font-medium text-foreground">
+                                    {playerName} & {teammate}
+                                  </span>
+                                  <span className="text-muted-foreground/50">vs</span>
+                                  <span className="text-muted-foreground">
+                                    {opponents.join(' & ')}
+                                  </span>
+                                </div>
+                                {game.game_number !== 3 && (
+                                  <span className={cn(
+                                    "text-[10px] mt-0.5",
+                                    won ? "text-emerald-400/60" : "text-muted-foreground/60"
+                                  )}>
+                                    Score: {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className={cn(
+                                "text-[9px] px-1.5 py-0 font-semibold uppercase tracking-wider",
+                                won 
+                                  ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
+                                  : "border-border text-muted-foreground bg-secondary/20"
+                              )}>
+                                {won ? 'W' : 'L'}
+                              </Badge>
+                              <span className={cn(
+                                "font-display text-sm tabular-nums",
+                                points >= 8 && "text-emerald-400",
+                                points >= 5 && points < 8 && "text-primary",
+                                points < 5 && "text-muted-foreground"
+                              )}>
+                                +{points.toFixed(1)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        /* Individual games view (existing) */
+        <div className="divide-y divide-border/50 max-h-[500px] overflow-y-auto scrollbar-thin">
+          {[...games].reverse().map((game) => {
+            const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
+            const teammate = isTeamA 
+              ? (game.team_a_player1 === playerName ? game.team_a_player2 : game.team_a_player1)
+              : (game.team_b_player1 === playerName ? game.team_b_player2 : game.team_b_player1);
+            const opponents = isTeamA 
+              ? [game.team_b_player1, game.team_b_player2]
+              : [game.team_a_player1, game.team_a_player2];
+            
+            let won = false;
+            if (game.game_number === 3) {
+              won = isTeamA ? game.winner === 'A' : game.winner === 'B';
+            } else {
+              const teamAScore = game.team_a_score || 0;
+              const teamBScore = game.team_b_score || 0;
+              won = isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;
+            }
+
+            const points = calculateGamePoints(game, playerName);
+
+            return (
+              <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={cn(
+                      "w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide",
+                      won 
+                        ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" 
+                        : "bg-secondary/50 text-muted-foreground ring-1 ring-border"
+                    )}>
+                      G{game.game_number}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-semibold text-foreground">
+                          {playerName} & {teammate}
+                        </span>
+                        <span className="text-muted-foreground/50 text-xs">vs</span>
+                        <span className="text-muted-foreground text-sm">
+                          {opponents.join(' & ')}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                        <span>
+                          {new Date(game.session_date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </span>
+                        {game.game_number !== 3 && (
+                          <>
+                            <span className="text-border">·</span>
+                            <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>
+                              {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge variant="outline" className={cn(
+                      "text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider",
+                      won 
+                        ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
+                        : "border-border text-muted-foreground bg-secondary/20"
+                    )}>
+                      {won ? 'W' : 'L'}
+                    </Badge>
+                    <span className={cn(
+                      "font-display text-base tabular-nums",
+                      points >= 8 && "text-emerald-400",
+                      points >= 5 && points < 8 && "text-primary",
+                      points < 5 && "text-muted-foreground"
+                    )}>
+                      +{points.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   const { players, getAveragePoints } = usePlayers();
   const [games, setGames] = useState<SessionGame[]>([]);
   const [loading, setLoading] = useState(true);
+  const [historyView, setHistoryView] = useState<'games' | 'sessions'>('sessions');
+  const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
 
   const player = players.find(p => p.name === playerName);
 
@@ -438,118 +843,16 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
       )}
 
       {/* Game History */}
-      <div className="relative bg-card border border-border rounded-xl shadow-card overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        
-        <div className="p-5 md:p-6 border-b border-border">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-display text-sm uppercase tracking-widest text-foreground">Game History</h3>
-              <p className="text-xs text-muted-foreground mt-1">{games.length} games recorded</p>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Swords className="w-3.5 h-3.5" />
-              <span>{wins}W / {games.length - wins}L</span>
-            </div>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center p-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/30 border-t-primary"></div>
-          </div>
-        ) : games.length === 0 ? (
-          <div className="text-center p-12 text-muted-foreground text-sm">
-            No games recorded yet
-          </div>
-        ) : (
-          <div className="divide-y divide-border/50 max-h-[500px] overflow-y-auto scrollbar-thin">
-            {[...games].reverse().map((game) => {
-              const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-              const teammate = isTeamA 
-                ? (game.team_a_player1 === playerName ? game.team_a_player2 : game.team_a_player1)
-                : (game.team_b_player1 === playerName ? game.team_b_player2 : game.team_b_player1);
-              const opponents = isTeamA 
-                ? [game.team_b_player1, game.team_b_player2]
-                : [game.team_a_player1, game.team_a_player2];
-              
-              let won = false;
-              if (game.game_number === 3) {
-                won = isTeamA ? game.winner === 'A' : game.winner === 'B';
-              } else {
-                const teamAScore = game.team_a_score || 0;
-                const teamBScore = game.team_b_score || 0;
-                won = isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;
-              }
-
-              const points = calculateGamePoints(game, playerName);
-
-              return (
-                <div key={game.id} className="px-5 md:px-6 py-4 hover:bg-secondary/20 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "w-9 h-9 rounded-lg flex items-center justify-center font-display text-xs tracking-wide",
-                        won 
-                          ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" 
-                          : "bg-secondary/50 text-muted-foreground ring-1 ring-border"
-                      )}>
-                        G{game.game_number}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="font-semibold text-foreground">
-                            {playerName} & {teammate}
-                          </span>
-                          <span className="text-muted-foreground/50 text-xs">vs</span>
-                          <span className="text-muted-foreground text-sm">
-                            {opponents.join(' & ')}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                          <span>
-                            {new Date(game.session_date).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
-                          </span>
-                          {game.game_number !== 3 && (
-                            <>
-                              <span className="text-border">·</span>
-                              <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>
-                                {isTeamA ? game.team_a_score : game.team_b_score} - {isTeamA ? game.team_b_score : game.team_a_score}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant="outline" className={cn(
-                        "text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider",
-                        won 
-                          ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" 
-                          : "border-border text-muted-foreground bg-secondary/20"
-                      )}>
-                        {won ? 'W' : 'L'}
-                      </Badge>
-                      <span className={cn(
-                        "font-display text-base tabular-nums",
-                        points >= 8 && "text-emerald-400",
-                        points >= 5 && points < 8 && "text-primary",
-                        points < 5 && "text-muted-foreground"
-                      )}>
-                        +{points.toFixed(1)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <GameHistorySection
+        games={games}
+        loading={loading}
+        playerName={playerName}
+        wins={wins}
+        historyView={historyView}
+        setHistoryView={setHistoryView}
+        expandedSessions={expandedSessions}
+        setExpandedSessions={setExpandedSessions}
+      />
     </div>
   );
 }

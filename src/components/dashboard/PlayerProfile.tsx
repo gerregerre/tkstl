@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
 import { computeAchievements } from '@/lib/achievements';
 import { AchievementsBadges } from '@/components/dashboard/AchievementsBadges';
+import { BestPartnerAnalysis } from '@/components/dashboard/BestPartnerAnalysis';
 import {
   LineChart,
   Line,
@@ -767,6 +768,11 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
       {/* Achievements */}
       {!loading && games.length > 0 && (
         <AchievementsBadges achievements={computeAchievements(games, playerName)} />
+      )}
+
+      {/* Best Partner / Nemesis Analysis */}
+      {!loading && games.length > 0 && (
+        <BestPartnerAnalysis games={games} playerName={playerName} />
       )}
 
       {/* Performance Trend Chart */}

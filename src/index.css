@@ -339,7 +339,7 @@
   .player-avatar img,
   .player-avatar-img {
     background-color: transparent;
-    mix-blend-mode: screen;
+    mix-blend-mode: multiply;
     clip-path: circle(50%);
     object-fit: cover;
   }

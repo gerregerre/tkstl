@@ -512,6 +512,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   const [loading, setLoading] = useState(true);
   const [historyView, setHistoryView] = useState<'games' | 'sessions'>('sessions');
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
+  const [seasonTitles, setSeasonTitles] = useState<{ name: string; type: 'singles' | 'doubles' }[]>([]);
 
   const player = players.find(p => p.name === playerName);
 
@@ -531,7 +532,28 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
       setLoading(false);
     };
 
+    const fetchSeasonTitles = async () => {
+      const { data } = await supabase
+        .from('seasons')
+        .select('name, champion_singles, champion_doubles')
+        .eq('is_active', false);
+
+      if (data) {
+        const titles: { name: string; type: 'singles' | 'doubles' }[] = [];
+        for (const season of data) {
+          if (season.champion_singles === playerName) {
+            titles.push({ name: season.name, type: 'singles' });
+          }
+          if (season.champion_doubles === playerName) {
+            titles.push({ name: season.name, type: 'doubles' });
+          }
+        }
+        setSeasonTitles(titles);
+      }
+    };
+
     fetchGames();
+    fetchSeasonTitles();
   }, [playerName]);
 
   if (!player) {

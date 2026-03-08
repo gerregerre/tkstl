@@ -71,7 +71,8 @@ function getWeekRange() {
   return `${formatDate(monday)} - ${formatDate(sunday)}`;
 }
 export function DashboardHome({
-  onPlayerSelect
+  onPlayerSelect,
+  onTeamSelect
 }: DashboardHomeProps) {
   const [countdown, setCountdown] = useState(getCountdownParts(getNextMonday()));
   const [recentResults, setRecentResults] = useState<SessionGame[]>([]);

@@ -200,19 +200,27 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
           </div>
         </div>
         
-        {/* Active Filter Badge */}
-        {gameTypeFilter !== 'all' && (
-          <div className="flex items-center gap-2 ml-4 md:ml-5">
-            <Badge variant="secondary" className="text-xs">
-              Filtered: {GAME_TYPE_LABELS[gameTypeFilter]}
-            </Badge>
+        {/* Active Filter Badges */}
+        {(gameTypeFilter !== 'all' || selectedSeasonId !== 'all') && (
+          <div className="flex items-center gap-2 ml-4 md:ml-5 flex-wrap">
+            {selectedSeasonId !== 'all' && (
+              <Badge variant="secondary" className="text-xs gap-1">
+                <Calendar className="w-3 h-3" />
+                {seasons.find(s => s.id === selectedSeasonId)?.name || 'Season'}
+              </Badge>
+            )}
+            {gameTypeFilter !== 'all' && (
+              <Badge variant="secondary" className="text-xs">
+                Filtered: {GAME_TYPE_LABELS[gameTypeFilter]}
+              </Badge>
+            )}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setGameTypeFilter('all')}
+              onClick={() => { setGameTypeFilter('all'); setSelectedSeasonId('all'); }}
               className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
             >
-              Clear
+              Clear All
             </Button>
           </div>
         )}

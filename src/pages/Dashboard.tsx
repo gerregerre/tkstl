@@ -54,11 +54,17 @@ export default function Dashboard() {
         return <MemberProfiles />;
       case 'news-admin':
         return <NewsAdmin />;
+      case 'team-profile':
+        return selectedTeam ? (
+          <TeamProfile teamName={selectedTeam} onBack={handleBackFromProfile} />
+        ) : (
+          <NewLeaderboard onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />
+        );
       case 'profile':
         return selectedPlayer ? (
           <PlayerProfile playerName={selectedPlayer} onBack={handleBackFromProfile} />
         ) : (
-          <NewLeaderboard onPlayerSelect={handlePlayerSelect} />
+          <NewLeaderboard onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />
         );
       default:
         return <DashboardHome onPlayerSelect={handlePlayerSelect} />;

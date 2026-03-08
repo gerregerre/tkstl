@@ -658,8 +658,8 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant="outline" className={cn("text-[10px] px-2 py-0.5 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
+                    <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
+                      <Badge variant="outline" className={cn("text-[9px] md:text-[10px] px-1.5 md:px-2 py-0.5 font-semibold uppercase tracking-wider", won ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" : "border-border text-muted-foreground bg-secondary/20")}>
                         {won ? 'W' : 'L'}
                       </Badge>
                       <span className={cn("font-display text-base tabular-nums", points >= 8 && "text-emerald-400", points >= 5 && points < 8 && "text-primary", points < 5 && "text-muted-foreground")}>

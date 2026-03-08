@@ -233,7 +233,9 @@ export function LeaderboardRowDesktop({
             </div>
           )}
           {avatar2 ? (
-            <img src={avatar2} alt={players[1]} style={{ clipPath: 'circle(50%)' }} className="w-10 h-10 rounded-full object-cover bg-[#1a1f2e] ring-2 ring-background transition-transform duration-200 group-hover:scale-105" />
+            <div className="w-10 h-10 rounded-full player-avatar ring-2 ring-background transition-transform duration-200 group-hover:scale-105">
+              <img src={avatar2} alt={players[1]} className="player-avatar-img w-full h-full" />
+            </div>
           ) : (
             <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-sm ring-2 ring-background transition-transform duration-200 group-hover:scale-105", getAvatarStyle(rank))}>
               {players[1][0]}

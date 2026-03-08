@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
+import { computeAchievements } from '@/lib/achievements';
+import { AchievementsBadges } from '@/components/dashboard/AchievementsBadges';
 import {
   LineChart,
   Line,

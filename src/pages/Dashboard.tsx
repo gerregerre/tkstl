@@ -55,6 +55,8 @@ export default function Dashboard() {
         return <MemberProfiles />;
       case 'news-admin':
         return <NewsAdmin />;
+      case 'seasons':
+        return <SeasonArchives />;
       case 'team-profile':
         return selectedTeam ? (
           <TeamProfile teamName={selectedTeam} onBack={handleBackFromProfile} />

@@ -764,6 +764,11 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
         ))}
       </div>
 
+      {/* Achievements */}
+      {!loading && games.length > 0 && (
+        <AchievementsBadges achievements={computeAchievements(games, playerName)} />
+      )}
+
       {/* Performance Trend Chart */}
       {trendData.length > 0 && (
         <div className="relative bg-card border border-border rounded-xl overflow-hidden shadow-card">

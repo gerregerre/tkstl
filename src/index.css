@@ -330,18 +330,16 @@
   /* Global Player Avatar */
   .player-avatar {
     background-color: #FFFFFF !important;
-    clip-path: circle(50%);
-    object-fit: cover;
-    mask-image: radial-gradient(circle, white 100%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
+    border-radius: 50%;
+    overflow: hidden;
   }
 
   .player-avatar img,
   .player-avatar-img {
-    background-color: transparent;
-    mix-blend-mode: multiply;
-    clip-path: circle(50%);
     object-fit: cover;
+    border-radius: 50%;
+    mask-image: radial-gradient(circle, black 60%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle, black 60%, transparent 80%);
   }
 
   /* News feed item style */

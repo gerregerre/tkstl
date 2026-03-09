@@ -129,7 +129,7 @@ export function DashboardHome({
       <HeroSection onScrollDown={handleScrollDown} />
 
       {/* Main Content */}
-      <div ref={contentRef} className="space-y-6 md:space-y-8 pt-8 md:pt-16 px-4 md:px-8 max-w-7xl mx-auto">
+      <div ref={contentRef} className="space-y-5 md:space-y-6 pt-6 md:pt-10 px-4 md:px-8 max-w-7xl mx-auto">
         {/* Compact Info Bar - Next Session & Duty Roster */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

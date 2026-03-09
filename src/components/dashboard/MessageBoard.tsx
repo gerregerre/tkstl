@@ -216,53 +216,57 @@ export function MessageBoard() {
   }
 
   return (
-    <div className="space-y-4 md:space-y-6 animate-fade-in-up">
-      {/* Header */}
-      <div>
-        <h1 className="section-header text-lg md:text-xl">Message Board</h1>
-        <p className="text-muted-foreground mt-2 ml-4 md:ml-5 text-sm md:text-base">
-          Share updates and communicate with fellow members
-        </p>
-      </div>
-
+    <div className="space-y-4 md:space-y-5 animate-fade-in-up">
       {/* Message Input */}
-      <div className="bg-card rounded-lg border border-border p-3 md:p-4 shadow-card">
-        <div className="flex gap-2 md:gap-3">
-          <Avatar className="h-8 w-8 md:h-10 md:w-10 shrink-0">
-            <AvatarImage src={user?.user_metadata?.avatar_url} />
-            <AvatarFallback className="bg-primary/20 text-primary font-serif font-bold text-sm md:text-base">
-              {user?.user_metadata?.display_name?.[0] || user?.email?.[0]?.toUpperCase() || '?'}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 space-y-2 md:space-y-3">
-            <Textarea
-              placeholder="Write a message to the club..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="min-h-[60px] md:min-h-[80px] resize-none text-sm md:text-base"
-            />
-            <div className="flex justify-end">
-              <Button 
-                onClick={handleSendMessage} 
-                disabled={!newMessage.trim() || sending}
-                className="gap-2 text-sm"
-                size="sm"
-              >
-                <Send className="w-3 h-3 md:w-4 md:h-4" />
-                <span className="hidden sm:inline">Post Message</span>
-                <span className="sm:hidden">Post</span>
-              </Button>
+      <div className="bg-card rounded-md border border-border overflow-hidden shadow-card">
+        <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
+          <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
+          <MessageSquare className="w-4 h-4 text-primary" />
+          <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
+            Message Board
+          </h3>
+        </div>
+        <div className="p-3 md:p-4">
+          <div className="flex gap-2 md:gap-3">
+            <Avatar className="h-8 w-8 md:h-10 md:w-10 shrink-0">
+              <AvatarImage src={user?.user_metadata?.avatar_url} />
+              <AvatarFallback className="bg-primary/20 text-primary font-serif font-bold text-sm md:text-base">
+                {user?.user_metadata?.display_name?.[0] || user?.email?.[0]?.toUpperCase() || '?'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 space-y-2 md:space-y-3">
+              <Textarea
+                placeholder="Write a message to the club..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="min-h-[60px] md:min-h-[80px] resize-none text-sm md:text-base"
+              />
+              <div className="flex justify-end">
+                <Button 
+                  onClick={handleSendMessage} 
+                  disabled={!newMessage.trim() || sending}
+                  className="gap-2 text-sm"
+                  size="sm"
+                >
+                  <Send className="w-3 h-3 md:w-4 md:h-4" />
+                  <span className="hidden sm:inline">Post Message</span>
+                  <span className="sm:hidden">Post</span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Messages List */}
-      <div className="bg-card rounded-lg border border-border shadow-card overflow-hidden">
-        <div className="p-3 md:p-4 border-b border-border flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-          <h3 className="font-serif text-base md:text-lg font-semibold">Recent Messages</h3>
+      <div className="bg-card rounded-md border border-border shadow-card overflow-hidden">
+        <div className="bg-secondary/50 px-5 py-4 flex items-center gap-3 border-b border-border">
+          <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_6px_hsl(var(--primary)/0.4)]" />
+          <MessageSquare className="w-4 h-4 text-primary" />
+          <h3 className="text-[11px] font-bold text-foreground uppercase tracking-widest">
+            Recent Messages
+          </h3>
         </div>
 
         {messages.length === 0 ? (

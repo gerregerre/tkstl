@@ -184,7 +184,7 @@ export function DashboardHome({
         </motion.div>
 
         {/* Main Content - Leaderboard & Right Panel */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6 items-start">
           {/* Leaderboard - Takes 2 columns */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -197,7 +197,7 @@ export function DashboardHome({
           </motion.div>
 
           {/* Right Panel - Voting, Session Signup & Recent Results */}
-          <div className="space-y-6">
+          <div className="space-y-5 md:space-y-6 lg:row-span-2">
             {/* Party Planners - last place doubles team */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -302,17 +302,18 @@ export function DashboardHome({
               </div>
             </motion.div>
           </div>
-        </div>
 
-        {/* Messageboard */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <MessageBoard />
-        </motion.div>
+          {/* Messageboard - sits below leaderboard in left 2 columns */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:col-span-2"
+          >
+            <MessageBoard />
+          </motion.div>
+        </div>
       </div>
     </div>;
 }

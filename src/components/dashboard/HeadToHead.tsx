@@ -412,7 +412,7 @@ export function HeadToHead() {
                           day: 'numeric'
                         })}
                               </span>
-                              {game.game_number !== 3 && <>
+                              {((game.team_a_score || 0) + (game.team_b_score || 0)) > 0 && <>
                                   <span>•</span>
                                   <span>{game.team_a_score} - {game.team_b_score}</span>
                                 </>}

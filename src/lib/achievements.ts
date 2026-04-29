@@ -23,7 +23,8 @@ export interface Achievement {
 
 function didWin(game: SessionGame, playerName: string): boolean {
   const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-  if (game.game_number === 3) {
+  const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+  if (totalScore === 0) {
     return isTeamA ? game.winner === 'A' : game.winner === 'B';
   }
   const teamAScore = game.team_a_score || 0;

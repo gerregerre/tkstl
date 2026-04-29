@@ -133,7 +133,7 @@ function groupGamesBySessions(games: SessionGame[], playerName: string): Session
     const totalPoints = points.reduce((a, b) => a + b, 0);
     const winsCount = sessionGames.filter(game => {
       const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-      if (game.game_number === 3) return isTeamA ? game.winner === 'A' : game.winner === 'B';
+      if (game.game_number >= 3) return isTeamA ? game.winner === 'A' : game.winner === 'B';
       const teamAScore = game.team_a_score || 0;
       const teamBScore = game.team_b_score || 0;
       return isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;

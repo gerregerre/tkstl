@@ -97,7 +97,8 @@ export function computeTeamAchievements(allGames: SessionGame[], player1: string
 
   // Shutouts (9-0)
   const shutouts = sorted.filter(({ game, side }) => {
-    if (game.game_number === 3) return false;
+    const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+    if (totalScore === 0) return false;
     const myScore = side === 'A' ? game.team_a_score : game.team_b_score;
     const theirScore = side === 'A' ? game.team_b_score : game.team_a_score;
     return myScore === 9 && theirScore === 0;

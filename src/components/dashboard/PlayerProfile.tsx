@@ -426,7 +426,7 @@ function GameHistorySection({
               : [game.team_a_player1, game.team_a_player2];
             
             let won = false;
-            if (game.game_number === 3) {
+            if (game.game_number >= 3) {
               won = isTeamA ? game.winner === 'A' : game.winner === 'B';
             } else {
               const teamAScore = game.team_a_score || 0;

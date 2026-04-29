@@ -597,7 +597,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                     <span className="text-muted-foreground/50">vs</span>
                                     <span className="text-muted-foreground">{opponents}</span>
                                   </div>
-                                  {game.game_number !== 3 && (
+                                  {((game.team_a_score || 0) + (game.team_b_score || 0)) > 0 && (
                                     <span className={cn("text-[10px] mt-0.5", won ? "text-emerald-400/60" : "text-muted-foreground/60")}>
                                       Score: {side === 'A' ? game.team_a_score : game.team_b_score} - {side === 'A' ? game.team_b_score : game.team_a_score}
                                     </span>

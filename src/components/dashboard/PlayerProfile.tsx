@@ -465,7 +465,7 @@ function GameHistorySection({
                             day: 'numeric',
                           })}
                         </span>
-                        {game.game_number !== 3 && (
+                        {game.game_number < 3 && (
                           <>
                             <span className="text-border">·</span>
                             <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>

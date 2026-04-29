@@ -590,7 +590,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   // Win rate
   const wins = games.filter(game => {
     const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-    if (game.game_number === 3) {
+    if (game.game_number >= 3) {
       return isTeamA ? game.winner === 'A' : game.winner === 'B';
     }
     const teamAScore = game.team_a_score || 0;

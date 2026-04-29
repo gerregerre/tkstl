@@ -375,7 +375,7 @@ function GameHistorySection({
                                     {opponents.join(' & ')}
                                   </span>
                                 </div>
-                                {game.game_number !== 3 && (
+                                {game.game_number < 3 && (
                                   <span className={cn(
                                     "text-[10px] mt-0.5 block",
                                     won ? "text-emerald-400/60" : "text-muted-foreground/60"

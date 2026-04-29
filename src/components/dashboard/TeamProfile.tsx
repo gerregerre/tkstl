@@ -63,7 +63,8 @@ function isTeamInGame(game: SessionGame, p1: string, p2: string): 'A' | 'B' | nu
 }
 
 function didTeamWin(game: SessionGame, side: 'A' | 'B'): boolean {
-  if (game.game_number === 3) return game.winner === side;
+  const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+  if (totalScore === 0) return game.winner === side;
   const teamAScore = game.team_a_score || 0;
   const teamBScore = game.team_b_score || 0;
   return side === 'A' ? teamAScore > teamBScore : teamBScore > teamAScore;
@@ -596,7 +597,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                                     <span className="text-muted-foreground/50">vs</span>
                                     <span className="text-muted-foreground">{opponents}</span>
                                   </div>
-                                  {game.game_number !== 3 && (
+                                  {((game.team_a_score || 0) + (game.team_b_score || 0)) > 0 && (
                                     <span className={cn("text-[10px] mt-0.5", won ? "text-emerald-400/60" : "text-muted-foreground/60")}>
                                       Score: {side === 'A' ? game.team_a_score : game.team_b_score} - {side === 'A' ? game.team_b_score : game.team_a_score}
                                     </span>
@@ -644,7 +645,7 @@ export function TeamProfile({ teamName, onBack }: TeamProfileProps) {
                         </div>
                         <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-muted-foreground mt-0.5">
                           <span>{new Date(game.session_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                          {game.game_number !== 3 && (
+                          {((game.team_a_score || 0) + (game.team_b_score || 0)) > 0 && (
                             <>
                               <span className="text-border">·</span>
                               <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>

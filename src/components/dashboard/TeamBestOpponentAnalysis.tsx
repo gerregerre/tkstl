@@ -33,7 +33,8 @@ function isTeamInGame(game: SessionGame, p1: string, p2: string): 'A' | 'B' | nu
 }
 
 function didTeamWin(game: SessionGame, side: 'A' | 'B'): boolean {
-  if (game.game_number === 3) return game.winner === side;
+  const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+  if (totalScore === 0) return game.winner === side;
   const teamAScore = game.team_a_score || 0;
   const teamBScore = game.team_b_score || 0;
   return side === 'A' ? teamAScore > teamBScore : teamBScore > teamAScore;

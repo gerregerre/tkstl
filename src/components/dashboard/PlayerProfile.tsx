@@ -57,25 +57,17 @@ interface PlayerProfileProps {
 
 function calculateGamePoints(game: SessionGame, playerName: string): number {
   const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-  
-  if (game.game_number === 3) {
+  const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+
+  // Tug of War (game 3+ with no scores): Winner=10, Loser=5
+  if (totalScore === 0) {
     const teamAWon = game.winner === 'A';
-    if (isTeamA) {
-      return teamAWon ? 10 : 5;
-    } else {
-      return teamAWon ? 5 : 10;
-    }
-  } else {
-    const teamAScore = game.team_a_score || 0;
-    const teamBScore = game.team_b_score || 0;
-    const teamAWon = teamAScore > teamBScore;
-    
-    if (isTeamA) {
-      return teamAWon ? 10 : (teamAScore / 9) * 10;
-    } else {
-      return teamAWon ? (teamBScore / 9) * 10 : 10;
-    }
+    if (isTeamA) return teamAWon ? 10 : 5;
+    return teamAWon ? 5 : 10;
   }
+
+  // Scored games: raw score
+  return isTeamA ? (game.team_a_score || 0) : (game.team_b_score || 0);
 }
 
 // Custom tooltip for the chart
@@ -133,7 +125,7 @@ function groupGamesBySessions(games: SessionGame[], playerName: string): Session
     const totalPoints = points.reduce((a, b) => a + b, 0);
     const winsCount = sessionGames.filter(game => {
       const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-      if (game.game_number === 3) return isTeamA ? game.winner === 'A' : game.winner === 'B';
+      if (game.game_number >= 3) return isTeamA ? game.winner === 'A' : game.winner === 'B';
       const teamAScore = game.team_a_score || 0;
       const teamBScore = game.team_b_score || 0;
       return isTeamA ? teamAScore > teamBScore : teamBScore > teamAScore;
@@ -284,7 +276,7 @@ function GameHistorySection({
                             {session.games.map((game, gi) => {
                               const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
                               let won = false;
-                              if (game.game_number === 3) {
+                              if (game.game_number >= 3) {
                                 won = isTeamA ? game.winner === 'A' : game.winner === 'B';
                               } else {
                                 won = isTeamA 
@@ -344,7 +336,7 @@ function GameHistorySection({
                         : [game.team_a_player1, game.team_a_player2];
                       
                       let won = false;
-                      if (game.game_number === 3) {
+                      if (game.game_number >= 3) {
                         won = isTeamA ? game.winner === 'A' : game.winner === 'B';
                       } else {
                         won = isTeamA 
@@ -375,7 +367,7 @@ function GameHistorySection({
                                     {opponents.join(' & ')}
                                   </span>
                                 </div>
-                                {game.game_number !== 3 && (
+                                {game.game_number < 3 && (
                                   <span className={cn(
                                     "text-[10px] mt-0.5 block",
                                     won ? "text-emerald-400/60" : "text-muted-foreground/60"
@@ -426,7 +418,7 @@ function GameHistorySection({
               : [game.team_a_player1, game.team_a_player2];
             
             let won = false;
-            if (game.game_number === 3) {
+            if (game.game_number >= 3) {
               won = isTeamA ? game.winner === 'A' : game.winner === 'B';
             } else {
               const teamAScore = game.team_a_score || 0;
@@ -465,7 +457,7 @@ function GameHistorySection({
                             day: 'numeric',
                           })}
                         </span>
-                        {game.game_number !== 3 && (
+                        {game.game_number < 3 && (
                           <>
                             <span className="text-border">·</span>
                             <span className={cn(won ? "text-emerald-400/70" : "text-muted-foreground")}>
@@ -590,7 +582,7 @@ export function PlayerProfile({ playerName, onBack }: PlayerProfileProps) {
   // Win rate
   const wins = games.filter(game => {
     const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-    if (game.game_number === 3) {
+    if (game.game_number >= 3) {
       return isTeamA ? game.winner === 'A' : game.winner === 'B';
     }
     const teamAScore = game.team_a_score || 0;

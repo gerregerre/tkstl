@@ -23,7 +23,8 @@ export interface Achievement {
 
 function didWin(game: SessionGame, playerName: string): boolean {
   const isTeamA = game.team_a_player1 === playerName || game.team_a_player2 === playerName;
-  if (game.game_number === 3) {
+  const totalScore = (game.team_a_score || 0) + (game.team_b_score || 0);
+  if (totalScore === 0) {
     return isTeamA ? game.winner === 'A' : game.winner === 'B';
   }
   const teamAScore = game.team_a_score || 0;
@@ -95,7 +96,8 @@ export function computeAchievements(games: SessionGame[], playerName: string): A
 
   // --- 9-0 Shutout ---
   const shutouts = sorted.filter(g => {
-    if (g.game_number === 3) return false;
+    const totalScore = (g.team_a_score || 0) + (g.team_b_score || 0);
+    if (totalScore === 0) return false;
     const isTeamA = g.team_a_player1 === playerName || g.team_a_player2 === playerName;
     const myScore = isTeamA ? g.team_a_score : g.team_b_score;
     const theirScore = isTeamA ? g.team_b_score : g.team_a_score;

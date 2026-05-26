@@ -146,16 +146,21 @@ export function SessionHistory() {
 
   // Called after password is verified
   const handlePasswordVerified = () => {
+    const action = pendingAction;
     setIsPasswordModalOpen(false);
-    
-    if (pendingAction?.type === 'edit') {
-      openEditDialog(pendingAction.game);
-    } else if (pendingAction?.type === 'delete') {
-      setDeletingGame(pendingAction.game);
-      setShowDeleteConfirm(true);
-    }
-    
     setPendingAction(null);
+
+    // Delay opening the next dialog so Radix can clean up pointer-events
+    // on <body> from the just-closed password modal. Without this delay,
+    // the follow-up dialog (edit/delete confirm) appears but is unclickable.
+    setTimeout(() => {
+      if (action?.type === 'edit') {
+        openEditDialog(action.game);
+      } else if (action?.type === 'delete') {
+        setDeletingGame(action.game);
+        setShowDeleteConfirm(true);
+      }
+    }, 150);
   };
 
   const openEditDialog = (game: SessionGame) => {

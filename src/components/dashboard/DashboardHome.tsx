@@ -8,6 +8,7 @@ import { SessionSignup } from './SessionSignup';
 import { PartyVoting } from './PartyVoting';
 import { supabase } from '@/integrations/supabase/client';
 import { PartyPlanners } from './PartyPlanners';
+import { SeasonFinaleBanner } from './SeasonFinaleBanner';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
 
 

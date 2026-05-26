@@ -131,6 +131,8 @@ export function DashboardHome({
 
       {/* Main Content */}
       <div ref={contentRef} className="space-y-5 md:space-y-6 pt-6 md:pt-10 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Season Finale - 2 sessions remaining */}
+        <SeasonFinaleBanner sessionsRemaining={2} />
         {/* Compact Info Bar - Next Session & Duty Roster */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

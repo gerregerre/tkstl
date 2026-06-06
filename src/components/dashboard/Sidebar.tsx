@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
@@ -7,8 +7,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 
 interface SidebarProps {
   activeTab: string;
@@ -25,36 +23,7 @@ const baseNavLinks = [
   { id: 'members', label: 'Members' },
 ];
 
-const adminOnlyLinks = [
-  { id: 'news-admin', label: 'News Admin' },
-];
-
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const { user } = useAuth();
-  const [displayName, setDisplayName] = useState<string | null>(null);
-  
-  useEffect(() => {
-    const fetchDisplayName = async () => {
-      if (!user) {
-        setDisplayName(null);
-        return;
-      }
-      
-      const { data } = await supabase
-        .from('user_profiles')
-        .select('display_name')
-        .eq('id', user.id)
-        .maybeSingle();
-      
-      setDisplayName(data?.display_name || null);
-    };
-    
-    fetchDisplayName();
-  }, [user]);
-  
-  // Only show admin links if user is Gerard
-  const isGerard = displayName?.toLowerCase() === 'gerard';
-  const navLinks = isGerard ? [...baseNavLinks, ...adminOnlyLinks] : baseNavLinks;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (tabId: string) => {
@@ -80,7 +49,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
       {/* Desktop Navigation - ATP Style */}
       <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
-        {navLinks.map((link) => {
+{baseNavLinks.map((link) => {
           const isActive = activeTab === link.id;
           
           return (
@@ -139,7 +108,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
               {/* Mobile Navigation Links */}
               <nav className="flex-1 overflow-y-auto py-4">
-                {navLinks.map((link) => {
+                {baseNavLinks.map((link) => {
                   const isActive = activeTab === link.id;
                   
                   return (

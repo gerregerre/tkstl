@@ -25,36 +25,7 @@ const baseNavLinks = [
   { id: 'members', label: 'Members' },
 ];
 
-const adminOnlyLinks = [
-  { id: 'news-admin', label: 'News Admin' },
-];
-
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const { user } = useAuth();
-  const [displayName, setDisplayName] = useState<string | null>(null);
-  
-  useEffect(() => {
-    const fetchDisplayName = async () => {
-      if (!user) {
-        setDisplayName(null);
-        return;
-      }
-      
-      const { data } = await supabase
-        .from('user_profiles')
-        .select('display_name')
-        .eq('id', user.id)
-        .maybeSingle();
-      
-      setDisplayName(data?.display_name || null);
-    };
-    
-    fetchDisplayName();
-  }, [user]);
-  
-  // Only show admin links if user is Gerard
-  const isGerard = displayName?.toLowerCase() === 'gerard';
-  const navLinks = isGerard ? [...baseNavLinks, ...adminOnlyLinks] : baseNavLinks;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (tabId: string) => {

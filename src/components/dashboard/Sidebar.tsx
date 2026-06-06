@@ -49,7 +49,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
       {/* Desktop Navigation - ATP Style */}
       <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
-        {navLinks.map((link) => {
+{baseNavLinks.map((link) => {
           const isActive = activeTab === link.id;
           
           return (
@@ -108,7 +108,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
 
               {/* Mobile Navigation Links */}
               <nav className="flex-1 overflow-y-auto py-4">
-                {navLinks.map((link) => {
+                {baseNavLinks.map((link) => {
                   const isActive = activeTab === link.id;
                   
                   return (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,11 +21,16 @@ type AuthView = 'login' | 'signup' | 'forgot';
 
 export default function Auth() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get('next');
+  // Only allow same-origin relative paths.
+  const nextPath = rawNext && rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/dashboard';
   const { user, loading, signIn, signUp, signInWithGoogle, resetPassword } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [view, setView] = useState<AuthView>('login');
   const [resetSent, setResetSent] = useState(false);
+
   
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
@@ -50,13 +56,14 @@ export default function Auth() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate('/dashboard');
+      navigate(nextPath);
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, nextPath]);
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
-    const { error } = await signInWithGoogle();
+    const { error } = await signInWithGoogle(nextPath);
+
     if (error) {
       toast.error(error.message);
       setIsGoogleLoading(false);
@@ -94,7 +101,7 @@ export default function Auth() {
         localStorage.removeItem('tkstl_remembered_email');
       }
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      navigate(nextPath);
     }
   };
 
@@ -113,7 +120,7 @@ export default function Auth() {
     }
 
     setIsSubmitting(true);
-    const { error } = await signUp(signupEmail, signupPassword, signupDisplayName);
+    const { error } = await signUp(signupEmail, signupPassword, signupDisplayName, nextPath);
     setIsSubmitting(false);
 
     if (error) {

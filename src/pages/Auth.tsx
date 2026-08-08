@@ -56,13 +56,14 @@ export default function Auth() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate('/dashboard');
+      navigate(nextPath);
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, nextPath]);
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
-    const { error } = await signInWithGoogle();
+    const { error } = await signInWithGoogle(nextPath);
+
     if (error) {
       toast.error(error.message);
       setIsGoogleLoading(false);
@@ -100,7 +101,7 @@ export default function Auth() {
         localStorage.removeItem('tkstl_remembered_email');
       }
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      navigate(nextPath);
     }
   };
 
@@ -119,7 +120,7 @@ export default function Auth() {
     }
 
     setIsSubmitting(true);
-    const { error } = await signUp(signupEmail, signupPassword, signupDisplayName);
+    const { error } = await signUp(signupEmail, signupPassword, signupDisplayName, nextPath);
     setIsSubmitting(false);
 
     if (error) {

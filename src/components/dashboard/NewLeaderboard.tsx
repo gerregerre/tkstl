@@ -49,7 +49,17 @@ export function NewLeaderboard({ onPlayerSelect, onTeamSelect }: NewLeaderboardP
   const [mode, setMode] = useState<'singles' | 'doubles'>('singles');
   const [gameTypeFilter, setGameTypeFilter] = useState<GameTypeFilter>('all');
   const [selectedSeasonId, setSelectedSeasonId] = useState<string>('all');
+  const [seasonInitialized, setSeasonInitialized] = useState(false);
   const [isRecalculating, setIsRecalculating] = useState(false);
+
+  // Default to the current (active) season for both singles and doubles
+  useEffect(() => {
+    if (!seasonInitialized && activeSeason) {
+      setSelectedSeasonId(activeSeason.id);
+      setSeasonInitialized(true);
+    }
+  }, [activeSeason, seasonInitialized]);
+
 
   // Compute season date range from selected season
   const seasonRange: SeasonDateRange | null = (() => {

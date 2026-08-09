@@ -7,9 +7,9 @@
 
 @layer base {
   :root {
-    /* ATP Tour Inspired Theme - Cool Black & Vivid Cerulean */
+    /* Roland Garros Inspired Theme - Deep Court Green & Terre Battue Clay */
     
-    /* Cool Black base - #002865 */
+    /* Deep court green base */
     --background: 158 30% 7%;
     --foreground: 0 0% 98%;
 
@@ -19,7 +19,7 @@
     --popover: 158 24% 13%;
     --popover-foreground: 0 0% 98%;
 
-    /* Vivid Cerulean Primary - #00AFF0 */
+    /* Terre battue clay primary */
     --primary: 16 78% 53%;
     --primary-foreground: 158 30% 8%;
 
@@ -29,7 +29,7 @@
 
     /* Muted tones - refined for better readability */
     --muted: 158 14% 28%;
-    --muted-foreground: 210 15% 65%;
+    --muted-foreground: 40 12% 68%;
 
     /* Accent - Lighter Cerulean */
     --accent: 38 80% 55%;
@@ -132,7 +132,7 @@
     --secondary: 158 20% 16%;
     --secondary-foreground: 0 0% 98%;
     --muted: 158 14% 26%;
-    --muted-foreground: 210 15% 62%;
+    --muted-foreground: 40 12% 66%;
     --accent: 38 80% 55%;
     --accent-foreground: 158 30% 8%;
     --destructive: 0 84% 60%;

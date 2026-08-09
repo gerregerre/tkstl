@@ -8,7 +8,7 @@ import { MemberProfiles } from '@/components/dashboard/MemberProfiles';
 import { NewSessionRecorder } from '@/components/dashboard/NewSessionRecorder';
 import { PlayerProfile } from '@/components/dashboard/PlayerProfile';
 import { TeamProfile } from '@/components/dashboard/TeamProfile';
-import { HeadToHead } from '@/components/dashboard/HeadToHead';
+import { TrophyRoom } from '@/components/dashboard/TrophyRoom';
 import { SessionHistory } from '@/components/dashboard/SessionHistory';
 import { Information } from '@/components/dashboard/Information';
 import { NewsAdmin } from '@/components/dashboard/NewsAdmin';
@@ -53,8 +53,8 @@ export default function Dashboard() {
     switch (activeTab) {
       case 'home':
         return <DashboardHome onPlayerSelect={handlePlayerSelect} onTeamSelect={handleTeamSelect} />;
-      case 'headtohead':
-        return <HeadToHead />;
+      case 'trophyroom':
+        return <TrophyRoom />;
       case 'history':
         return <SessionHistory />;
       case 'recorder':

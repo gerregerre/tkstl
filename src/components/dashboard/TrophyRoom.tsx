@@ -81,12 +81,15 @@ function Pedestal({ standing }: { standing: Standing }) {
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center font-display text-2xl font-black text-foreground/70">
-            {standing.name.charAt(0)}
+            {standing.name
+              .split(/\s*&\s*/)
+              .map((n) => n.trim().charAt(0))
+              .join('')}
           </div>
         )}
       </div>
 
-      <p className="mt-3 font-display text-base md:text-lg font-black uppercase tracking-tight text-foreground truncate max-w-full">
+      <p className="mt-3 px-1 font-display text-sm md:text-base font-black uppercase tracking-tight text-foreground text-center leading-tight break-words">
         {standing.name}
       </p>
       <p className={cn('text-[10px] uppercase tracking-[0.2em] font-bold', cfg.text)}>{cfg.label}</p>

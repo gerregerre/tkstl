@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFilteredPlayerStats } from '@/hooks/useFilteredPlayerStats';
+import { useSeasons } from '@/hooks/useSeasons';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
 import { PartyPopper, Pizza, Flame, Trophy, Skull } from 'lucide-react';
 
@@ -18,10 +19,17 @@ const ROASTS = [
 ];
 
 export function PartyPlanners() {
-  const { teamStats, loading } = useFilteredPlayerStats('all');
+  const { seasons, loading: seasonsLoading } = useSeasons();
+  const activeSeason = useMemo(() => seasons.find((s) => s.is_active) || null, [seasons]);
+  const seasonRange = useMemo(
+    () => (activeSeason ? { startDate: activeSeason.start_date, endDate: activeSeason.end_date } : null),
+    [activeSeason]
+  );
+  const { teamStats, loading } = useFilteredPlayerStats('all', seasonRange);
   const [roastIndex, setRoastIndex] = useState(0);
 
-  const lastTeam = teamStats.length > 1 ? teamStats[teamStats.length - 1] : null;
+  const rankedTeams = useMemo(() => teamStats.filter((t) => t.gamesPlayed > 0), [teamStats]);
+  const lastTeam = rankedTeams.length > 1 ? rankedTeams[rankedTeams.length - 1] : null;
 
   useEffect(() => {
     if (!lastTeam) return;
@@ -33,7 +41,7 @@ export function PartyPlanners() {
     return () => clearInterval(interval);
   }, [lastTeam?.player1, lastTeam?.player2]);
 
-  if (loading) {
+  if (loading || seasonsLoading) {
     return (
       <div className="relative bg-card/90 backdrop-blur-sm border border-border rounded-xl overflow-hidden shadow-card">
         <div className="p-5 text-center text-sm text-muted-foreground">Loading...</div>
@@ -42,6 +50,7 @@ export function PartyPlanners() {
   }
 
   if (!lastTeam) return null;
+
 
   const avatar1 = getPlayerAvatar(lastTeam.player1);
   const avatar2 = getPlayerAvatar(lastTeam.player2);

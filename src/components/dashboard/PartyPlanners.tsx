@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFilteredPlayerStats } from '@/hooks/useFilteredPlayerStats';
+import { useSeasons } from '@/hooks/useSeasons';
 import { getPlayerAvatar } from '@/lib/playerAvatars';
 import { PartyPopper, Pizza, Flame, Trophy, Skull } from 'lucide-react';
 

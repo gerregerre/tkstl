@@ -14,6 +14,9 @@ const PLAYER_AVATARS: Record<string, string> = {
   Viktor: viktorAvatar,
 };
 
+export const PLAYER_ROSTER = Object.keys(PLAYER_AVATARS);
+
 export function getPlayerAvatar(name: string): string | null {
   return PLAYER_AVATARS[name] ?? null;
 }
+

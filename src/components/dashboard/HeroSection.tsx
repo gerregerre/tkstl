@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import heroImage from '@/assets/hero-tennis-court.jpg';
+import { PLAYER_ROSTER, getPlayerAvatar } from '@/lib/playerAvatars';
+
 
 interface HeroSectionProps {
   onScrollDown?: () => void;
@@ -119,12 +121,76 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           {/* Subheading */}
           <motion.p
             variants={fadeSlideUp}
-            className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 font-medium px-4 drop-shadow-sm"
+            className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 font-medium px-4 drop-shadow-sm"
           >
             Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
           </motion.p>
+
+          {/* Player Lineup — tour presentation */}
+          <motion.div variants={fadeSlideUp} className="w-full flex flex-col items-center">
+            <div className="flex items-center gap-3 mb-5 sm:mb-6">
+              <span className="h-px w-8 sm:w-14 bg-gradient-to-r from-transparent to-primary/60" />
+              <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.35em] text-primary/90">
+                The Field
+              </span>
+              <span className="h-px w-8 sm:w-14 bg-gradient-to-l from-transparent to-primary/60" />
+            </div>
+
+            <motion.ul
+              initial="initial"
+              animate="animate"
+              variants={{ animate: { transition: { staggerChildren: 0.09, delayChildren: 0.5 } } }}
+              className="flex flex-wrap items-start justify-center gap-x-3 gap-y-5 sm:gap-x-6 md:gap-x-8 px-2"
+            >
+              {PLAYER_ROSTER.map((name, i) => {
+                const avatar = getPlayerAvatar(name);
+                return (
+                  <motion.li
+                    key={name}
+                    variants={{
+                      initial: { opacity: 0, y: 26, scale: 0.86, filter: 'blur(6px)' },
+                      animate: {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: 'blur(0px)',
+                        transition: { duration: 0.7, ease },
+                      },
+                    }}
+                    className="group flex flex-col items-center"
+                  >
+                    <motion.div
+                      whileHover={{ y: -6, scale: 1.06 }}
+                      transition={{ duration: 0.3, ease }}
+                      className="relative"
+                    >
+                      {/* clay glow ring */}
+                      <div className="absolute -inset-1 rounded-full bg-primary/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full player-avatar ring-1 ring-primary/30 group-hover:ring-primary transition-all duration-300 shadow-card overflow-hidden">
+                        {avatar ? (
+                          <img src={avatar} alt={`${name} — TKSTL player`} className="w-full h-full player-avatar-img" loading="lazy" />
+                        ) : (
+                          <span className="flex items-center justify-center w-full h-full font-display font-black text-foreground">
+                            {name.charAt(0)}
+                          </span>
+                        )}
+                      </div>
+                      {/* seed number */}
+                      <span className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-black flex items-center justify-center tabular-nums shadow-card">
+                        {i + 1}
+                      </span>
+                    </motion.div>
+                    <span className="mt-2 sm:mt-3 font-display text-[10px] sm:text-xs md:text-sm font-black uppercase tracking-widest text-foreground/80 group-hover:text-primary transition-colors">
+                      {name}
+                    </span>
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
+          </motion.div>
         </motion.div>
       </motion.div>
+
 
       {/* Scroll Indicator */}
       {onScrollDown && (

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import heroImage from '@/assets/hero-tennis-court.jpg';
-import { PLAYER_ROSTER, getPlayerAvatar } from '@/lib/playerAvatars';
+import { PLAYER_ROSTER, getPlayerCutout } from '@/lib/playerAvatars';
 
 
 interface HeroSectionProps {
@@ -81,7 +81,7 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
         className="absolute inset-x-0 top-[8%] sm:top-[10%] z-0 flex items-end justify-center gap-1 sm:gap-4 md:gap-8 px-2 pointer-events-none select-none"
       >
         {PLAYER_ROSTER.map((name) => {
-          const avatar = getPlayerAvatar(name);
+          const avatar = getPlayerCutout(name);
           if (!avatar) return null;
           return (
             <motion.li

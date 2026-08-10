@@ -1,8 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import heroImage from '@/assets/hero-tennis-court.jpg';
-import { PLAYER_ROSTER, getPlayerCutout } from '@/lib/playerAvatars';
-
 
 interface HeroSectionProps {
   onScrollDown?: () => void;
@@ -73,51 +71,6 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
       {/* Subtle Radial Glow - Cyan */}
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
 
-      {/* Player Presentation Row — ghosted behind the headline */}
-      <motion.ul
-        initial="initial"
-        animate="animate"
-        variants={{ animate: { transition: { staggerChildren: 0.14, delayChildren: 0.35 } } }}
-        className="absolute inset-x-0 top-[8%] sm:top-[10%] z-0 flex items-end justify-center gap-1 sm:gap-4 md:gap-8 px-2 pointer-events-none select-none"
-      >
-        {PLAYER_ROSTER.map((name) => {
-          const avatar = getPlayerCutout(name);
-          if (!avatar) return null;
-          return (
-            <motion.li
-              key={name}
-              variants={{
-                initial: { opacity: 0, y: 40, scale: 0.9, filter: 'blur(10px)' },
-                animate: {
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  filter: 'blur(1.5px)',
-                  transition: { duration: 1.1, ease },
-                },
-              }}
-              className="relative"
-            >
-              <img
-                src={avatar}
-                alt={`${name} — TKSTL player`}
-                className="w-16 sm:w-28 md:w-40 lg:w-48 h-auto opacity-[0.2] sm:opacity-[0.24] grayscale contrast-125"
-                style={{
-                  maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
-                }}
-                loading="lazy"
-              />
-            </motion.li>
-          );
-        })}
-      </motion.ul>
-
-      {/* Clay wash over the players so the copy stays legible */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-background/70 to-background" />
-
-
-
       {/* Content with staggered entrance + scroll fade */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
@@ -166,14 +119,12 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           {/* Subheading */}
           <motion.p
             variants={fadeSlideUp}
-            className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 font-medium px-4 drop-shadow-sm"
+            className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-12 font-medium px-4 drop-shadow-sm"
           >
             Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
           </motion.p>
         </motion.div>
-
       </motion.div>
-
 
       {/* Scroll Indicator */}
       {onScrollDown && (

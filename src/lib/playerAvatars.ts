@@ -14,31 +14,6 @@ const PLAYER_AVATARS: Record<string, string> = {
   Viktor: viktorAvatar,
 };
 
-import gerardCutout from '@/assets/avatars/cutout/gerard.png';
-import joelCutout from '@/assets/avatars/cutout/joel.png';
-import kockumCutout from '@/assets/avatars/cutout/kockum.png';
-import ludvigCutout from '@/assets/avatars/cutout/ludvig.png';
-import hampusCutout from '@/assets/avatars/cutout/hampus.png';
-import viktorCutout from '@/assets/avatars/cutout/viktor.png';
-
-// Transparent-background cutouts, used for layered/hero presentation
-const PLAYER_CUTOUTS: Record<string, string> = {
-  Gerard: gerardCutout,
-  Joel: joelCutout,
-  Kockum: kockumCutout,
-  Ludvig: ludvigCutout,
-  Hampus: hampusCutout,
-  Viktor: viktorCutout,
-};
-
-export const PLAYER_ROSTER = Object.keys(PLAYER_AVATARS);
-
 export function getPlayerAvatar(name: string): string | null {
   return PLAYER_AVATARS[name] ?? null;
 }
-
-export function getPlayerCutout(name: string): string | null {
-  return PLAYER_CUTOUTS[name] ?? null;
-}
-
-

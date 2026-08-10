@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import heroImage from '@/assets/hero-tennis-court.jpg';
-import { PLAYER_ROSTER, getPlayerAvatar } from '@/lib/playerAvatars';
+import { PLAYER_ROSTER, getPlayerCutout } from '@/lib/playerAvatars';
 
 
 interface HeroSectionProps {
@@ -73,6 +73,51 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
       {/* Subtle Radial Glow - Cyan */}
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
 
+      {/* Player Presentation Row — ghosted behind the headline */}
+      <motion.ul
+        initial="initial"
+        animate="animate"
+        variants={{ animate: { transition: { staggerChildren: 0.14, delayChildren: 0.35 } } }}
+        className="absolute inset-x-0 top-[8%] sm:top-[10%] z-0 flex items-end justify-center gap-1 sm:gap-4 md:gap-8 px-2 pointer-events-none select-none"
+      >
+        {PLAYER_ROSTER.map((name) => {
+          const avatar = getPlayerCutout(name);
+          if (!avatar) return null;
+          return (
+            <motion.li
+              key={name}
+              variants={{
+                initial: { opacity: 0, y: 40, scale: 0.9, filter: 'blur(10px)' },
+                animate: {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: 'blur(1.5px)',
+                  transition: { duration: 1.1, ease },
+                },
+              }}
+              className="relative"
+            >
+              <img
+                src={avatar}
+                alt={`${name} — TKSTL player`}
+                className="w-16 sm:w-28 md:w-40 lg:w-48 h-auto opacity-[0.2] sm:opacity-[0.24] grayscale contrast-125"
+                style={{
+                  maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+                }}
+                loading="lazy"
+              />
+            </motion.li>
+          );
+        })}
+      </motion.ul>
+
+      {/* Clay wash over the players so the copy stays legible */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-background/70 to-background" />
+
+
+
       {/* Content with staggered entrance + scroll fade */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
@@ -125,70 +170,8 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           >
             Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
           </motion.p>
-
-          {/* Player Lineup — tour presentation */}
-          <motion.div variants={fadeSlideUp} className="w-full flex flex-col items-center">
-            <div className="flex items-center gap-3 mb-5 sm:mb-6">
-              <span className="h-px w-8 sm:w-14 bg-gradient-to-r from-transparent to-primary/60" />
-              <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.35em] text-primary/90">
-                The Field
-              </span>
-              <span className="h-px w-8 sm:w-14 bg-gradient-to-l from-transparent to-primary/60" />
-            </div>
-
-            <motion.ul
-              initial="initial"
-              animate="animate"
-              variants={{ animate: { transition: { staggerChildren: 0.09, delayChildren: 0.5 } } }}
-              className="flex flex-wrap items-start justify-center gap-x-3 gap-y-5 sm:gap-x-6 md:gap-x-8 px-2"
-            >
-              {PLAYER_ROSTER.map((name, i) => {
-                const avatar = getPlayerAvatar(name);
-                return (
-                  <motion.li
-                    key={name}
-                    variants={{
-                      initial: { opacity: 0, y: 26, scale: 0.86, filter: 'blur(6px)' },
-                      animate: {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        filter: 'blur(0px)',
-                        transition: { duration: 0.7, ease },
-                      },
-                    }}
-                    className="group flex flex-col items-center"
-                  >
-                    <motion.div
-                      whileHover={{ y: -6, scale: 1.06 }}
-                      transition={{ duration: 0.3, ease }}
-                      className="relative"
-                    >
-                      {/* clay glow ring */}
-                      <div className="absolute -inset-1 rounded-full bg-primary/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full player-avatar ring-1 ring-primary/30 group-hover:ring-primary transition-all duration-300 shadow-card overflow-hidden">
-                        {avatar ? (
-                          <img src={avatar} alt={`${name} — TKSTL player`} className="w-full h-full player-avatar-img" loading="lazy" />
-                        ) : (
-                          <span className="flex items-center justify-center w-full h-full font-display font-black text-foreground">
-                            {name.charAt(0)}
-                          </span>
-                        )}
-                      </div>
-                      {/* seed number */}
-                      <span className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] font-black flex items-center justify-center tabular-nums shadow-card">
-                        {i + 1}
-                      </span>
-                    </motion.div>
-                    <span className="mt-2 sm:mt-3 font-display text-[10px] sm:text-xs md:text-sm font-black uppercase tracking-widest text-foreground/80 group-hover:text-primary transition-colors">
-                      {name}
-                    </span>
-                  </motion.li>
-                );
-              })}
-            </motion.ul>
-          </motion.div>
         </motion.div>
+
       </motion.div>
 
 

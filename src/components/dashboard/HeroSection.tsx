@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import heroImage from '@/assets/hero-tennis-court.jpg';
+import { PLAYER_ROSTER, getPlayerAvatar } from '@/lib/playerAvatars';
+
 
 interface HeroSectionProps {
   onScrollDown?: () => void;

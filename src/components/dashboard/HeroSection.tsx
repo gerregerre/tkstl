@@ -101,7 +101,7 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
               <img
                 src={avatar}
                 alt={`${name} — TKSTL player`}
-                className="w-16 sm:w-28 md:w-40 lg:w-48 h-auto opacity-[0.16] sm:opacity-[0.18] grayscale contrast-125"
+                className="w-16 sm:w-28 md:w-40 lg:w-48 h-auto opacity-[0.2] sm:opacity-[0.24] grayscale contrast-125"
                 style={{
                   maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
                   WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',

@@ -125,31 +125,26 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
             Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
           </motion.p>
 
-          {/* Player Lineup */}
-          <motion.div
-            variants={fadeSlideUp}
-            className="flex items-end justify-center gap-2 sm:gap-4 md:gap-6 flex-wrap"
-          >
-            {PLAYER_LINEUP.map((player, i) => (
-              <motion.div
-                key={player.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.08, duration: 0.5, ease }}
-                whileHover={{ y: -6 }}
-                className="flex flex-col items-center gap-1.5 sm:gap-2 group"
-              >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full player-avatar ring-2 ring-primary/30 group-hover:ring-primary transition-all shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.5)]">
-                  <img src={player.avatar} alt={`${player.name} — TKSTL player`} className="w-full h-full player-avatar-img" loading="lazy" />
-                </div>
-                <span className="font-display text-[9px] sm:text-[11px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">
-                  {player.name}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
         </motion.div>
       </motion.div>
+
+      {/* Full-body Player Lineup - Avengers style */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.9, ease }}
+        className="absolute bottom-0 left-0 right-0 z-[5] flex justify-center pointer-events-none"
+      >
+        <img
+          src={playersLineup}
+          alt="The six TKSTL players standing together with tennis rackets"
+          className="w-full max-w-5xl object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--primary)/0.35)]"
+        />
+        {/* Fade feet into the background */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/70 to-transparent" />
+      </motion.div>
+
+
 
 
       {/* Scroll Indicator */}

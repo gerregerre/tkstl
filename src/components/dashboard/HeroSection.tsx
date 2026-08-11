@@ -129,7 +129,7 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
         <img
           src={playersLineup}
           alt="The six TKSTL players standing together with tennis rackets"
-          className="w-full max-w-4xl object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--primary)/0.35)]"
+          className="w-full max-w-4xl object-contain object-bottom drop-shadow-[0_18px_28px_hsl(var(--background)/0.85)]"
         />
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background via-background/70 to-transparent" />
       </motion.div>

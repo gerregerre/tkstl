@@ -17,3 +17,12 @@ const PLAYER_AVATARS: Record<string, string> = {
 export function getPlayerAvatar(name: string): string | null {
   return PLAYER_AVATARS[name] ?? null;
 }
+
+export const PLAYER_LINEUP: { name: string; avatar: string }[] = [
+  { name: 'Gerard', avatar: gerardAvatar },
+  { name: 'Joel', avatar: joelAvatar },
+  { name: 'Kockum', avatar: kockumAvatar },
+  { name: 'Ludvig', avatar: ludvigAvatar },
+  { name: 'Hampus', avatar: hampusAvatar },
+  { name: 'Viktor', avatar: viktorAvatar },
+];

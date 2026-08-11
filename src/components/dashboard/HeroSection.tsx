@@ -52,7 +52,7 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
   const contentY = useTransform(scrollYProgress, [0, 0.6], [0, -40]);
 
   return (
-    <section ref={sectionRef} className="relative w-full min-h-[80vh] sm:h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative w-full min-h-[85vh] sm:min-h-screen overflow-hidden flex flex-col">
       {/* Parallax Background Image */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -63,19 +63,19 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
         }}
       />
 
-      {/* ATP-Style Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background" />
+      {/* Gradient Overlay - dark banner at top, open court below */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background/95" />
 
       {/* Diagonal Speed Line Accent */}
       <div className="absolute inset-0 diagonal-accent opacity-60" />
 
-      {/* Subtle Radial Glow - Cyan */}
+      {/* Subtle Radial Glow */}
       <div className="absolute inset-0 bg-gradient-radial-glow opacity-40" />
 
-      {/* Content with staggered entrance + scroll fade */}
+      {/* Top text stack */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-10 h-full flex flex-col items-center justify-center text-center sm:px-6 px-px py-[160px]"
+        className="relative z-20 flex flex-col items-center text-center px-4 sm:px-6 pt-10 sm:pt-16"
       >
         <motion.div
           variants={staggerChildren}
@@ -83,10 +83,10 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           animate="animate"
           className="flex flex-col items-center"
         >
-          {/* ATP-Style Badge */}
+          {/* Badge */}
           <motion.div
             variants={fadeScale}
-            className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-3 sm:px-4 py-1.5 mb-6 sm:mb-8"
+            className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded px-3 sm:px-4 py-1.5 mb-4 sm:mb-6"
           >
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-primary font-bold tracking-widest text-[10px] sm:text-xs uppercase">
@@ -97,7 +97,7 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           {/* Club Name */}
           <motion.p
             variants={fadeSlideUp}
-            className="font-display text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 tracking-wide uppercase not-italic drop-shadow-lg text-muted-foreground lg:text-5xl animate-shimmer bg-clip-text"
+            className="font-display text-xs sm:text-base md:text-lg font-bold mb-2 sm:mb-3 tracking-[0.2em] uppercase text-muted-foreground"
           >
             TENNISKLUBBEN STORA TENNISLIGAN
           </motion.p>
@@ -105,26 +105,17 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
           {/* Main Heading */}
           <motion.h1
             variants={fadeSlideUp}
-            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mb-1 sm:mb-2 tracking-tight uppercase drop-shadow-lg"
+            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground tracking-tight uppercase drop-shadow-lg leading-[0.95]"
           >
             WHERE TRADITIONS
           </motion.h1>
 
           <motion.h2
             variants={fadeSlideUp}
-            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gradient-cyan mb-6 sm:mb-8 tracking-tight uppercase drop-shadow-lg"
+            className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gradient-atp tracking-tight uppercase drop-shadow-lg leading-[0.95]"
           >
             MEETS EXCELLENCE
           </motion.h2>
-
-          {/* Subheading */}
-          <motion.p
-            variants={fadeSlideUp}
-            className="text-muted-foreground max-w-xs sm:max-w-lg md:max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10 font-medium px-4 drop-shadow-sm"
-          >
-            Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
-          </motion.p>
-
         </motion.div>
       </motion.div>
 
@@ -132,38 +123,47 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.9, ease }}
-        className="absolute bottom-0 left-0 right-0 z-[5] flex justify-center pointer-events-none"
+        transition={{ delay: 0.4, duration: 0.9, ease }}
+        className="relative z-10 mt-6 sm:mt-8 flex justify-center pointer-events-none"
       >
         <img
           src={playersLineup}
           alt="The six TKSTL players standing together with tennis rackets"
-          className="w-full max-w-5xl object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--primary)/0.35)]"
+          className="w-full max-w-4xl object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--primary)/0.35)]"
         />
-        {/* Fade feet into the background */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background via-background/70 to-transparent" />
       </motion.div>
 
-
-
-
-      {/* Scroll Indicator */}
-      {onScrollDown && (
-        <motion.button
-          onClick={onScrollDown}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+      {/* Bottom copy + scroll cue */}
+      <div className="relative z-20 flex flex-col items-center text-center px-4 pb-10 sm:pb-14 -mt-4">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.6, ease }}
+          className="text-foreground/90 max-w-xs sm:max-w-xl md:max-w-2xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed font-medium"
         >
-          <div className="w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1.5 group-hover:border-primary transition-colors">
-            <div className="w-1.5 h-3 bg-current rounded-full animate-bounce group-hover:bg-primary transition-colors" />
-          </div>
-        </motion.button>
-      )}
+          Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
+        </motion.p>
+
+        {onScrollDown && (
+          <motion.button
+            onClick={onScrollDown}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.5 }}
+            aria-label="Scroll down"
+            className="mt-6 flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
+          >
+            <div className="w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1.5 group-hover:border-primary transition-colors">
+              <div className="w-1.5 h-3 bg-current rounded-full animate-bounce group-hover:bg-primary transition-colors" />
+            </div>
+          </motion.button>
+        )}
+      </div>
 
       {/* Bottom Edge */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
     </section>
   );
 }
+

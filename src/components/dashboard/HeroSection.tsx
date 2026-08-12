@@ -129,40 +129,9 @@ export function HeroSection({ onScrollDown }: HeroSectionProps) {
         <img
           src={playersLineup}
           alt="The six TKSTL players standing together with tennis rackets"
-          className="w-full max-w-4xl object-contain object-bottom drop-shadow-[0_18px_28px_hsl(var(--background)/0.85)]"
+          className="w-full max-w-4xl object-contain object-bottom"
         />
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background via-background/70 to-transparent" />
       </motion.div>
-
-      {/* Bottom copy + scroll cue */}
-      <div className="relative z-20 flex flex-col items-center text-center px-4 pb-10 sm:pb-14 -mt-4">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6, ease }}
-          className="text-foreground/90 max-w-xs sm:max-w-xl md:max-w-2xl mx-auto text-xs sm:text-sm md:text-base leading-relaxed font-medium"
-        >
-          Experience championship-level doubles tennis with precision, energy, and the spirit of competition.
-        </motion.p>
-
-        {onScrollDown && (
-          <motion.button
-            onClick={onScrollDown}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.5 }}
-            aria-label="Scroll down"
-            className="mt-6 flex flex-col items-center gap-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer group"
-          >
-            <div className="w-6 h-10 rounded-full border-2 border-current flex items-start justify-center p-1.5 group-hover:border-primary transition-colors">
-              <div className="w-1.5 h-3 bg-current rounded-full animate-bounce group-hover:bg-primary transition-colors" />
-            </div>
-          </motion.button>
-        )}
-      </div>
-
-      {/* Bottom Edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60" />
     </section>
   );
 }

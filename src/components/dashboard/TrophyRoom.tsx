@@ -81,22 +81,16 @@ function AvatarRing({
       )}
     >
       {isDoubles ? (
-        <div className="w-full h-full flex -space-x-2 items-center justify-center p-1.5">
-          {names.map((name, i) => {
+        <div className="w-full h-full flex player-avatar">
+          {names.map((name) => {
             const avatar = getPlayerAvatar(name);
             return (
-              <div
-                key={name}
-                className={cn(
-                  'relative w-1/2 h-full rounded-full overflow-hidden border-2 border-background/80 bg-white',
-                  i === 0 && '-ml-1'
-                )}
-              >
+              <div key={name} className="relative w-1/2 h-full overflow-hidden">
                 {avatar ? (
                   <img
                     src={avatar}
                     alt={`${name} podium portrait`}
-                    className="w-full h-full object-cover mix-blend-multiply"
+                    className="player-avatar-img absolute inset-0 w-[200%] h-full max-w-none left-1/2 -translate-x-1/2"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center font-display text-lg font-black text-foreground/70 bg-muted/40">
@@ -108,6 +102,7 @@ function AvatarRing({
           })}
         </div>
       ) : (
+
         <div className="w-full h-full player-avatar">
           {names.map((name) => {
             const avatar = getPlayerAvatar(name);

@@ -53,10 +53,90 @@ const PODIUM = {
   },
 } as const;
 
+function getMemberNames(name: string): string[] {
+  return name.split(/\s*&\s*/).map((n) => n.trim());
+}
+
+function AvatarRing({
+  names,
+  rank,
+  ring,
+  glow,
+}: {
+  names: string[];
+  rank: number;
+  ring: string;
+  glow: string;
+}) {
+  const sizeClass = 'w-20 h-20 md:w-24 md:h-24';
+  const isDoubles = names.length > 1;
+
+  return (
+    <div
+      className={cn(
+        'relative rounded-full ring-2 overflow-hidden bg-muted/40 shrink-0',
+        sizeClass,
+        ring,
+        glow
+      )}
+    >
+      {isDoubles ? (
+        <div className="w-full h-full flex -space-x-2 items-center justify-center p-1.5">
+          {names.map((name, i) => {
+            const avatar = getPlayerAvatar(name);
+            return (
+              <div
+                key={name}
+                className={cn(
+                  'relative w-1/2 h-full rounded-full overflow-hidden border-2 border-background/80 bg-white',
+                  i === 0 && '-ml-1'
+                )}
+              >
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    alt={`${name} podium portrait`}
+                    className="w-full h-full object-cover mix-blend-multiply"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center font-display text-lg font-black text-foreground/70 bg-muted/40">
+                    {name.charAt(0)}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="w-full h-full player-avatar">
+          {names.map((name) => {
+            const avatar = getPlayerAvatar(name);
+            return avatar ? (
+              <img
+                key={name}
+                src={avatar}
+                alt={`${name} podium portrait`}
+                className="player-avatar-img w-full h-full"
+              />
+            ) : (
+              <div
+                key={name}
+                className="w-full h-full flex items-center justify-center font-display text-2xl font-black text-foreground/70"
+              >
+                {name.charAt(0)}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Pedestal({ standing }: { standing: Standing }) {
   const cfg = PODIUM[standing.rank as 1 | 2 | 3] ?? PODIUM[3];
   const Icon = cfg.icon;
-  const avatar = getPlayerAvatar(standing.name);
+  const memberNames = getMemberNames(standing.name);
 
   return (
     <motion.div
@@ -68,26 +148,7 @@ function Pedestal({ standing }: { standing: Standing }) {
     >
       <Icon className={cn('h-6 w-6 mb-3', cfg.text)} strokeWidth={1.5} />
 
-      <div
-        className={cn(
-          'relative w-20 h-20 md:w-24 md:h-24 rounded-full ring-2 overflow-hidden bg-muted/40',
-          cfg.ring,
-          cfg.glow
-        )}
-      >
-        {avatar ? (
-          <div className="w-full h-full player-avatar">
-            <img src={avatar} alt={`${standing.name} podium portrait`} className="player-avatar-img w-full h-full" />
-          </div>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center font-display text-2xl font-black text-foreground/70">
-            {standing.name
-              .split(/\s*&\s*/)
-              .map((n) => n.trim().charAt(0))
-              .join('')}
-          </div>
-        )}
-      </div>
+      <AvatarRing names={memberNames} rank={standing.rank} ring={cfg.ring} glow={cfg.glow} />
 
       <p className="mt-3 px-1 font-display text-sm md:text-base font-black uppercase tracking-tight text-foreground text-center leading-tight break-words">
         {standing.name}

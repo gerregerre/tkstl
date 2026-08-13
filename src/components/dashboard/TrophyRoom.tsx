@@ -205,7 +205,7 @@ export function TrophyRoom() {
     const load = async () => {
       const [{ data: s }, { data: st }] = await Promise.all([
         supabase.from('seasons').select('id, name, start_date, end_date').order('start_date', { ascending: false }),
-        supabase.from('season_standings').select('*').lte('rank', 3),
+        supabase.from('season_standings').select('*'),
       ]);
       setSeasons((s ?? []) as Season[]);
       setStandings((st ?? []) as Standing[]);

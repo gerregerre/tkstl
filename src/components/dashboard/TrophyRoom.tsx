@@ -31,7 +31,7 @@ const PODIUM = {
     glow: 'shadow-[0_0_50px_-8px_hsl(43,74%,55%,0.55)]',
     text: 'text-[hsl(43,80%,66%)]',
     plate: 'from-[hsl(43,74%,55%)]/25 to-transparent',
-    height: 'md:h-40',
+    height: 'h-32 md:h-40',
   },
   2: {
     label: 'Silver',
@@ -40,7 +40,7 @@ const PODIUM = {
     glow: 'shadow-[0_0_36px_-10px_hsl(210,12%,80%,0.4)]',
     text: 'text-[hsl(210,14%,80%)]',
     plate: 'from-[hsl(210,12%,72%)]/20 to-transparent',
-    height: 'md:h-28',
+    height: 'h-24 md:h-28',
   },
   3: {
     label: 'Bronze',
@@ -49,7 +49,7 @@ const PODIUM = {
     glow: 'shadow-[0_0_30px_-10px_hsl(25,55%,50%,0.4)]',
     text: 'text-[hsl(25,55%,62%)]',
     plate: 'from-[hsl(25,45%,48%)]/20 to-transparent',
-    height: 'md:h-20',
+    height: 'h-16 md:h-20',
   },
 } as const;
 

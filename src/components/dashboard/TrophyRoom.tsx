@@ -166,12 +166,22 @@ function Pedestal({ standing }: { standing: Standing }) {
   );
 }
 
+const MIN_GAMES = 5;
+
 function Hall({ title, standings }: { title: string; standings: Standing[] }) {
+  // Podium is decided by average points, with a minimum games played to qualify.
+  const qualified = [...standings]
+    .filter((s) => s.games_played >= MIN_GAMES)
+    .sort((a, b) => b.avg_points - a.avg_points || b.total_points - a.total_points)
+    .slice(0, 3)
+    .map((s, i) => ({ ...s, rank: i + 1 }));
+
   const podium = [2, 1, 3]
-    .map((r) => standings.find((s) => s.rank === r))
+    .map((r) => qualified.find((s) => s.rank === r))
     .filter(Boolean) as Standing[];
 
   if (podium.length === 0) return null;
+
 
   return (
     <div className="relative rounded-lg border border-border/70 bg-card/70 backdrop-blur-sm p-6 md:p-8 overflow-hidden">

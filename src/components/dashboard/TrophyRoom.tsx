@@ -217,9 +217,22 @@ export function TrophyRoom() {
   const archived = useMemo(() => seasons.filter((s) => s.end_date), [seasons]);
 
   const inductees = useMemo(() => {
-    const names = new Set(standings.map((s) => s.name));
+    const names = new Set<string>();
+    const groups = new Map<string, Standing[]>();
+    standings.forEach((s) => {
+      const key = `${s.season_id}-${s.type}`;
+      groups.set(key, [...(groups.get(key) ?? []), s]);
+    });
+    groups.forEach((group) => {
+      group
+        .filter((s) => s.games_played >= MIN_GAMES)
+        .sort((a, b) => b.avg_points - a.avg_points || b.total_points - a.total_points)
+        .slice(0, 3)
+        .forEach((s) => names.add(s.name));
+    });
     return names.size;
   }, [standings]);
+
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-10 md:py-14">

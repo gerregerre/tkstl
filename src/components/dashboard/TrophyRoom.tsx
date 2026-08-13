@@ -166,12 +166,22 @@ function Pedestal({ standing }: { standing: Standing }) {
   );
 }
 
+const MIN_GAMES = 5;
+
 function Hall({ title, standings }: { title: string; standings: Standing[] }) {
+  // Podium is decided by average points, with a minimum games played to qualify.
+  const qualified = [...standings]
+    .filter((s) => s.games_played >= MIN_GAMES)
+    .sort((a, b) => b.avg_points - a.avg_points || b.total_points - a.total_points)
+    .slice(0, 3)
+    .map((s, i) => ({ ...s, rank: i + 1 }));
+
   const podium = [2, 1, 3]
-    .map((r) => standings.find((s) => s.rank === r))
+    .map((r) => qualified.find((s) => s.rank === r))
     .filter(Boolean) as Standing[];
 
   if (podium.length === 0) return null;
+
 
   return (
     <div className="relative rounded-lg border border-border/70 bg-card/70 backdrop-blur-sm p-6 md:p-8 overflow-hidden">
@@ -195,7 +205,7 @@ export function TrophyRoom() {
     const load = async () => {
       const [{ data: s }, { data: st }] = await Promise.all([
         supabase.from('seasons').select('id, name, start_date, end_date').order('start_date', { ascending: false }),
-        supabase.from('season_standings').select('*').lte('rank', 3),
+        supabase.from('season_standings').select('*'),
       ]);
       setSeasons((s ?? []) as Season[]);
       setStandings((st ?? []) as Standing[]);
@@ -207,9 +217,22 @@ export function TrophyRoom() {
   const archived = useMemo(() => seasons.filter((s) => s.end_date), [seasons]);
 
   const inductees = useMemo(() => {
-    const names = new Set(standings.map((s) => s.name));
+    const names = new Set<string>();
+    const groups = new Map<string, Standing[]>();
+    standings.forEach((s) => {
+      const key = `${s.season_id}-${s.type}`;
+      groups.set(key, [...(groups.get(key) ?? []), s]);
+    });
+    groups.forEach((group) => {
+      group
+        .filter((s) => s.games_played >= MIN_GAMES)
+        .sort((a, b) => b.avg_points - a.avg_points || b.total_points - a.total_points)
+        .slice(0, 3)
+        .forEach((s) => names.add(s.name));
+    });
     return names.size;
   }, [standings]);
+
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-10 md:py-14">
